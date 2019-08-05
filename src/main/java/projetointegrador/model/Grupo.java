@@ -1,9 +1,12 @@
-package model;
+package projetointegrador.model;
+
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "grupo")
+@DynamicUpdate
 public class Grupo {
 
     @Id

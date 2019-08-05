@@ -1,4 +1,32 @@
 /* CSS for app */
 
+.button {
+    -fx-background-color: transparent;
+    -fx-border-radius: 0px;
+    -fx-border-insets: 0px 0px 0px 0px;
 
+}
 
+.button:hover {
+    -fx-background-color: #9777A7;
+    -fx-border-width: 0px 0px 0px 3px;
+    -fx-border-color: white;
+    -fx-border-style: solid;
+}
+
+.button:pressed {
+    -fx-background-color: #9777A7;
+}
+
+.sid-bar{
+    -fx-background-color: #4059a9;
+}
+
+.menu-button {
+    -fx-text-fill: #ffffff;
+}
+
+.menu-label {
+    -fx-text-fill: #ffffff;
+    -fx-start-margin: 5;
+}

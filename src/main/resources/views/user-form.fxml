@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane fx:id="panelUser" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="426.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.UsuarioController">
+   <children>
+      <Pane layoutY="-42.0" prefHeight="399.0" prefWidth="759.0" translateZ="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXTextField fx:id="txtName" labelFloat="true" layoutX="26.0" layoutY="58.0" prefHeight="29.0" prefWidth="578.0" promptText="Nome" />
+            <JFXToggleButton fx:id="btnAtivo" layoutX="641.0" layoutY="42.0" prefHeight="60.0" prefWidth="109.0" text="Ativo" />
+            <JFXTextField fx:id="txtEmail" labelFloat="true" layoutX="26.0" layoutY="103.0" prefHeight="29.0" prefWidth="578.0" promptText="E-mail" />
+            <JFXPasswordField fx:id="txtPassword" labelFloat="true" layoutX="26.0" layoutY="162.0" prefHeight="29.0" prefWidth="263.0" promptText="Senha" />
+            <JFXPasswordField fx:id="txtConfirmePassword" labelFloat="true" layoutX="341.0" layoutY="162.0" prefHeight="29.0" prefWidth="263.0" promptText="Confirmação senha" />
+            <JFXButton fx:id="btnSave" layoutX="26.0" layoutY="256.0" onAction="#save" prefHeight="60.0" prefWidth="144.0" text="Salvar" />
+            <JFXButton fx:id="btnCancel" layoutX="217.0" layoutY="256.0" onAction="#cancel" prefHeight="60.0" prefWidth="144.0" text="Cancelar" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

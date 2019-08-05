@@ -1,4 +1,4 @@
-package model;
+package projetointegrador.model;
 
 import javax.persistence.*;
 import java.util.Date;
