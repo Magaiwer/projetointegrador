@@ -1,5 +1,6 @@
 package projetointegrador.model;
 
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -7,6 +8,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "grupo")
 @DynamicUpdate
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class Grupo {
 
     @Id
@@ -15,20 +21,4 @@ public class Grupo {
 
     @Column
     private String nome;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 }

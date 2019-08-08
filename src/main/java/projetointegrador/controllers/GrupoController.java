@@ -9,6 +9,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -26,6 +28,7 @@ import projetointegrador.repository.GrupoRepository;
 
 import java.net.URL;
 import java.security.Guard;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
@@ -100,8 +103,10 @@ public class GrupoController implements Initializable {
             stageManager.switchScene(root, EFxmlView.GROUP);
             txtName.setText(grupo.getNome());
         } else {
-            // TODO
-            System.out.println("SELECIONE UM GRUPO");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Selecione o grupo que deseja editar");
+            alert.show();
         }
     }
 
@@ -110,11 +115,18 @@ public class GrupoController implements Initializable {
         grupo = tableGroup.getSelectionModel().getSelectedItem();
 
         if (grupo != null) {
-            grupoRepository.delete(grupo);
-            initTable();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Você deseja remover o usuário " + grupo.getNome());
+            Optional<ButtonType> confirm = alert.showAndWait();
+
+            if (confirm.get() == ButtonType.OK) {
+                grupoRepository.delete(grupo);
+                initTable();
+            }
         } else {
-            // TODO
-            System.out.println("SELECIONE UM GRUPO");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Selecione o grupo que deseja deletar");
+            alert.show();
         }
 
     }
