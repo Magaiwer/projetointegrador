@@ -51,7 +51,7 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!-- Components -->
+        <!-- Components foenix -->
         <dependency>
             <groupId>de.jensd</groupId>
             <artifactId>fontawesomefx</artifactId>
