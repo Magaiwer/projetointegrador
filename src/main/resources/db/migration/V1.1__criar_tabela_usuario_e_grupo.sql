@@ -1,13 +1,15 @@
 CREATE TABLE USUARIO (
   id serial not null,
+  nome varchar (100),
   login varchar (100) not null,
   senha text not null,
+  ativo boolean not null,
   constraint pk_usuario primary key (id)
 
-)
+);
 
 CREATE TABLE GRUPO (
   id serial not null,
   nome varchar (100) not null,
   constraint pk_grupo primary key (id)
-)
+);

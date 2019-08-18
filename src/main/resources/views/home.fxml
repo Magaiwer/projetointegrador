@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import com.jfoenix.controls.JFXButton?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -10,7 +11,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400" minWidth="600" prefHeight="617.0" prefWidth="1100.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.AppController">
    <children>
       <BorderPane layoutX="159.0" layoutY="109.0" prefHeight="617.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -20,7 +20,8 @@
                   <Pane prefHeight="136.0" prefWidth="189.0">
                      <children>
                         <Separator layoutY="133.0" prefHeight="3.0" prefWidth="189.0" />
-                        <FontAwesomeIconView fx:id="menuAvatar" fill="WHITE" glyphName="USER" layoutX="59.0" layoutY="101.0" size="7em" />
+                        <FontAwesomeIconView fx:id="menuAvatar" fill="WHITE" glyphName="USER" layoutX="59.0" layoutY="87.0" size="7em" />
+                        <TextField fx:id="lbUser" layoutX="11.0" layoutY="101.0" />
                      </children>
                   </Pane>
                   <Label prefHeight="28.0" prefWidth="184.0" styleClass="menu-label" text="Cadastros" textFill="#fcfcfc">
@@ -49,9 +50,9 @@
                         <Insets left="5.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXButton prefHeight="48.0" prefWidth="189.0" />
-                  <JFXButton prefHeight="48.0" prefWidth="189.0" />
-                  <JFXButton prefHeight="48.0" prefWidth="189.0" />
+                  <JFXButton fx:id="btnAudit" onAction="#showAudit" prefHeight="48.0" prefWidth="189.0" text="Auditoria" textFill="WHITE" />
+                  <JFXButton fx:id="btnForm" onAction="#showForms" prefHeight="48.0" prefWidth="189.0" text="Formularios" textFill="WHITE" />
+                  <JFXButton onAction="#showAudit" prefHeight="48.0" prefWidth="189.0" />
                   <JFXButton prefHeight="48.0" prefWidth="189.0" />
                   <JFXButton prefHeight="48.0" prefWidth="189.0" />
                   <JFXButton prefHeight="48.0" prefWidth="189.0" />

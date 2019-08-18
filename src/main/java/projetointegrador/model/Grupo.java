@@ -2,17 +2,17 @@ package projetointegrador.model;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.context.event.EventListener;
+import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 
+@EntityListeners(AuditListeners.class)
 @Entity
 @Table(name = "grupo")
 @DynamicUpdate
-@Getter
-@Setter
-@NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@Data
 public class Grupo {
 
     @Id

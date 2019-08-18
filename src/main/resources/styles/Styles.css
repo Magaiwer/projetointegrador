@@ -8,14 +8,15 @@
 }
 
 .button:hover {
-    -fx-background-color: #9777A7;
+    -fx-background-color: #7159c1;
+    -fx-text-fill: #fffeff;
     -fx-border-width: 0px 0px 0px 3px;
     -fx-border-color: white;
     -fx-border-style: solid;
 }
 
 .button:pressed {
-    -fx-background-color: #9777A7;
+    -fx-background-color: #3a1c52;
 }
 
 .sid-bar{

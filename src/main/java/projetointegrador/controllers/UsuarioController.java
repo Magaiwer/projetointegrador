@@ -20,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.ValidationUtils;
 import projetointegrador.Util.EFxmlView;
@@ -93,6 +94,9 @@ public class UsuarioController implements Initializable {
     @Autowired
     private StageManager stageManager;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private Usuario usuario = new Usuario();
     private RequiredFieldValidator requiredFieldValidator;
 
@@ -112,11 +116,13 @@ public class UsuarioController implements Initializable {
         txtName.getValidators().add(validator);
         validator.setMessage("Campo é obrigatorio");
         txtName.validate();
+
         if (usuario != null) {
             usuario.setNome(txtName.getText());
             usuario.setLogin(txtEmail.getText());
-            usuario.setSenha(txtPassword.getText());
+            usuario.setSenha(passwordEncoder.encode(txtPassword.getText()));
             usuario.setAtivo(btnAtivo.isSelected());
+
             usuarioRepository.save(usuario);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -134,6 +140,7 @@ public class UsuarioController implements Initializable {
     @FXML
     void newUser(ActionEvent event) {
         stageManager.switchScene(root, EFxmlView.USER);
+        usuario = new Usuario();
         txtName.requestFocus();
 
     }
