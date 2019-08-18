@@ -4,6 +4,17 @@ import java.util.ResourceBundle;
 
 public enum EFxmlView {
 
+    LOGIN {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("login.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/views/login.fxml";
+        }
+    },
     HOME {
         @Override
         public String getTitle() {
@@ -57,17 +68,6 @@ public enum EFxmlView {
         @Override
         public String getFxmlFile() {
             return "/views/group-form.fxml";
-        }
-    },
-    LOGIN {
-        @Override
-        public String getTitle() {
-            return getStringFromResourceBundle("login.title");
-        }
-
-        @Override
-        public String getFxmlFile() {
-            return "/fxml/Login.fxml";
         }
     };
 

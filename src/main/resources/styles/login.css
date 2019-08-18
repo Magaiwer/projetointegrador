@@ -1,0 +1,39 @@
+.pane-top {
+    -fx-background-color: #3a1c52;
+
+}
+
+.pane-center {
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 2px;
+}
+
+.pane-bottom {
+    -fx-background-color: #2087a9;
+}
+
+.icon {
+    -fx-fill: #7159c1;
+}
+
+.button-login {
+    -fx-background-color: #7159c1;
+    -fx-text-fill: #fffeff;
+    -fx-border-radius: 0px;
+    -fx-border-insets: 0px 0px 0px 0px;
+
+}
+
+
+.button-login:hover {
+    -fx-background-color: #3a1c52;
+
+    -fx-text-fill: #fffeff;
+    -fx-border-width: 0px 0px 0px 3px;
+    -fx-border-color: white;
+    -fx-border-style: solid;
+}
+
+.button-login:pressed {
+    -fx-background-color: #3a1c52;
+}

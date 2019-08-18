@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="479.0" prefWidth="806.0" stylesheets="@../styles/login.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.LoginController">
+   <children>
+      <Pane prefHeight="119.0" prefWidth="806.0" styleClass="pane-top" />
+      <Pane layoutX="195.0" layoutY="69.0" prefHeight="348.0" prefWidth="432.0" styleClass="pane-center">
+         <children>
+            <Label fx:id="lb_msg" alignment="CENTER" layoutX="58.0" layoutY="306.0" prefHeight="18.0" prefWidth="321.0" textFill="#e40808" visible="false" />
+         </children>
+      </Pane>
+      <JFXTextField fx:id="txtUser" alignment="CENTER" labelFloat="true" layoutX="253.0" layoutY="173.0" prefHeight="28.0" prefWidth="321.0" promptText="E-mail" />
+      <FontAwesomeIconView fill="#807ee0" glyphName="USER" layoutX="260.0" layoutY="187.0" size="20" styleClass="icon" />
+      <FontAwesomeIconView glyphName="LOCK" layoutX="261.0" layoutY="283.0" size="20" styleClass="icon" />
+      <JFXPasswordField fx:id="txtPassword" alignment="CENTER" labelFloat="true" layoutX="253.0" layoutY="263.0" prefHeight="28.0" prefWidth="321.0" promptText="Senha" styleClass="icon" />
+      <JFXButton fx:id="btnLogin" layoutX="253.0" layoutY="324.0" onAction="#autenthicate" prefHeight="36.0" prefWidth="321.0" styleClass="button-login" text="Login" />
+   </children>
+</AnchorPane>
