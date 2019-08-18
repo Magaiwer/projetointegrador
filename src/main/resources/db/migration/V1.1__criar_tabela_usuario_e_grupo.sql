@@ -13,3 +13,6 @@ CREATE TABLE GRUPO (
   nome varchar (100) not null,
   constraint pk_grupo primary key (id)
 );
+
+  /*senha 1234*/
+INSERT INTO USUARIO(nome, login, senha, ativo) values('Administrador','admin@admin.com','$2a$10$12Bm5xzAVYzi.fvHIxreqeR.ajqGazIcHPQKzAUtgKYfZa8axbsR2',true );

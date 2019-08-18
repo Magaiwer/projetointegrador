@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
@@ -21,7 +20,6 @@
                      <children>
                         <Separator layoutY="133.0" prefHeight="3.0" prefWidth="189.0" />
                         <FontAwesomeIconView fx:id="menuAvatar" fill="WHITE" glyphName="USER" layoutX="59.0" layoutY="87.0" size="7em" />
-                        <TextField fx:id="lbUser" layoutX="11.0" layoutY="101.0" />
                      </children>
                   </Pane>
                   <Label prefHeight="28.0" prefWidth="184.0" styleClass="menu-label" text="Cadastros" textFill="#fcfcfc">
@@ -52,7 +50,7 @@
                   </Label>
                   <JFXButton fx:id="btnAudit" onAction="#showAudit" prefHeight="48.0" prefWidth="189.0" text="Auditoria" textFill="WHITE" />
                   <JFXButton fx:id="btnForm" onAction="#showForms" prefHeight="48.0" prefWidth="189.0" text="Formularios" textFill="WHITE" />
-                  <JFXButton onAction="#showAudit" prefHeight="48.0" prefWidth="189.0" />
+                  <JFXButton prefHeight="48.0" prefWidth="189.0" />
                   <JFXButton prefHeight="48.0" prefWidth="189.0" />
                   <JFXButton prefHeight="48.0" prefWidth="189.0" />
                   <JFXButton prefHeight="48.0" prefWidth="189.0" />

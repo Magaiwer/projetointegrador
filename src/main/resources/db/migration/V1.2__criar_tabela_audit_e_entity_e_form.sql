@@ -12,7 +12,7 @@ CREATE TABLE AUDIT (
 CREATE TABLE ENTITY (
   id serial not null,
   name varchar (100) not null,
-  target varchar (100) not null,
+  target varchar (100),
   constraint pk_entity primary key (id)
 );
 
@@ -24,3 +24,5 @@ CREATE TABLE FORM (
   constraint pk_form primary key (id),
   constraint fk_form_entityid foreign key (entity_id) references entity
 );
+
+

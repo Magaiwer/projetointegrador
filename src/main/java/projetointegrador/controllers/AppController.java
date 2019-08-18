@@ -57,5 +57,13 @@ public class AppController implements Initializable {
         stageManager.switchScene(body, EFxmlView.GROUP_TABLE);
     }
 
+    @FXML
+    void showAudit(ActionEvent event) {
+    }
+
+    @FXML
+    void showForms(ActionEvent event) {
+    }
+
 
 }
