@@ -20,6 +20,7 @@ CREATE TABLE FORM (
   id serial not null,
   name varchar (100) not null,
   audit boolean,
+  description text,
   entity_id BIGINT not null,
   constraint pk_form primary key (id),
   constraint fk_form_entityid foreign key (entity_id) references entity
