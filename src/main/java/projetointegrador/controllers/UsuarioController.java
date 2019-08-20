@@ -24,9 +24,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.ValidationUtils;
 import projetointegrador.Util.EFxmlView;
+import projetointegrador.Util.MessagesUtil;
 import projetointegrador.config.StageManager;
 import projetointegrador.model.Usuario;
 import projetointegrador.repository.UsuarioRepository;
+import projetointegrador.service.UsuarioService;
+import projetointegrador.service.exception.EmailJaCadastradoException;
+import projetointegrador.service.exception.PasswordInvalidException;
+import projetointegrador.service.exception.RequiredPasswordException;
 
 import java.net.URL;
 import java.util.Optional;
@@ -90,12 +95,13 @@ public class UsuarioController implements Initializable {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @Lazy
     @Autowired
     private StageManager stageManager;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     private Usuario usuario = new Usuario();
     private RequiredFieldValidator requiredFieldValidator;
@@ -107,7 +113,6 @@ public class UsuarioController implements Initializable {
 
         if (txtName != null)
             validateForm();
-
     }
 
     @FXML
@@ -120,15 +125,20 @@ public class UsuarioController implements Initializable {
         if (usuario != null) {
             usuario.setNome(txtName.getText());
             usuario.setLogin(txtEmail.getText());
-            usuario.setSenha(passwordEncoder.encode(txtPassword.getText()));
+            usuario.setSenha(txtPassword.getText());
+            usuario.setConfirmacaoSenha(txtConfirmePassword.getText());
             usuario.setAtivo(btnAtivo.isSelected());
 
-            usuarioRepository.save(usuario);
+            try {
+                usuarioService.save(usuario);
+                MessagesUtil.showMessageInformation("Usuário salvo com sucesso");
+                stageManager.switchScene(root, EFxmlView.USER_TABLE);
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Usuário salvo com sucesso");
-            alert.show();
-            stageManager.switchScene(root, EFxmlView.USER_TABLE);
+            } catch (PasswordInvalidException | RequiredPasswordException | EmailJaCadastradoException e) {
+                System.out.println(e.getMessage());
+                MessagesUtil.showMessageError(e.getMessage());
+            }
+
         }
     }
 
@@ -142,7 +152,6 @@ public class UsuarioController implements Initializable {
         stageManager.switchScene(root, EFxmlView.USER);
         usuario = new Usuario();
         txtName.requestFocus();
-
     }
 
     @FXML
@@ -158,8 +167,7 @@ public class UsuarioController implements Initializable {
             btnAtivo.setSelected(usuario.isAtivo());
 
         } else {
-            // TODO
-            System.out.println("SELECIONE UM USUARIO");
+            MessagesUtil.showMessageWarning("Selecione um Usuário");
         }
     }
 
@@ -168,9 +176,7 @@ public class UsuarioController implements Initializable {
         Usuario usuario = tableUser.getSelectionModel().getSelectedItem();
 
         if (usuario != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setHeaderText("Você deseja remover o usuário " + usuario.getNome());
-            Optional<ButtonType> confirm = alert.showAndWait();
+            Optional<ButtonType> confirm = MessagesUtil.showMessageConfirmation("Você deseja remover o usuário " + usuario.getNome());
 
             if (confirm.get() == ButtonType.OK) {
                 usuarioRepository.delete(usuario);
@@ -178,9 +184,7 @@ public class UsuarioController implements Initializable {
             }
 
         } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Selecione o usúario que deseja editar");
-            alert.show();
+            MessagesUtil.showMessageWarning("Selecione o usúario que deseja editar");
         }
 
     }

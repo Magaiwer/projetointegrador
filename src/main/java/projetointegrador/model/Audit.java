@@ -30,5 +30,9 @@ public class Audit {
     @JoinColumn(name = "user_id")
     private Usuario usuario;
 
+    @Transient
+    private String entityName;
+
+
 
 }

@@ -63,6 +63,7 @@ public class AppController implements Initializable {
 
     @FXML
     void showForms(ActionEvent event) {
+        stageManager.switchScene(body, EFxmlView.FORM_TABLE);
     }
 
 

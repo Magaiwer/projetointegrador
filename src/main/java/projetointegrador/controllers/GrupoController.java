@@ -18,7 +18,9 @@ import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.TransactionSystemException;
 import projetointegrador.Util.EFxmlView;
+import projetointegrador.Util.MessagesUtil;
 import projetointegrador.config.StageManager;
 import projetointegrador.model.Grupo;
 import projetointegrador.model.Grupo;
@@ -76,8 +78,13 @@ public class GrupoController implements Initializable {
     void save(ActionEvent event) {
         if (grupo != null) {
             grupo.setNome(txtName.getText());
+            try {
+                grupoRepository.save(grupo);
+            } catch (TransactionSystemException e) {
+                //TODO
+                System.out.println(e.getMessage());
+            }
 
-            grupoRepository.save(grupo);
             stageManager.switchScene(root, EFxmlView.GROUP_TABLE);
         }
         grupo = new Grupo();
@@ -103,10 +110,7 @@ public class GrupoController implements Initializable {
             stageManager.switchScene(root, EFxmlView.GROUP);
             txtName.setText(grupo.getNome());
         } else {
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Selecione o grupo que deseja editar");
-            alert.show();
+            MessagesUtil.showMessageWarning("Selecione o grupo que deseja editar");
         }
     }
 
@@ -115,18 +119,15 @@ public class GrupoController implements Initializable {
         grupo = tableGroup.getSelectionModel().getSelectedItem();
 
         if (grupo != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setHeaderText("Você deseja remover o usuário " + grupo.getNome());
-            Optional<ButtonType> confirm = alert.showAndWait();
+
+            Optional<ButtonType> confirm = MessagesUtil.showMessageConfirmation("Você deseja remover o usuário " + grupo.getNome());
 
             if (confirm.get() == ButtonType.OK) {
                 grupoRepository.delete(grupo);
                 initTable();
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Selecione o grupo que deseja deletar");
-            alert.show();
+            MessagesUtil.showMessageWarning("Selecione o grupo que deseja deletar");
         }
 
     }

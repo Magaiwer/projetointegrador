@@ -90,9 +90,6 @@ public class LoginController implements Initializable {
             if (isPasswordValid) {
                 stageManager.switchScene(EFxmlView.HOME);
                 UsuarioService.usuarioLogado = usuario.get();
-
-
-                System.out.println(UsuarioService.usuarioLogado.getNome());
             } else {
                 lb_msg.setText("Senha não confere");
                 lb_msg.setVisible(true);

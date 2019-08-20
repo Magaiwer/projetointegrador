@@ -1,13 +1,16 @@
 package projetointegrador.listeners;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import projetointegrador.model.Audit;
-import projetointegrador.model.Usuario;
 import projetointegrador.model.enums.Command;
 import projetointegrador.service.AuditService;
-import projetointegrador.service.BeanUtil;
 
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
@@ -18,29 +21,25 @@ import java.time.LocalDateTime;
 @Component
 public class AuditListeners {
 
-    public AuditListeners() {
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-    }
-
     private void beforeOperation(Object object, Command command) {
         Audit audit = new Audit();
         audit.setCommand(command);
         audit.setNewValue(object.toString());
         audit.setCreatedAt(LocalDateTime.now());
 
-        new AuditService().save(audit);
+        audit.setEntityName(object.getClass().getSimpleName());
 
+        new AuditService().save(audit);
     }
 
     @PostUpdate
-    private void onUpdate(Object object) {
+    void onUpdate(Object object) {
         beforeOperation(object, Command.UPDATE);
     }
 
     @PostPersist
-    private void onInsert(Object object) {
+     void onInsert(Object object) {
         beforeOperation(object, Command.INSERT);
-
     }
 
     @PostRemove

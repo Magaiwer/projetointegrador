@@ -3,10 +3,12 @@ package projetointegrador.model;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@EntityListeners(AuditListeners.class)
 @Entity
 @Table(name = "usuario")
 @DynamicUpdate
@@ -28,5 +30,14 @@ public class Usuario implements Serializable {
 
     @Column(name = "ativo")
     private boolean ativo;
+
+    @Transient
+    private String confirmacaoSenha;
+
+    public boolean isNew() {
+        return this.id == null;
+    }
+
+
 
 }
