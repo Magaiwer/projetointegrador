@@ -69,7 +69,30 @@ public enum EFxmlView {
         public String getFxmlFile() {
             return "/views/group-form.fxml";
         }
+    },
+    FORM {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("form.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/views/forms-form.fxml";
+        }
+    },
+    FORM_TABLE {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("form.table");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/views/table-form.fxml";
+        }
     };
+
 
     public abstract String getTitle();
 
