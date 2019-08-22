@@ -1,13 +1,16 @@
 package projetointegrador;
 
-import projetointegrador.Util.EFxmlView;
-import projetointegrador.config.StageManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
+import projetointegrador.Util.EFxmlView;
+import projetointegrador.config.StageManager;
 
+
+@EnableCaching
 @SpringBootApplication
 public class App extends Application {
 
