@@ -1,17 +1,23 @@
 package projetointegrador.config;
 
+import javafx.fxml.LoadException;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import projetointegrador.Util.EFxmlView;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import projetointegrador.Util.MessagesUtil;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class StageManager {
 
+    private Logger LOGGER = LoggerFactory.getLogger(StageManager.class);
     private final Stage primaryStage;
     private final SpringFXMLLoader springFXMLLoader;
 
@@ -52,7 +58,8 @@ public class StageManager {
         try {
             primaryStage.show();
         } catch (Exception e) {
-            System.out.println("Erro ao carregar a cena " + e.getMessage());
+            LOGGER.error("Erro ao carregar a cena " + e.getMessage());
+            MessagesUtil.showMessageError("Erro ao carregar o formulário! Tente novamente");
         }
     }
     
@@ -71,9 +78,10 @@ public class StageManager {
         try {
             rootNode = springFXMLLoader.load(fxmlFilePath);
             Objects.requireNonNull(rootNode, "A Root FXML node não pode ser nullo");
-        } catch (Exception e) {
-           e.printStackTrace();
-           Platform.exit();
+        } catch (IOException | RuntimeException e) {
+            LOGGER.error("A Root FXML node não pode ser nullo " + e.getMessage());
+            MessagesUtil.showMessageError("Formulário não encontrado !");
+           //Platform.exit();
         }
         return rootNode;
     }
