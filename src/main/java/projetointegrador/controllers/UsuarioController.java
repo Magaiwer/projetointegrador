@@ -18,6 +18,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -102,13 +105,13 @@ public class UsuarioController implements Initializable {
     @Autowired
     private StageManager stageManager;
 
-
     private Usuario usuario = new Usuario();
     private RequiredFieldValidator requiredFieldValidator;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        MDC.put("user", UsuarioService.usuarioLogado.getNome());
         initTable();
 
         if (txtName != null)
