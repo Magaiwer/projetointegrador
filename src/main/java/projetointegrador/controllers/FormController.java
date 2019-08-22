@@ -4,6 +4,11 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +21,7 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -29,6 +35,8 @@ import projetointegrador.repository.FormRepository;
 import projetointegrador.service.FormService;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Observable;
 import java.util.ResourceBundle;
 
 @Controller
@@ -136,6 +144,13 @@ public class FormController implements Initializable {
     }
 
     @FXML
+    void onAudit(ActionEvent event) {
+        formService.updateAudit(tableForm.getItems());
+        listForms();
+        MessagesUtil.showMessageInformation("Formulários a serem auditados atualizado com sucesso!");
+    }
+
+    @FXML
     void onDelete(ActionEvent event) {
 
     }
@@ -156,6 +171,7 @@ public class FormController implements Initializable {
         }
     }
 
+
     @FXML
     void newForm(ActionEvent event) {
         stageManager.switchScene(root, EFxmlView.FORM);
@@ -173,8 +189,9 @@ public class FormController implements Initializable {
     }
 
     private void initCombo() {
-        listForms();
-        //cboxEntity.setItems(listEntities());
+        if (cboxEntity != null) {
+            cboxEntity.setItems(listEntities());
+        }
     }
 
     private void initTable() {
@@ -183,19 +200,44 @@ public class FormController implements Initializable {
         colunmDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         colunmAudit.setCellValueFactory(new PropertyValueFactory<>("audited"));
 
+
         colunmAudit.setCellFactory(CheckBoxTableCell.forTableColumn(colunmAudit));
+
+        colunmAudit.setCellValueFactory(param -> {
+            Form form = param.getValue();
+            BooleanProperty auditProperty = new SimpleBooleanProperty(form.isAudit());
+            auditProperty.addListener((observable, oldValue, newValue) -> form.setAudit(newValue));
+            return auditProperty;
+        });
+
 
         tableForm.setItems(listForms());
     }
 
     private void initListener() {
-        tableCBAudit.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                tableForm.getItems().forEach(i -> i.setAudit(tableCBAudit.isSelected()));
-                tableForm.getItems().toString();
+        tableCBAudit.selectedProperty().addListener((observable, oldValue, newValue) -> {
 
-            }
+/*
+            tableForm.getItems().forEach(form1 -> {
+                form1.setAudit(newValue);
+
+                colunmAudit.setCellFactory(new PropertyValueFactory<Form, Boolean>("audit"));
+
+                });
+
+            } );
+
+
+            tableForm.getColumns().get(0).setCellValueFactory(param -> {
+                Form form = param.getValue();
+                BooleanProperty auditedColumn = new SimpleBooleanProperty();
+
+                auditedColumn.addListener((observable1, oldValue1, newValue1) -> form.setAudit(newValue));
+                return auditedColumn;
+            });
+*/
+
+
         });
     }
 }

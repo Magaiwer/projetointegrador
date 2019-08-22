@@ -13,7 +13,7 @@ public class FormRepositoryImpl implements FormQueries {
     @Override
     public List<Form> findByFormsWithEntities() {
         return entityManager
-                .createQuery("select f from Form f INNER JOIN  f.entity", Form.class)
+                .createQuery("select f from Form f left join fetch f.entity", Form.class)
                 .getResultList();
     }
 }

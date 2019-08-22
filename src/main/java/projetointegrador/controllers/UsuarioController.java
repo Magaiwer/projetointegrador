@@ -165,8 +165,6 @@ public class UsuarioController implements Initializable {
             stageManager.switchScene(root, EFxmlView.USER);
             txtName.setText(usuario.getNome());
             txtEmail.setText(usuario.getLogin());
-            txtPassword.setText(usuario.getNome());
-            txtConfirmePassword.setText(usuario.getNome());
             btnAtivo.setSelected(usuario.isAtivo());
 
         } else {

@@ -33,13 +33,22 @@ public class UsuarioService {
         Optional<Usuario> usuarioExistente = usuarioRepository.findByLogin(usuario.getLogin());
 
         validateEmailExistes(usuarioExistente, usuario);
+
+
         requiredPassword(usuario);
         matchesPassword(usuario);
 
-        passwordEncoder.encode(usuario.getSenha());
+        encodePassword(usuario);
+
+        if (StringUtils.isEmpty(usuario.getSenha())) {
+            usuario.setSenha(usuarioExistente.get().getSenha());
+        }
+
+        usuario.setConfirmacaoSenha(usuario.getSenha());
 
         try {
             usuarioRepository.saveAndFlush(usuario);
+            LOGGER.info("usuario salvo com sucesso");
 
         } catch (Exception e) {
             MDC.put("user", usuarioLogado.getNome());
@@ -48,8 +57,8 @@ public class UsuarioService {
     }
 
     private void requiredPassword(Usuario usuario) {
-        if (StringUtils.isEmpty(usuario.getSenha())) {
-            throw new RequiredPasswordException("Senha é obrigatória");
+        if (StringUtils.isEmpty(usuario.getSenha()) && usuario.isNew()) {
+            throw new RequiredPasswordException("Senha é obrigatória para novo usuário");
         }
     }
 
@@ -64,6 +73,20 @@ public class UsuarioService {
             throw new EmailJaCadastradoException("Email já cadastrado no sistema");
         }
     }
+
+    private void encodePassword(Usuario usuario) {
+        if (usuario.isNew() || !StringUtils.isEmpty(usuario.getSenha())) {
+            usuario.setSenha(this.passwordEncoder.encode(usuario.getSenha()));
+        }
+    }
+
+/*    private boolean bothAreEquals(String password,String confirmPassword) {
+        return password != null && password.equals(confirmPassword);
+    }
+
+    private boolean bothAreENull(String password,String confirmPassword) {
+        return StringUtils.isEmpty(password) && StringUtils.isEmpty(confirmPassword);
+    }*/
 
 
 }

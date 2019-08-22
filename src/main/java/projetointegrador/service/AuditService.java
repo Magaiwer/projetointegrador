@@ -2,6 +2,7 @@ package projetointegrador.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import projetointegrador.model.Audit;
 import projetointegrador.model.Form;
@@ -20,6 +21,7 @@ public class AuditService {
 
         audit.setUsuario(UsuarioService.usuarioLogado);
         Optional<Form> form = searchForm(audit);
+        System.out.println(form.toString());
 
         try {
             if (!form.isPresent() || form.get().isAudit()){
@@ -27,6 +29,7 @@ public class AuditService {
             }
 
         } catch (Exception ex) {
+            MDC.put("user", UsuarioService.usuarioLogado.getNome());
             LOGGER.error(ex.getMessage());
         }
     }
