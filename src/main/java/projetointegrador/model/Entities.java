@@ -1,6 +1,8 @@
 package projetointegrador.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
@@ -10,7 +12,7 @@ import java.util.List;
 @Entity
 @EntityListeners(AuditListeners.class)
 @Table(name = "entity")
-@Data
+@Data @ToString(exclude="forms") @EqualsAndHashCode(of="forms")
 public class Entities implements Serializable {
 
     @Id

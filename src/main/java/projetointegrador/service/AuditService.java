@@ -4,11 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import projetointegrador.model.Audit;
-import projetointegrador.model.Entities;
 import projetointegrador.model.Form;
 import projetointegrador.repository.AuditRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 

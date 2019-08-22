@@ -1,6 +1,8 @@
 package projetointegrador.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
@@ -9,7 +11,7 @@ import javax.persistence.Entity;
 @Entity
 @EntityListeners(AuditListeners.class)
 @Table(name = "form")
-@Data
+@Data @ToString(exclude="entity") @EqualsAndHashCode(of="entity")
 public class Form {
 
     @Id

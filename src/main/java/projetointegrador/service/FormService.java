@@ -24,11 +24,13 @@ public class FormService {
     @Cacheable
     public List<Form> loadForms() {
         Optional<Form> form = formRepository.findByFormsWithEntities().stream().findFirst();
+        System.out.println(form.get().getEntity().getName());
         return this.forms = formRepository.findByFormsWithEntities();
     }
 
     public Optional<Form> findFormByEntityName(String entityName) {
-       return this.forms.stream()
-                .filter(f -> f.getEntity().getName().equals(entityName)).findFirst();
+       return formRepository.findById(2L);
+               //this.forms.stream()
+              //  .filter(f -> f.getEntity().getName().equals(entityName)).findFirst();
     }
 }
