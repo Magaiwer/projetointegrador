@@ -10,10 +10,9 @@
       <TableView layoutY="65.0" prefHeight="335.0" prefWidth="600.0">
         <columns>
           <TableColumn prefWidth="59.0" text="Código" />
-          <TableColumn prefWidth="133.0" text="Valor antigo" />
-            <TableColumn prefWidth="135.0" text="Valor novo" />
-            <TableColumn prefWidth="130.0" text="Comando" />
-            <TableColumn prefWidth="142.0" text="Usuario" />
+            <TableColumn prefWidth="192.0" text="Valor novo" />
+            <TableColumn prefWidth="137.0" text="Comando" />
+            <TableColumn prefWidth="211.0" text="Usuario" />
         </columns>
       </TableView>
    </children>

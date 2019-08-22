@@ -55,7 +55,6 @@ public class AuditoriaController implements Initializable
     private void initTable()
     {
         colunmId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        //colunmOldValue.setCellValueFactory(new PropertyValueFactory<>("old_value"));
         colunmNewValue.setCellValueFactory(new PropertyValueFactory<>("new_value"));
         colunmCommand.setCellValueFactory(new PropertyValueFactory<>("command"));
         colunmUserId.setCellValueFactory(new PropertyValueFactory<>("user_id"));
