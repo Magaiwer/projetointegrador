@@ -91,8 +91,18 @@ public enum EFxmlView {
         public String getFxmlFile() {
             return "/views/table-form.fxml";
         }
-    };
+    },
+    AUDITORIA_LIST{
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("audit.title");
+        }
 
+        @Override
+        public String getFxmlFile() {
+            return "/views/audit-list.fxml";
+        }
+    };
 
     public abstract String getTitle();
 

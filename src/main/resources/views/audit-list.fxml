@@ -4,15 +4,14 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.AppController">
+<AnchorPane prefHeight="439.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.AuditoriaController">
    <children>
-      <TableView layoutY="65.0" prefHeight="335.0" prefWidth="600.0">
+      <TableView fx:id="tableAudit" layoutY="65.0" prefHeight="335.0" prefWidth="600.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="65.0">
         <columns>
-          <TableColumn prefWidth="59.0" text="Código" />
-            <TableColumn prefWidth="192.0" text="Valor novo" />
-            <TableColumn prefWidth="137.0" text="Comando" />
-            <TableColumn prefWidth="211.0" text="Usuario" />
+          <TableColumn fx:id="columnId" prefWidth="59.0" text="Código" />
+            <TableColumn fx:id="columnNewValue" prefWidth="366.0" text="Valor novo" />
+            <TableColumn fx:id="columnCommand" prefWidth="109.0" text="Comando" />
+            <TableColumn fx:id="columnUserId" maxWidth="1.7976931348623157E308" minWidth="113.0" prefWidth="-1.0" text="Usuario" />
         </columns>
       </TableView>
    </children>

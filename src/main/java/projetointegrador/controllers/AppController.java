@@ -59,6 +59,8 @@ public class AppController implements Initializable {
 
     @FXML
     void showAudit(ActionEvent event) {
+
+        stageManager.switchScene(body, EFxmlView.AUDITORIA_LIST);
     }
 
     @FXML
