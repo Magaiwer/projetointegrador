@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,19 +12,15 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.config.StageManager;
 import projetointegrador.model.Usuario;
 import projetointegrador.repository.UsuarioRepository;
+import projetointegrador.service.FormService;
 import projetointegrador.service.UsuarioService;
 
 import java.net.URL;
@@ -61,6 +56,9 @@ public class LoginController implements Initializable {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private FormService formService;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -90,6 +88,8 @@ public class LoginController implements Initializable {
             if (isPasswordValid) {
                 stageManager.switchScene(EFxmlView.HOME);
                 UsuarioService.usuarioLogado = usuario.get();
+
+                formService.loadForms();
             } else {
                 lb_msg.setText("Senha não confere");
                 lb_msg.setVisible(true);

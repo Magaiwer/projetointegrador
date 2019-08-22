@@ -1,5 +1,8 @@
 package projetointegrador.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ import java.util.Optional;
 public class UsuarioService {
 
     public static Usuario usuarioLogado;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioService.class);
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -28,7 +32,6 @@ public class UsuarioService {
     public void save(Usuario usuario) {
         Optional<Usuario> usuarioExistente = usuarioRepository.findByLogin(usuario.getLogin());
 
-
         validateEmailExistes(usuarioExistente, usuario);
         requiredPassword(usuario);
         matchesPassword(usuario);
@@ -39,8 +42,8 @@ public class UsuarioService {
             usuarioRepository.saveAndFlush(usuario);
 
         } catch (Exception e) {
-            // TODO LOGGER
-            System.out.println(e.getMessage());
+            MDC.put("user", usuarioLogado.getNome());
+            LOGGER.error(e.getMessage());
         }
     }
 

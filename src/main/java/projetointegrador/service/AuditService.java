@@ -1,49 +1,40 @@
 package projetointegrador.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionSystemException;
 import projetointegrador.model.Audit;
+import projetointegrador.model.Entities;
 import projetointegrador.model.Form;
 import projetointegrador.repository.AuditRepository;
-import projetointegrador.repository.FormRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public class AuditService {
 
-    @PersistenceContext
-    EntityManager entityManager;
+    private Logger LOGGER = LoggerFactory.getLogger(AuditService.class);
 
     public void save(Audit audit) {
         AuditRepository auditRepository = BeanUtil.getBean(AuditRepository.class);
-        //Optional<Entities> entities = searchEntities(audit);
-
-
-        //entityManager.getTransaction().commit();
-
-
-      //  List<Form> forms = searchEntities(audit);
-
-
-
 
         audit.setUsuario(UsuarioService.usuarioLogado);
+        Optional<Form> form = searchForm(audit);
+
         try {
+            if (!form.isPresent() || form.get().isAudit()){
+                auditRepository.save(audit);
+            }
 
-            // auditRepository.save(audit);
-        } catch (TransactionSystemException ex) {
-            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
         }
-
     }
 
-    private List<Form> searchEntities(Audit audit) {
-        FormRepository repository = BeanUtil.getBean(FormRepository.class);
-        return repository.findByName("Grupo");
-        // return repository.findById(2L);
+    private Optional<Form> searchForm(Audit audit) {
+        FormService formService = BeanUtil.getBean(FormService.class);
+        return formService.findFormByEntityName(audit.getEntityName());
     }
 }
