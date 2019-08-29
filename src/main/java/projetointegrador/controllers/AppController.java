@@ -35,6 +35,18 @@ public class AppController implements Initializable {
     private JFXButton menuGroup;
 
     @FXML
+    private JFXButton menuAudit;
+
+    @FXML
+    private JFXButton menuForm;
+
+    @FXML
+    private JFXButton menuMaterialAbsortancia;
+
+    @FXML
+    private JFXButton menuMaterial;
+
+    @FXML
     private AnchorPane body;
 
     @Lazy
@@ -43,7 +55,6 @@ public class AppController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
 
     }
 
@@ -67,6 +78,20 @@ public class AppController implements Initializable {
     void showForms(ActionEvent event) {
         stageManager.switchScene(body, EFxmlView.FORM_TABLE);
     }
+
+    @FXML
+    void showMaterialAbsortancia(ActionEvent event) {
+        stageManager.switchScene(body, EFxmlView.MATERIAL_ABSORTANCIA_TABLE);
+    }
+
+
+    @FXML
+    void showMaterial(ActionEvent event) {
+        stageManager.switchScene(body, EFxmlView.MATERIAL_LIST);
+    }
+
+
+
 
 
 }

@@ -40,6 +40,14 @@
                         <FontAwesomeIconView fill="#f8f4f4" glyphName="USERS" />
                      </graphic>
                   </JFXButton>
+                  <JFXButton fx:id="menuMaterial" onAction="#showMaterial" prefHeight="48.0" prefWidth="189.0" text="Material" textFill="#f2f2f2">
+                     <graphic>
+                        <FontAwesomeIconView fill="#fcfcfc" glyphName="CUBE" />
+                     </graphic></JFXButton>
+                  <JFXButton fx:id="menuMaterialAbsortancia" onAction="#showMaterialAbsortancia" prefHeight="48.0" prefWidth="189.0" text="Superficie" textFill="#fffbfb">
+                     <graphic>
+                        <FontAwesomeIconView fill="#f5f5f5" glyphName="CUBES" />
+                     </graphic></JFXButton>
                   <Label prefHeight="28.0" prefWidth="184.0" styleClass="menu-label" text="Configurações" textFill="#fcfcfc">
                      <graphic>
                         <FontAwesomeIconView fill="#f8f4f4" glyphName="GEARS" />
@@ -48,10 +56,14 @@
                         <Insets left="5.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXButton fx:id="btnAudit" onAction="#showAudit" prefHeight="48.0" prefWidth="189.0" text="Auditoria" textFill="WHITE" />
-                  <JFXButton fx:id="btnForm" onAction="#showForms" prefHeight="48.0" prefWidth="189.0" text="Formularios" textFill="WHITE" />
-                  <JFXButton prefHeight="48.0" prefWidth="189.0" />
-                  <JFXButton prefHeight="48.0" prefWidth="189.0" />
+                  <JFXButton fx:id="menuAudit" onAction="#showAudit" prefHeight="48.0" prefWidth="189.0" text="Auditoria" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="FILE_TEXT" />
+                     </graphic></JFXButton>
+                  <JFXButton fx:id="menuForm" onAction="#showForms" prefHeight="48.0" prefWidth="189.0" text="Formularios" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="#fffbfb" glyphName="LIST" />
+                     </graphic></JFXButton>
                   <JFXButton prefHeight="48.0" prefWidth="189.0" />
                   <JFXButton prefHeight="48.0" prefWidth="189.0" />
                </children>

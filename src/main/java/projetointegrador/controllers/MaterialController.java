@@ -84,7 +84,7 @@ public class MaterialController implements Initializable
         if (material != null)
         {
             material.setNome(txtName.getText());
-            material.setCondutividade_termica(txtCondutividadeTermica.getText());
+            material.setCondutividadeTermica(txtCondutividadeTermica.getText());
 
             try
             {
@@ -123,7 +123,7 @@ public class MaterialController implements Initializable
         {
             stageManager.switchScene(root, EFxmlView.GROUP);
             txtName.setText(material.getNome());
-            txtCondutividadeTermica.setText(String.valueOf(material.getCondutividade_termica()));
+            txtCondutividadeTermica.setText(String.valueOf(material.getCondutividadeTermica()));
         } else {
             MessagesUtil.showMessageWarning("Selecione o grupo que deseja editar");
         }
@@ -160,7 +160,7 @@ public class MaterialController implements Initializable
     {
         columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnName.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        columnCondutividadeTermica.setCellValueFactory(new PropertyValueFactory<>("condutividade_termica"));
+        columnCondutividadeTermica.setCellValueFactory(new PropertyValueFactory<>("condutividadeTermica"));
         tableMaterial.setItems(listMaterial());
     }
 

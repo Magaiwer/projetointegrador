@@ -79,6 +79,7 @@ public class FormController implements Initializable {
     @FXML
     private TableColumn<Form, Boolean> colunmAudit;
 
+
     @FXML
     private JFXCheckBox tableCBAudit;
 
@@ -120,7 +121,6 @@ public class FormController implements Initializable {
         initTable();
         initCombo();
         initListener();
-
 
     }
 

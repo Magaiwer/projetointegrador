@@ -1,27 +1,29 @@
 package projetointegrador.model;
 
-import lombok.*;
+import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.context.event.EventListener;
 import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 @EntityListeners(AuditListeners.class)
 @Entity
-@Table(name = "material")
+@Table(name = "material_absortancia")
 @DynamicUpdate
 @Data
-public class Material
-{
+public class MaterialAbsortancia {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String nome;
+    private String superficie;
 
     @Column
-    private String condutividadeTermica;
+    private BigDecimal alfa;
+
+    @Column
+    private BigDecimal beta;
 }
