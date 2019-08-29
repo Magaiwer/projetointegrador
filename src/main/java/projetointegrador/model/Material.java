@@ -7,6 +7,7 @@ import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 @EntityListeners(AuditListeners.class)
 @Entity
@@ -23,5 +24,5 @@ public class Material
     private String nome;
 
     @Column
-    private String condutividadeTermica;
+    private BigDecimal condutividadeTermica;
 }

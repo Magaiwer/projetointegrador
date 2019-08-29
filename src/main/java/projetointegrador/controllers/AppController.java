@@ -84,10 +84,9 @@ public class AppController implements Initializable {
         stageManager.switchScene(body, EFxmlView.MATERIAL_ABSORTANCIA_TABLE);
     }
 
-
     @FXML
     void showMaterial(ActionEvent event) {
-        stageManager.switchScene(body, EFxmlView.MATERIAL_LIST);
+        stageManager.switchScene(body, EFxmlView.MATERIAL_TABLE);
     }
 
 
