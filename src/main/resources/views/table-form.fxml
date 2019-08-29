@@ -9,17 +9,16 @@
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.FormController">
    <children>
-      <TableView fx:id="tableForm"  editable="true" layoutX="5.0" layoutY="81.0" prefHeight="430.0" prefWidth="933.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="81.0">
+      <TableView fx:id="tableForm" editable="true" layoutX="5.0" layoutY="81.0" maxWidth="1.7976931348623157E308" prefHeight="430.0" prefWidth="933.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="81.0">
           <columns>
               <TableColumn fx:id="colunmAudit" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="87.0">
                <graphic>
-                  <JFXCheckBox fx:id="tableCBAudit" text="Auditar" />
+                  <JFXCheckBox fx:id="tableCBAudit" text="Auditar" visible="false" />
                </graphic>
             </TableColumn>
-              <TableColumn fx:id="colunmId" editable="false" prefWidth="69.0" text="Código" />
-              <TableColumn fx:id="colunmName" editable="false" minWidth="0.0" prefWidth="241.0" text="Nome" />
-              <TableColumn fx:id="colunmDescription" editable="false" minWidth="0.0" prefWidth="306.0" text="Descrição" />
-            <TableColumn fx:id="colunmEntity" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="148.0" text="Entidade" />
+              <TableColumn fx:id="colunmId" editable="false" maxWidth="1.7976931348623157E308" prefWidth="69.0" text="Código" />
+              <TableColumn fx:id="colunmName" editable="false" minWidth="0.0" prefWidth="301.0" text="Nome" />
+              <TableColumn fx:id="colunmDescription" editable="false" minWidth="0.0" prefWidth="377.0" text="Descrição" />
           </columns>
       </TableView>
       <JFXButton id="btnNew" fx:id="btnNew" graphicTextGap="8.0" layoutX="14.0" layoutY="46.0" onAction="#newForm" prefHeight="29.0" prefWidth="101.0" text="Novo">

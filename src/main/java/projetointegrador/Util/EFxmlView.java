@@ -103,12 +103,34 @@ public enum EFxmlView {
             return "/views/audit-list.fxml";
         }
     },
-    MATERIAL_LISTT{
+    MATERIAL_LIST{
         @Override
         public  String getTitle() { return getStringFromResourceBundle("material.title"); }
 
         @Override
         public String getFxmlFile() { return  "/views/table-material.fxml"; }
+    },
+    MATERIAL_ABSORTANCIA{
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("material-absortancia.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/views/material-absortancia-form.fxml";
+        }
+    },
+    MATERIAL_ABSORTANCIA_TABLE {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("material-absortancia.table");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/views/table-material-absortancia.fxml";
+        }
     };
 
     public abstract String getTitle();
