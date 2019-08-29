@@ -23,5 +23,5 @@ public class Material
     private String nome;
 
     @Column
-    private String condutividade_termica;
+    private String condutividadeTermica;
 }
