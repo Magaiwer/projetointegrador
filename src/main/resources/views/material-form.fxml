@@ -12,7 +12,7 @@
             <JFXTextField fx:id="txtName" labelFloat="true" layoutX="26.0" layoutY="69.0" prefHeight="29.0" prefWidth="578.0" promptText="Nome" />
             <JFXButton fx:id="btnSave" layoutX="26.0" layoutY="251.0" onAction="#save" prefHeight="60.0" prefWidth="144.0" text="Salvar" />
             <JFXButton fx:id="btnCancel" layoutX="219.0" layoutY="251.0" onAction="#cancel" prefHeight="60.0" prefWidth="144.0" text="Cancelar" />
-            <JFXTextField id="txtCondutividadeTermica" fx:id="txtName1" labelFloat="true" layoutX="26.0" layoutY="123.0" prefHeight="29.0" prefWidth="578.0" promptText="Condutividade termica" />
+            <JFXTextField id="txtCondutividadeTermica" fx:id="txtCondutividadeTermica" labelFloat="true" layoutX="26.0" layoutY="123.0" prefHeight="29.0" prefWidth="578.0" promptText="Condutividade termica" />
          </children>
       </Pane>
    </children>
