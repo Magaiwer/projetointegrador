@@ -102,6 +102,13 @@ public enum EFxmlView {
         public String getFxmlFile() {
             return "/views/audit-list.fxml";
         }
+    },
+    MATERIAL_LISTT{
+        @Override
+        public  String getTitle() { return getStringFromResourceBundle("material.title"); }
+
+        @Override
+        public String getFxmlFile() { return  "/views/table-material.fxml"; }
     };
 
     public abstract String getTitle();
