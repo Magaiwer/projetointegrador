@@ -10,10 +10,12 @@
       <Pane layoutY="-42.0" prefHeight="426.0" prefWidth="665.0" translateZ="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <JFXTextField fx:id="txtSuperficie" labelFloat="true" layoutX="26.0" layoutY="69.0" prefHeight="29.0" prefWidth="578.0" promptText="Superficie *" />
+            <JFXTextField fx:id="txtAlfaIni" labelFloat="true" layoutX="28.0" layoutY="124.0" prefHeight="29.0" prefWidth="215.0" promptText="Alfa Inicial *" />
+            <JFXTextField fx:id="txtAlfaFim" labelFloat="true" layoutX="391.0" layoutY="124.0" prefHeight="29.0" prefWidth="215.0" promptText="Alfa Final*" />
+            <JFXTextField fx:id="txtBetaIni" labelFloat="true" layoutX="28.0" layoutY="184.0" prefHeight="29.0" prefWidth="215.0" promptText="Beta Inicial" />
             <JFXButton fx:id="btnSave" layoutX="25.0" layoutY="269.0" onAction="#save" prefHeight="60.0" prefWidth="144.0" text="Salvar" />
             <JFXButton fx:id="btnCancel" layoutX="215.0" layoutY="269.0" onAction="#cancel" prefHeight="60.0" prefWidth="144.0" text="Cancelar" />
-            <JFXTextField fx:id="txtAlfa" labelFloat="true" layoutX="28.0" layoutY="124.0" prefHeight="29.0" prefWidth="578.0" promptText="Alfa *" />
-            <JFXTextField fx:id="txtBeta" labelFloat="true" layoutX="28.0" layoutY="184.0" prefHeight="29.0" prefWidth="578.0" promptText="Beta" />
+            <JFXTextField fx:id="txtBetaFim" labelFloat="true" layoutX="391.0" layoutY="184.0" prefHeight="29.0" prefWidth="215.0" promptText="Beta Final" />
          </children>
       </Pane>
    </children>

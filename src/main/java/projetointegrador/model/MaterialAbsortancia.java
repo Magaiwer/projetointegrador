@@ -22,8 +22,14 @@ public class MaterialAbsortancia {
     private String superficie;
 
     @Column
-    private BigDecimal alfa;
+    private BigDecimal alfaIni;
 
     @Column
-    private BigDecimal beta;
+    private BigDecimal alfaFim;
+
+    @Column
+    private BigDecimal betaIni;
+
+    @Column
+    private BigDecimal betaFim;
 }
