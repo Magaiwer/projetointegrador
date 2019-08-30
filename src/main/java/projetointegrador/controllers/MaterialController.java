@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,14 +27,14 @@ import projetointegrador.config.StageManager;
 import projetointegrador.model.Material;
 import projetointegrador.repository.MaterialRepository;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.security.Guard;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
-public class MaterialController implements Initializable
-{
+public class MaterialController implements Initializable {
     @FXML
     private AnchorPane root;
 
@@ -59,7 +61,7 @@ public class MaterialController implements Initializable
     private TableColumn<Material, String> columnName;
 
     @FXML
-    private TableColumn<Material, String> columnCondutividadeTermica;
+    private TableColumn<Material, BigDecimal> columnCondutividadeTermica;
 
 
     @Autowired
@@ -76,6 +78,10 @@ public class MaterialController implements Initializable
     {
         //material = new Material();
         initTable();
+        if (txtCondutividadeTermica != null)
+        {
+            initListeners();
+        }
     }
 
     @FXML
@@ -83,8 +89,23 @@ public class MaterialController implements Initializable
     {
         if (material != null)
         {
-            material.setNome(txtName.getText());
-            material.setCondutividadeTermica(txtCondutividadeTermica.getText());
+            if (!txtName.getText().isEmpty())
+            {
+                material.setNome(txtName.getText());
+            }
+            else
+            {
+                MessagesUtil.showMessageWarning("Informe o nome do material");
+            }
+
+            if (!txtCondutividadeTermica.getText().isEmpty())
+            {
+                material.setCondutividadeTermica(new BigDecimal(txtCondutividadeTermica.getText().replace(",", ".")));
+            }
+            else
+            {
+                MessagesUtil.showMessageWarning("Informe a condutividade térmica do material");
+            }
 
             try
             {
@@ -96,7 +117,7 @@ public class MaterialController implements Initializable
                 System.out.println(e.getMessage());
             }
 
-            stageManager.switchScene(root, EFxmlView.GROUP_TABLE);
+            stageManager.switchScene(root, EFxmlView.MATERIAL_TABLE);
         }
 
         material = new Material();
@@ -104,64 +125,65 @@ public class MaterialController implements Initializable
 
     @FXML
     void cancel(ActionEvent event) {
-        stageManager.switchScene(root, EFxmlView.GROUP_TABLE);
+        stageManager.switchScene(root, EFxmlView.MATERIAL_TABLE);
     }
 
     @FXML
-    void newGroup(ActionEvent event)
-    {
-        stageManager.switchScene(root, EFxmlView.GROUP);
+    void newMaterial(ActionEvent event) {
+        stageManager.switchScene(root, EFxmlView.MATERIAL);
         txtName.requestFocus();
     }
 
     @FXML
-    void edit(ActionEvent event)
-    {
+    void edit(ActionEvent event) {
         material = tableMaterial.getSelectionModel().getSelectedItem();
 
-        if (material != null)
-        {
-            stageManager.switchScene(root, EFxmlView.GROUP);
+        if (material != null) {
+            stageManager.switchScene(root, EFxmlView.MATERIAL);
             txtName.setText(material.getNome());
-            txtCondutividadeTermica.setText(String.valueOf(material.getCondutividadeTermica()));
+            txtCondutividadeTermica.setText(String.valueOf(material.getCondutividadeTermica()).replace(".", ","));
         } else {
-            MessagesUtil.showMessageWarning("Selecione o grupo que deseja editar");
+            MessagesUtil.showMessageWarning("Selecione o material que deseja editar");
         }
     }
 
     @FXML
-    void delete(ActionEvent event)
-    {
+    void delete(ActionEvent event) {
         material = tableMaterial.getSelectionModel().getSelectedItem();
 
-        if (material != null)
-        {
+        if (material != null) {
 
             Optional<ButtonType> confirm = MessagesUtil.showMessageConfirmation("Você deseja remover o material " + material.getNome());
 
-            if (confirm.get() == ButtonType.OK)
-            {
+            if (confirm.get() == ButtonType.OK) {
                 materialRepository.delete(material);
                 initTable();
             }
-        }
-        else {
+        } else {
             MessagesUtil.showMessageWarning("Selecione o material que deseja deletar");
         }
 
     }
 
-    private ObservableList<Material> listMaterial()
-    {
+    private ObservableList<Material> listMaterial() {
         return FXCollections.observableArrayList(materialRepository.findAll());
     }
 
-    private void initTable()
-    {
+    private void initTable() {
         columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnName.setCellValueFactory(new PropertyValueFactory<>("nome"));
         columnCondutividadeTermica.setCellValueFactory(new PropertyValueFactory<>("condutividadeTermica"));
         tableMaterial.setItems(listMaterial());
     }
 
+    private void initListeners() {
+        txtCondutividadeTermica.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d{0,7}([\\,]\\d{0,2})?")) {
+                    txtCondutividadeTermica.setText(oldValue);
+                }
+            }
+        });
+    }
 }
