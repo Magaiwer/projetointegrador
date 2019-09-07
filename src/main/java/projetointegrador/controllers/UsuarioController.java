@@ -5,27 +5,21 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.validation.RequiredFieldValidator;
-import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.ValidationUtils;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.Util.MessagesUtil;
 import projetointegrador.config.StageManager;
@@ -33,12 +27,15 @@ import projetointegrador.model.Usuario;
 import projetointegrador.repository.UsuarioRepository;
 import projetointegrador.service.UsuarioService;
 import projetointegrador.service.exception.EmailJaCadastradoException;
+import projetointegrador.service.exception.GenericException;
 import projetointegrador.service.exception.PasswordInvalidException;
 import projetointegrador.service.exception.RequiredPasswordException;
+import projetointegrador.validation.EntityValidator;
 
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
 public class UsuarioController implements Initializable {
@@ -111,26 +108,19 @@ public class UsuarioController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        MDC.put("user", UsuarioService.usuarioLogado.getNome());
         initTable();
 
-        if (txtName != null)
-            validateForm();
+        if (txtName != null) {
+            EntityValidator.noEmpty(txtName, txtEmail);
+        }
     }
 
     @FXML
     void save(ActionEvent event) {
-        RequiredFieldValidator validator = new RequiredFieldValidator();
-        txtName.getValidators().add(validator);
-        validator.setMessage("Campo é obrigatorio");
-        txtName.validate();
+        boolean noEmpty = EntityValidator.noEmpty(txtName, txtEmail);
 
-        if (usuario != null) {
-            usuario.setNome(txtName.getText());
-            usuario.setLogin(txtEmail.getText());
-            usuario.setSenha(txtPassword.getText());
-            usuario.setConfirmacaoSenha(txtConfirmePassword.getText());
-            usuario.setAtivo(btnAtivo.isSelected());
+        if (usuario != null && noEmpty) {
+            bindUser();
 
             try {
                 usuarioService.save(usuario);
@@ -138,12 +128,11 @@ public class UsuarioController implements Initializable {
                 stageManager.switchScene(root, EFxmlView.USER_TABLE);
 
             } catch (PasswordInvalidException | RequiredPasswordException | EmailJaCadastradoException e) {
-                System.out.println(e.getMessage());
                 MessagesUtil.showMessageError(e.getMessage());
             }
-
         }
     }
+
 
     @FXML
     void cancel(ActionEvent event) {
@@ -165,6 +154,7 @@ public class UsuarioController implements Initializable {
             stageManager.switchScene(root, EFxmlView.USER);
             txtName.setText(usuario.getNome());
             txtEmail.setText(usuario.getLogin());
+            txtEmail.setDisable(true);
             btnAtivo.setSelected(usuario.isAtivo());
 
         } else {
@@ -190,6 +180,14 @@ public class UsuarioController implements Initializable {
 
     }
 
+    private void bindUser() {
+        usuario.setNome(txtName.getText());
+        usuario.setLogin(txtEmail.getText());
+        usuario.setAtivo(btnAtivo.isSelected());
+        usuario.setSenha(txtPassword.getText());
+        usuario.setConfirmacaoSenha(txtConfirmePassword.getText());
+    }
+
     private ObservableList<Usuario> listUsers() {
         return FXCollections.observableArrayList(usuarioRepository.findAll());
     }
@@ -202,25 +200,5 @@ public class UsuarioController implements Initializable {
         tableUser.setItems(listUsers());
     }
 
-    private void validateForm() {
-        requiredFieldValidator = new RequiredFieldValidator();
-        txtName.getValidators().add(requiredFieldValidator);
-        txtEmail.getValidators().add(requiredFieldValidator);
-        txtPassword.getValidators().add(requiredFieldValidator);
-
-        txtName.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (!newValue && newValue != oldValue) {
-                requiredFieldValidator.setMessage("Campo obrigatório");
-                txtName.validate();
-            }
-        });
-        txtEmail.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (!newValue && newValue != oldValue) {
-                requiredFieldValidator.setMessage("Campo obrigatório");
-                txtEmail.validate();
-            }
-        });
-
-    }
 
 }

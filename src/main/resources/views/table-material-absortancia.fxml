@@ -14,8 +14,8 @@
               <TableColumn fx:id="columnSuperficie" minWidth="188.0" prefWidth="188.0" text="Superficie" />
             <TableColumn fx:id="columnAlfaIni" prefWidth="274.0" style="-fx-alignment: CENTER;" text="Alfa Ini" />
             <TableColumn fx:id="columnAlfaFim" prefWidth="88.0" style="-fx-alignment: CENTER;" text="Alfa Fim" />
-            <TableColumn fx:id="columnBetaIni" prefWidth="238.0" text="Beta" />
-            <TableColumn fx:id="columnBetaFim" prefWidth="238.0" text="Beta Fim" />
+            <TableColumn fx:id="columnBetaIni" prefWidth="238.0" style="-fx-alignment: CENTER;" text="Beta" />
+            <TableColumn fx:id="columnBetaFim" prefWidth="238.0" style="-fx-alignment: CENTER;" text="Beta Fim" />
           </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

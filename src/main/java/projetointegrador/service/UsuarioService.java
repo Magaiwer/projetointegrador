@@ -2,7 +2,6 @@ package projetointegrador.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,6 @@ public class UsuarioService {
 
         validateEmailExistes(usuarioExistente, usuario);
 
-
         requiredPassword(usuario);
         matchesPassword(usuario);
 
@@ -46,14 +44,8 @@ public class UsuarioService {
 
         usuario.setConfirmacaoSenha(usuario.getSenha());
 
-        try {
-            usuarioRepository.saveAndFlush(usuario);
-            LOGGER.info("usuario salvo com sucesso");
+        usuarioRepository.saveAndFlush(usuario);
 
-        } catch (Exception e) {
-            MDC.put("user", usuarioLogado.getNome());
-            LOGGER.error(e.getMessage());
-        }
     }
 
     private void requiredPassword(Usuario usuario) {
@@ -79,14 +71,5 @@ public class UsuarioService {
             usuario.setSenha(this.passwordEncoder.encode(usuario.getSenha()));
         }
     }
-
-/*    private boolean bothAreEquals(String password,String confirmPassword) {
-        return password != null && password.equals(confirmPassword);
-    }
-
-    private boolean bothAreENull(String password,String confirmPassword) {
-        return StringUtils.isEmpty(password) && StringUtils.isEmpty(confirmPassword);
-    }*/
-
 
 }

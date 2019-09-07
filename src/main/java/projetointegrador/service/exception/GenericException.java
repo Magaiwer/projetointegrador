@@ -6,11 +6,11 @@ import org.slf4j.MDC;
 import projetointegrador.service.UsuarioService;
 
 public class GenericException extends Exception{
+    private Logger logger;
 
-   // private static Logger LOGGER = LoggerFactory.getLogger();
-    public GenericException(String message) {
+    public GenericException(String message, Object object) {
         super(message);
-       // MDC.put("user", UsuarioService.usuarioLogado.getNome());
-        //LOGGER.error(message);
+        MDC.put("user", UsuarioService.usuarioLogado.getNome());
+        this.logger = LoggerFactory.getLogger(object.getClass());
     }
 }

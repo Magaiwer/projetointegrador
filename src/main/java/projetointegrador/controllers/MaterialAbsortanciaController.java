@@ -130,7 +130,7 @@ public class MaterialAbsortanciaController implements Initializable {
 
             try {
                 materialAbsortanciaService.save(materialAbsortancia);
-                MessagesUtil.showMessageWarning("Superficie cadastrada com sucesso");
+                MessagesUtil.showMessageInformation("Superficie cadastrada com sucesso");
                 stageManager.switchScene(root, EFxmlView.MATERIAL_ABSORTANCIA_TABLE);
 
             } catch (FieldRequeridException e) {

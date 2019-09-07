@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -90,6 +91,7 @@ public class LoginController implements Initializable {
                 UsuarioService.usuarioLogado = usuario.get();
 
                 formService.loadForms();
+                MDC.put("user", usuario.get().getNome());
             } else {
                 lb_msg.setText("Senha não confere");
                 lb_msg.setVisible(true);
