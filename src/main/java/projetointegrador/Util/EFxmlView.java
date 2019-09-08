@@ -142,6 +142,28 @@ public enum EFxmlView {
         public String getFxmlFile() {
             return "/views/table-material-absortancia.fxml";
         }
+    },
+    PERMISSIONS {
+        @Override
+        public String getTitle() {
+            return null;
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return null;
+        }
+    },
+    PERMISSIONS_TABLE {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("permissions.table");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/views/table-group-permissions.fxml";
+        }
     };
 
     public abstract String getTitle();

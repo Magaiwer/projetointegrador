@@ -18,6 +18,9 @@ public class Permission implements Serializable {
     @Column
     private String role;
 
+    @Column
+    private String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "form_id")
     private Form form;
