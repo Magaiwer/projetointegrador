@@ -7,12 +7,13 @@ import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @EntityListeners(AuditListeners.class)
 @Entity
 @Table(name = "usuario")
 @DynamicUpdate
-@Getter @Setter @NoArgsConstructor @EqualsAndHashCode @ToString
+@Data
 public class Usuario implements Serializable {
 
     @Id
@@ -30,6 +31,10 @@ public class Usuario implements Serializable {
 
     @Column(name = "ativo")
     private boolean ativo;
+
+    @ManyToMany
+    @JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "grupo_id"))
+    private List<Grupo> grupos;
 
     @Transient
     private String confirmacaoSenha;

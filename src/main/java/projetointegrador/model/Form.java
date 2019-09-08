@@ -8,12 +8,13 @@ import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import java.util.List;
 
 @Entity
 @EntityListeners(AuditListeners.class)
 @Table(name = "form")
 @DynamicUpdate
-@Data @ToString(exclude="entity") @EqualsAndHashCode(of="entity")
+@Data @ToString(exclude={"entity", "permissions"}) @EqualsAndHashCode(of="entity")
 public class Form {
 
     @Id
@@ -32,4 +33,7 @@ public class Form {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity_id")
     private Entities entity;
+
+    @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Permission> permissions;
 }

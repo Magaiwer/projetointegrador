@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface FormRepository extends JpaRepository<Form, Long> , FormQueries {
 
+    @Query("from Form f INNER JOIN fetch  f.permissions ")
+    List<Form> findFormWithPermissions();
 }

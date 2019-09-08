@@ -22,6 +22,7 @@ import projetointegrador.Util.MessagesUtil;
 import projetointegrador.config.StageManager;
 import projetointegrador.model.Grupo;
 import projetointegrador.repository.GrupoRepository;
+import projetointegrador.validation.EntityValidator;
 
 import java.net.URL;
 import java.util.Optional;
@@ -66,13 +67,18 @@ public class GrupoController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //grupo = new Grupo();
         initTable();
+
+        if(txtName != null) {
+            EntityValidator.noEmpty(txtName);
+        }
     }
 
     @FXML
     void save(ActionEvent event) {
-        if (grupo != null) {
+        boolean noEmpty = EntityValidator.noEmpty(txtName);
+
+        if (grupo != null && noEmpty) {
             grupo.setNome(txtName.getText());
             try {
                 grupoRepository.save(grupo);
@@ -115,7 +121,7 @@ public class GrupoController implements Initializable {
 
         if (grupo != null) {
 
-            Optional<ButtonType> confirm = MessagesUtil.showMessageConfirmation("Você deseja remover o usuário " + grupo.getNome());
+            Optional<ButtonType> confirm = MessagesUtil.showMessageConfirmation("Você deseja remover o grupo " + grupo.getNome());
 
             if (confirm.get() == ButtonType.OK) {
                 grupoRepository.delete(grupo);

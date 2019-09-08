@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.FormController">
+   <children>
+      <TreeTableView layoutX="15.0" layoutY="117.0" prefHeight="390.0" prefWidth="832.0" />
+      <JFXComboBox labelFloat="true" layoutX="33.0" layoutY="49.0" prefHeight="28.0" prefWidth="329.0" promptText="Grupos" />
+   </children>
+</AnchorPane>

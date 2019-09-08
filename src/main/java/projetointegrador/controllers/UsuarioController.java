@@ -1,9 +1,6 @@
 package projetointegrador.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleButton;
+import com.jfoenix.controls.*;
 import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -16,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.StringConverter;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -23,7 +21,9 @@ import org.springframework.stereotype.Component;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.Util.MessagesUtil;
 import projetointegrador.config.StageManager;
+import projetointegrador.model.Grupo;
 import projetointegrador.model.Usuario;
+import projetointegrador.repository.GrupoRepository;
 import projetointegrador.repository.UsuarioRepository;
 import projetointegrador.service.UsuarioService;
 import projetointegrador.service.exception.EmailJaCadastradoException;
@@ -33,6 +33,7 @@ import projetointegrador.service.exception.RequiredPasswordException;
 import projetointegrador.validation.EntityValidator;
 
 import java.net.URL;
+import java.security.Guard;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -63,6 +64,15 @@ public class UsuarioController implements Initializable {
 
     @FXML
     private JFXPasswordField txtPassword;
+
+    @FXML
+    private JFXComboBox<Grupo> cboxGroups;
+
+    @FXML
+    private JFXButton btnAddGroup;
+
+    @FXML
+    private JFXChipView<Grupo> cViewGrupo;
 
     @FXML
     private AnchorPane root;
@@ -96,6 +106,9 @@ public class UsuarioController implements Initializable {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private GrupoRepository grupoRepository;
+
+    @Autowired
     private UsuarioService usuarioService;
 
     @Lazy
@@ -109,6 +122,8 @@ public class UsuarioController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initTable();
+        initCombo();
+        initConverter();
 
         if (txtName != null) {
             EntityValidator.noEmpty(txtName, txtEmail);
@@ -144,6 +159,8 @@ public class UsuarioController implements Initializable {
         stageManager.switchScene(root, EFxmlView.USER);
         usuario = new Usuario();
         txtName.requestFocus();
+        initCombo();
+
     }
 
     @FXML
@@ -152,6 +169,11 @@ public class UsuarioController implements Initializable {
 
         if (usuario != null) {
             stageManager.switchScene(root, EFxmlView.USER);
+            Optional<Usuario> usuarioOptional = usuarioRepository.findUsuarioWithGrupos(usuario.getId());
+
+            usuarioOptional.ifPresent(u-> usuario = u);
+            usuarioOptional.ifPresent(u-> cViewGrupo.getChips().addAll(u.getGrupos()));
+
             txtName.setText(usuario.getNome());
             txtEmail.setText(usuario.getLogin());
             txtEmail.setDisable(true);
@@ -180,16 +202,30 @@ public class UsuarioController implements Initializable {
 
     }
 
+    @FXML
+    void addGroup(ActionEvent event) {
+        Grupo grupo = cboxGroups.getSelectionModel().getSelectedItem();
+
+        if (!cViewGrupo.getChips().contains(grupo)) {
+            cViewGrupo.getChips().add(grupo);
+        }
+    }
+
     private void bindUser() {
         usuario.setNome(txtName.getText());
         usuario.setLogin(txtEmail.getText());
         usuario.setAtivo(btnAtivo.isSelected());
         usuario.setSenha(txtPassword.getText());
         usuario.setConfirmacaoSenha(txtConfirmePassword.getText());
+        usuario.setGrupos(cViewGrupo.getChips());
     }
 
     private ObservableList<Usuario> listUsers() {
         return FXCollections.observableArrayList(usuarioRepository.findAll());
+    }
+
+    private ObservableList<Grupo> listGroups() {
+        return FXCollections.observableArrayList(grupoRepository.findAll());
     }
 
     private void initTable() {
@@ -198,6 +234,31 @@ public class UsuarioController implements Initializable {
         colunmEmail.setCellValueFactory(new PropertyValueFactory<>("login"));
         colunmActive.setCellValueFactory(new PropertyValueFactory<>("ativo"));
         tableUser.setItems(listUsers());
+    }
+
+    private void initCombo() {
+        if (cboxGroups != null) {
+            cboxGroups.setItems(listGroups());
+        }
+    }
+
+    private void initConverter() {
+        if (cboxGroups != null) {
+
+            StringConverter<Grupo> grupoStringConverter = new StringConverter<Grupo>() {
+                @Override
+                public String toString(Grupo grupo) {
+                    return grupo.getNome();
+                }
+
+                @Override
+                public Grupo fromString(String string) {
+                    return null;
+                }
+            };
+            cboxGroups.setConverter(grupoStringConverter);
+            cViewGrupo.setConverter(grupoStringConverter);
+        }
     }
 
 
