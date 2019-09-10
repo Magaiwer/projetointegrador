@@ -3,7 +3,9 @@ package projetointegrador.controllers;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,8 +22,10 @@ import org.springframework.stereotype.Component;
 import projetointegrador.config.StageManager;
 import projetointegrador.model.Form;
 import projetointegrador.model.Grupo;
+import projetointegrador.model.Permission;
 import projetointegrador.repository.FormRepository;
 import projetointegrador.repository.GrupoRepository;
+import projetointegrador.repository.PermissionRepository;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,10 +37,10 @@ public class PermissionController implements Initializable {
     private JFXComboBox<Grupo> cbGroups;
 
     @FXML
-    private JFXTreeTableView<FormObjectTree> tablePermissions;
+    private JFXTreeTableView<PermissionObjectTree> tablePermissions;
 
     @Autowired
-    private FormRepository formRepository;
+    private PermissionRepository permissionRepository;
 
     @Autowired
     private GrupoRepository grupoRepository;
@@ -60,8 +64,8 @@ public class PermissionController implements Initializable {
         return FXCollections.observableArrayList(grupoRepository.findAll());
     }
 
-    private ObservableList<Form> listForms() {
-        return FXCollections.observableArrayList(formRepository.findFormWithPermissions());
+    private ObservableList<Permission> listForms() {
+        return FXCollections.observableArrayList(permissionRepository.findPermissionWithForms());
     }
 
     private void initConverter() {
@@ -80,36 +84,73 @@ public class PermissionController implements Initializable {
 
     private void initTable() {
 
-        TreeTableColumn<FormObjectTree, String> formColumn = new JFXTreeTableColumn<>("Formularios");
+        TreeTableColumn<PermissionObjectTree, String> formColumn = new JFXTreeTableColumn<>("Formularios");
         formColumn.setPrefWidth(150);
 
-        formColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<FormObjectTree, String> param) -> {
-            TreeItem<FormObjectTree> form = param.getValue();
+        formColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<PermissionObjectTree, String> param) -> {
+            TreeItem<PermissionObjectTree> form = param.getValue();
             if (form == null) {
                 return new SimpleStringProperty();
             }
-            return new SimpleStringProperty(form.getValue().form.getName());
+            return new SimpleStringProperty(form.getValue().permission.getForm().getName());
+        });
+
+        tablePermissions.getColumns().add(formColumn);
+
+
+        TreeItem<PermissionObjectTree> rootItem = new TreeItem<>();
+        rootItem.setExpanded(true);
+
+
+        listForms().forEach(permission -> {
+
+            TreeItem<PermissionObjectTree> formItem = new TreeItem<>(new PermissionObjectTree(permission));
+            TreeItem<PermissionObjectTree> permissionItem = new TreeItem<>(new PermissionObjectTree(permission.getForm()));
+            formItem.getChildren().add(permissionItem);
+/*            form.getPermissions().forEach(permission -> {
+
+
+            });*/
+
+            System.out.println(formItem);
+            rootItem.getChildren().add(formItem);
+
+
         });
 
 
-        tablePermissions.getColumns().add(formColumn);
-        TreeItem treeItem = new TreeItem();
-        treeItem.setExpanded(true);
+
         tablePermissions.setShowRoot(false);
-        tablePermissions.setRoot(treeItem);
+        tablePermissions.setRoot(rootItem);
         tablePermissions.setPrefHeight(Short.MAX_VALUE);
 
-      listForms().forEach(form -> {
-                    tablePermissions.getRoot().getChildren().add(new TreeItem<>(new FormObjectTree(form)));
-                   /* tablePermissions.getRoot().getChildren().add(new TreeItem<Permission>(new FormObjectTree(form).getForm().getPermissions()));*/
-                });
+
+
+
+
+
+
+
+
+
     }
 
 
-    @AllArgsConstructor
-    private static final class FormObjectTree extends RecursiveTreeObject<FormObjectTree> {
+    private static final class PermissionObjectTree extends RecursiveTreeObject<PermissionObjectTree> {
+
+
+        @Getter
+        private Permission permission;
+
         @Getter
         private Form form;
+
+        public PermissionObjectTree(Permission permission) {
+            this.permission = permission;
+        }
+        public PermissionObjectTree(Form form) {
+            this.form = form;
+        }
     }
 
 }
