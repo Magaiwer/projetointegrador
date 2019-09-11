@@ -5,8 +5,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.config.StageManager;
-import projetointegrador.service.UsuarioService;
+import projetointegrador.annotation.Restriction;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -67,22 +65,26 @@ public class AppController implements Initializable {
     }
 
     @FXML
+    @Restriction(value = "ROLE_VIEW_GROUP")
     void showGroup(ActionEvent event) {
         stageManager.switchScene(body, EFxmlView.GROUP_TABLE);
     }
 
     @FXML
+    @Restriction(value = "ROLE_VIEW_AUDIT")
     void showAudit(ActionEvent event) {
 
         stageManager.switchScene(body, EFxmlView.AUDITORIA_LIST);
     }
 
     @FXML
+    @Restriction(value = "ROLE_VIEW_AUDIT")
     void showForms(ActionEvent event) {
         stageManager.switchScene(body, EFxmlView.FORM_TABLE);
     }
 
     @FXML
+    @Restriction(value = "ROLE_VIEW_ABSORTANCIA")
     void showMaterialAbsortancia(ActionEvent event) {
         stageManager.switchScene(body, EFxmlView.MATERIAL_ABSORTANCIA_TABLE);
     }

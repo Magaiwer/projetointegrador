@@ -7,6 +7,7 @@ import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import java.util.List;
 
 @EntityListeners(AuditListeners.class)
 @Entity
@@ -21,4 +22,8 @@ public class Grupo {
 
     @Column
     private String nome;
+
+    @ManyToMany
+    @JoinTable(name = "grupo_permission", joinColumns = @JoinColumn(name = "grupo_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    private List<Permission> permissions;
 }
