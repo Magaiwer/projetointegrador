@@ -5,14 +5,19 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,9 +41,18 @@ public class PermissionController implements Initializable {
     @FXML
     private JFXComboBox<Grupo> cbGroups;
 
-    @FXML
-    private JFXTreeTableView<PermissionObjectTree> tablePermissions;
 
+    @FXML
+    private TableView<Permission> tablePermissions;
+
+    @FXML
+    private TableColumn<Permission, String> columnForm;
+
+    @FXML
+    private TableColumn<Permission, String> columnPermission;
+
+    @FXML
+    private TableColumn<Boolean, Boolean> columnEnable;
     @Autowired
     private PermissionRepository permissionRepository;
 
@@ -83,55 +97,21 @@ public class PermissionController implements Initializable {
     }
 
     private void initTable() {
-
-        TreeTableColumn<PermissionObjectTree, String> formColumn = new JFXTreeTableColumn<>("Formularios");
-        formColumn.setPrefWidth(150);
-
-        formColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<PermissionObjectTree, String> param) -> {
-            TreeItem<PermissionObjectTree> form = param.getValue();
-            if (form == null) {
-                return new SimpleStringProperty();
-            }
-            return new SimpleStringProperty(form.getValue().permission.getForm().getName());
+        columnForm.setCellValueFactory(param -> {
+            return new SimpleStringProperty(param.getValue().getForm().getName());
         });
 
-        tablePermissions.getColumns().add(formColumn);
+        columnPermission.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-
-        TreeItem<PermissionObjectTree> rootItem = new TreeItem<>();
-        rootItem.setExpanded(true);
-
-
-        listForms().forEach(permission -> {
-
-            TreeItem<PermissionObjectTree> formItem = new TreeItem<>(new PermissionObjectTree(permission));
-            TreeItem<PermissionObjectTree> permissionItem = new TreeItem<>(new PermissionObjectTree(permission.getForm()));
-            formItem.getChildren().add(permissionItem);
-/*            form.getPermissions().forEach(permission -> {
-
-
-            });*/
-
-            System.out.println(formItem);
-            rootItem.getChildren().add(formItem);
-
-
-        });
+ /*       columnEnable.setCellValueFactory(param -> {
+            BooleanProperty auditProperty = new SimpleBooleanProperty(form.isAudit());
+            auditProperty.addListener((observable, oldValue, newValue) -> form.setAudit(newValue));
+            return auditProperty;
+        });*/
 
 
 
-        tablePermissions.setShowRoot(false);
-        tablePermissions.setRoot(rootItem);
-        tablePermissions.setPrefHeight(Short.MAX_VALUE);
-
-
-
-
-
-
-
-
-
+        tablePermissions.setItems(listForms());
 
     }
 
