@@ -60,6 +60,7 @@ public class AppController implements Initializable {
     }
 
     @FXML
+    @Restriction(value = "ROLE_VIEW_USER")
     void showUser(ActionEvent event) {
         stageManager.switchScene(body, EFxmlView.USER_TABLE);
     }
@@ -78,7 +79,7 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    @Restriction(value = "ROLE_VIEW_AUDIT")
+    @Restriction(value = "ROLE_VIEW_FORM")
     void showForms(ActionEvent event) {
         stageManager.switchScene(body, EFxmlView.FORM_TABLE);
     }

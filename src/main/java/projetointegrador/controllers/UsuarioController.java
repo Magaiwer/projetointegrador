@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.Util.MessagesUtil;
+import projetointegrador.annotation.Restriction;
 import projetointegrador.config.StageManager;
 import projetointegrador.model.Grupo;
 import projetointegrador.model.Usuario;
@@ -225,7 +226,7 @@ public class UsuarioController implements Initializable {
     }
 
     private ObservableList<Grupo> listGroups() {
-        return FXCollections.observableArrayList(grupoRepository.findAll());
+        return FXCollections.observableArrayList(grupoRepository.findAllWithPermissions());
     }
 
     private void initTable() {

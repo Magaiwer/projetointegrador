@@ -18,6 +18,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByLogin(String login);
 
-    @Query("select distinct u from Usuario u inner join fetch u.grupos g where u.id = :id")
+    @Query("select distinct u from Usuario u inner join fetch u.grupos g  where u.id = :id")
     Optional<Usuario> findUsuarioWithGrupos(@Param("id") Long id);
 }

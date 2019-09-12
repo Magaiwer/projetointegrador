@@ -9,12 +9,17 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.client.support.BasicAuthorizationInterceptor;
+import projetointegrador.security.SecurityInterceptor;
 
+import javax.interceptor.Interceptors;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
 @Configuration
+@EnableAspectJAutoProxy
 public class AppJavaConfig {
 	
     @Autowired
@@ -31,5 +36,4 @@ public class AppJavaConfig {
     public StageManager stageManager(Stage stage) throws IOException {
         return new StageManager(springFXMLLoader, stage);
     }
-
 }

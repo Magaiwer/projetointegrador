@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.config.StageManager;
 
