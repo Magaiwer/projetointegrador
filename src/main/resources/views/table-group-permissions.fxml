@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
-<?import javafx.scene.control.TreeTableColumn?>
-<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.PermissionController">
    <children>
       <JFXComboBox fx:id="cbGroups" labelFloat="true" layoutX="14.0" layoutY="54.0" prefHeight="28.0" prefWidth="329.0" promptText="Grupos" />
-      <JFXTreeTableView fx:id="tablePermissions" currentItemsCount="3" layoutX="14.0" layoutY="105.0" prefHeight="413.0" prefWidth="853.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="105.0" />
-      <TreeTableView layoutX="-653.0" layoutY="-192.0" prefHeight="200.0" prefWidth="200.0">
-        <columns>
-          <TreeTableColumn prefWidth="75.0" text="C1" />
-        </columns>
-      </TreeTableView>
+      <TableView fx:id="tablePermissions" layoutX="14.0" layoutY="101.0" prefHeight="395.0" prefWidth="832.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="105.0">
+         <columns>
+            <TableColumn fx:id="columnForm" minWidth="5.0" prefWidth="76.0" style="-fx-alignment: CENTER;" text="Formularios" />
+            <TableColumn fx:id="columnPermission" minWidth="188.0" prefWidth="188.0" text="Permissoes" />
+            <TableColumn fx:id="columnEnable" prefWidth="274.0" style="-fx-alignment: CENTER;" text="Ativar" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
    </children>
 </AnchorPane>
