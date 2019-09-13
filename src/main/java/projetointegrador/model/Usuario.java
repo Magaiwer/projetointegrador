@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "usuario")
 @DynamicUpdate
-@Data
+@Data @ToString(exclude={"grupos"})
 public class Usuario implements Serializable {
 
     @Id

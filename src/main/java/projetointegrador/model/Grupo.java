@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "grupo")
 @DynamicUpdate
-@Data
+@Data @ToString(exclude={"permissions"})
 public class Grupo {
 
     @Id
@@ -23,7 +23,9 @@ public class Grupo {
     @Column
     private String nome;
 
-    @ManyToMany
-    @JoinTable(name = "grupo_permission", joinColumns = @JoinColumn(name = "grupo_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "grupo_permission",
+            joinColumns = @JoinColumn(name = "grupo_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permissions;
 }

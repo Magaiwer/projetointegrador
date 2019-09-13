@@ -20,12 +20,14 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.Util.MessagesUtil;
+import projetointegrador.Util.Role;
 import projetointegrador.annotation.Restriction;
 import projetointegrador.config.StageManager;
 import projetointegrador.model.Grupo;
 import projetointegrador.model.Usuario;
 import projetointegrador.repository.GrupoRepository;
 import projetointegrador.repository.UsuarioRepository;
+import projetointegrador.security.Security;
 import projetointegrador.service.UsuarioService;
 import projetointegrador.service.exception.EmailJaCadastradoException;
 import projetointegrador.service.exception.GenericException;
@@ -126,6 +128,12 @@ public class UsuarioController implements Initializable {
         initCombo();
         initConverter();
 
+        System.out.println(!Security.userHasRole(Role.ROLE_EDIT_USER.getDescription()));
+
+        btnEdit.setDisable(!Security.userHasRole(Role.ROLE_EDIT_USER.getDescription()));
+        btnNew.setDisable(!Security.userHasRole(Role.ROLE_INSERT_USER.getDescription()));
+        btnDelete.setDisable(!Security.userHasRole(Role.ROLE_DELETE_USER.getDescription()));
+
         if (txtName != null) {
             EntityValidator.noEmpty(txtName, txtEmail);
         }
@@ -170,7 +178,7 @@ public class UsuarioController implements Initializable {
 
         if (usuario != null) {
             stageManager.switchScene(root, EFxmlView.USER);
-            Optional<Usuario> usuarioOptional = usuarioRepository.findUsuarioWithGrupos(usuario.getId());
+            Optional<Usuario> usuarioOptional = usuarioRepository.findUsuarioGrupos(usuario.getId());
 
             usuarioOptional.ifPresent(u-> usuario = u);
             usuarioOptional.ifPresent(u-> cViewGrupo.getChips().addAll(u.getGrupos()));
@@ -226,7 +234,7 @@ public class UsuarioController implements Initializable {
     }
 
     private ObservableList<Grupo> listGroups() {
-        return FXCollections.observableArrayList(grupoRepository.findAllWithPermissions());
+        return FXCollections.observableArrayList(grupoRepository.findAll());
     }
 
     private void initTable() {

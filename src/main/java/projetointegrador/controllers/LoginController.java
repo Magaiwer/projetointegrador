@@ -88,7 +88,9 @@ public class LoginController implements Initializable {
 
             if (isPasswordValid) {
                 stageManager.switchScene(EFxmlView.HOME);
-                UsuarioService.usuarioLogado = usuario.get();
+                Long id = usuario.get().getId();
+
+                UsuarioService.usuarioLogado = usuarioRepository.findUsuarioWithGrupos(id).get();
 
                 formService.loadForms();
                 MDC.put("user", usuario.get().getNome());

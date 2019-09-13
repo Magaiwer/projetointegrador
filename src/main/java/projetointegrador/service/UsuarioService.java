@@ -7,12 +7,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import projetointegrador.model.Grupo;
 import projetointegrador.model.Usuario;
+import projetointegrador.repository.GrupoRepository;
 import projetointegrador.repository.UsuarioRepository;
 import projetointegrador.service.exception.EmailJaCadastradoException;
 import projetointegrador.service.exception.PasswordInvalidException;
 import projetointegrador.service.exception.RequiredPasswordException;
 
+import java.security.Guard;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +27,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private GrupoRepository grupoRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -70,6 +77,14 @@ public class UsuarioService {
         if (usuario.isNew() || !StringUtils.isEmpty(usuario.getSenha())) {
             usuario.setSenha(this.passwordEncoder.encode(usuario.getSenha()));
         }
+    }
+
+    public static void setUsuarioLogado(Usuario usuarioLogado) {
+        UsuarioService.usuarioLogado = usuarioLogado;
+    }
+
+    private void fillGroups () {
+        List<Grupo> grupoList = grupoRepository.findAllWithPermissions();
     }
 
 }
