@@ -87,13 +87,13 @@ public class LoginController implements Initializable {
             boolean isPasswordValid = bCryptPasswordEncoder.matches(txtPassword.getText(), usuario.get().getSenha());
 
             if (isPasswordValid) {
-                stageManager.switchScene(EFxmlView.HOME);
                 Long id = usuario.get().getId();
-
                 UsuarioService.usuarioLogado = usuarioRepository.findUsuarioWithGrupos(id).get();
 
                 formService.loadForms();
                 MDC.put("user", usuario.get().getNome());
+
+                stageManager.switchScene(EFxmlView.HOME);
             } else {
                 lb_msg.setText("Senha não confere");
                 lb_msg.setVisible(true);

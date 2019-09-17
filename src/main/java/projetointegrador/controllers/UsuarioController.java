@@ -1,8 +1,6 @@
 package projetointegrador.controllers;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.validation.RequiredFieldValidator;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,32 +12,25 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.Util.MessagesUtil;
-import projetointegrador.Util.Role;
-import projetointegrador.annotation.Restriction;
 import projetointegrador.config.StageManager;
 import projetointegrador.model.Grupo;
 import projetointegrador.model.Usuario;
 import projetointegrador.repository.GrupoRepository;
 import projetointegrador.repository.UsuarioRepository;
-import projetointegrador.security.Security;
 import projetointegrador.service.UsuarioService;
 import projetointegrador.service.exception.EmailJaCadastradoException;
-import projetointegrador.service.exception.GenericException;
 import projetointegrador.service.exception.PasswordInvalidException;
 import projetointegrador.service.exception.RequiredPasswordException;
 import projetointegrador.validation.EntityValidator;
 
 import java.net.URL;
-import java.security.Guard;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
 public class UsuarioController implements Initializable {
@@ -97,13 +88,13 @@ public class UsuarioController implements Initializable {
     private TableColumn<Usuario, String> colunmActive;
 
     @FXML
-    private JFXButton btnNew;
+    private JFXButton btnNewUser;
 
     @FXML
-    private JFXButton btnEdit;
+    private JFXButton btnEditUser;
 
     @FXML
-    private JFXButton btnDelete;
+    private JFXButton btnDeleteUser;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -119,20 +110,12 @@ public class UsuarioController implements Initializable {
     private StageManager stageManager;
 
     private Usuario usuario = new Usuario();
-    private RequiredFieldValidator requiredFieldValidator;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initTable();
         initCombo();
         initConverter();
-
-        System.out.println(!Security.userHasRole(Role.ROLE_EDIT_USER.getDescription()));
-
-        btnEdit.setDisable(!Security.userHasRole(Role.ROLE_EDIT_USER.getDescription()));
-        btnNew.setDisable(!Security.userHasRole(Role.ROLE_INSERT_USER.getDescription()));
-        btnDelete.setDisable(!Security.userHasRole(Role.ROLE_DELETE_USER.getDescription()));
 
         if (txtName != null) {
             EntityValidator.noEmpty(txtName, txtEmail);
@@ -156,7 +139,6 @@ public class UsuarioController implements Initializable {
             }
         }
     }
-
 
     @FXML
     void cancel(ActionEvent event) {

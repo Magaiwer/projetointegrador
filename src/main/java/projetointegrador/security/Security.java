@@ -1,5 +1,6 @@
 package projetointegrador.security;
 
+import javafx.scene.Parent;
 import projetointegrador.model.Permission;
 import projetointegrador.service.UsuarioService;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 public class Security {
 
-    public static boolean userHasRole(String role) {
+    private static boolean userHasRole(String role) {
         List<Permission> permissionList = new ArrayList<>();
 
 
@@ -16,5 +17,13 @@ public class Security {
 
         return permissionList.stream()
                 .map(Permission::getRole).anyMatch(r -> r.equals(role));
+    }
+
+    public static void setPermissionForm(Parent node) {
+        if (UsuarioService.usuarioLogado != null) {
+            node.lookupAll("JFXButton").forEach(btn -> {
+                btn.setDisable(!userHasRole(btn.getId()));
+            });
+        }
     }
 }

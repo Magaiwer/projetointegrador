@@ -1,16 +1,15 @@
 package projetointegrador.config;
 
-import javafx.fxml.LoadException;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import projetointegrador.Util.EFxmlView;
-import javafx.application.Platform;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import projetointegrador.Util.MessagesUtil;
+import projetointegrador.security.Security;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -33,6 +32,7 @@ public class StageManager {
 
     public void switchScene(AnchorPane body, final EFxmlView view) {
         Parent viewRootNodeHierarchy = loadViewNodeHierarchy(view.getFxmlFile());
+
         body.getChildren().clear();
         body.getChildren().add(viewRootNodeHierarchy);
         resize(viewRootNodeHierarchy);
@@ -47,9 +47,9 @@ public class StageManager {
     }
 
 
-
     private void show(final Parent rootnode, String title) {
         Scene scene = prepareScene(rootnode);
+
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
@@ -77,11 +77,17 @@ public class StageManager {
         Parent rootNode = null;
         try {
             rootNode = springFXMLLoader.load(fxmlFilePath);
+
+            if(rootNode != null) {
+                Security.setPermissionForm(rootNode);
+            }
+
+
             Objects.requireNonNull(rootNode, "A Root FXML node não pode ser nullo");
+
         } catch (IOException | RuntimeException e) {
             LOGGER.error("A Root FXML node não pode ser nullo " + e.getMessage());
             MessagesUtil.showMessageError("Formulário não encontrado !");
-           //Platform.exit();
         }
         return rootNode;
     }

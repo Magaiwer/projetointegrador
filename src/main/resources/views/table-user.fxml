@@ -17,16 +17,16 @@
               <TableColumn fx:id="colunmActive" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="163.0" text="Ativo" />
           </columns>
       </TableView>
-      <JFXButton id="btnNew" fx:id="btnNew" graphicTextGap="8.0" layoutX="14.0" onAction="#newUser" layoutY="46.0" prefHeight="29.0" prefWidth="101.0" text="Novo">
+      <JFXButton id="btnNew" fx:id="btnNewUser" graphicTextGap="8.0" layoutX="14.0" onAction="#newUser" layoutY="46.0" prefHeight="29.0" prefWidth="101.0" text="Novo">
          <graphic>
             <FontAwesomeIconView glyphName="PLUS" />
          </graphic></JFXButton>
-      <JFXButton fx:id="btnEdit" graphicTextGap="8.0" layoutX="125.0" layoutY="46.0" onAction="#edit" prefHeight="29.0" prefWidth="101.0" text="Editar">
+      <JFXButton fx:id="btnEditUser" graphicTextGap="8.0" layoutX="125.0" layoutY="46.0" onAction="#edit" prefHeight="29.0" prefWidth="101.0" text="Editar">
          <graphic>
             <FontAwesomeIconView glyphName="PENCIL" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="btnDelete" graphicTextGap="8.0" layoutX="235.0" layoutY="46.0" onAction="#delete" prefHeight="29.0" prefWidth="101.0" text="deletar">
+      <JFXButton fx:id="btnDeleteUser" graphicTextGap="8.0" layoutX="235.0" layoutY="46.0" onAction="#delete" prefHeight="29.0" prefWidth="101.0" text="deletar">
          <graphic>
             <FontAwesomeIconView glyphName="TRASH" />
          </graphic>

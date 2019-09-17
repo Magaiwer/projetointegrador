@@ -11,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import projetointegrador.Util.EFxmlView;
-import projetointegrador.Util.MessagesUtil;
-import projetointegrador.config.StageManager;
 import projetointegrador.annotation.Restriction;
-import projetointegrador.security.Security;
+import projetointegrador.config.StageManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -64,51 +62,31 @@ public class AppController implements Initializable {
     @FXML
     @Restriction(value = "ROLE_VIEW_USER")
     void showUser(ActionEvent event) {
-        if (Security.userHasRole("ROLE_VIEW_USER")) {
-            stageManager.switchScene(body, EFxmlView.USER_TABLE);
-        } else {
-            MessagesUtil.showMessageWarning("Sem permissão de acesso!");
-        }
+        stageManager.switchScene(body, EFxmlView.USER_TABLE);
     }
 
     @FXML
     @Restriction(value = "ROLE_VIEW_GROUP")
     void showGroup(ActionEvent event) {
-        if(Security.userHasRole("ROLE_VIEW_GROUP")) {
-            stageManager.switchScene(body, EFxmlView.GROUP_TABLE);
-        } else {
-            MessagesUtil.showMessageWarning("Sem permissão de acesso!");
-        }
+        stageManager.switchScene(body, EFxmlView.GROUP_TABLE);
     }
 
     @FXML
     @Restriction(value = "ROLE_VIEW_AUDIT")
     void showAudit(ActionEvent event) {
-        if(Security.userHasRole("ROLE_VIEW_AUDIT")) {
-            stageManager.switchScene(body, EFxmlView.AUDITORIA_LIST);
-        } else {
-            MessagesUtil.showMessageWarning("Sem permissão de acesso!");
-        }
+        stageManager.switchScene(body, EFxmlView.AUDITORIA_LIST);
     }
 
     @FXML
     @Restriction(value = "ROLE_VIEW_FORM")
     void showForms(ActionEvent event) {
-        if(Security.userHasRole("ROLE_VIEW_FORM")) {
-            stageManager.switchScene(body, EFxmlView.FORM_TABLE);
-        } else {
-            MessagesUtil.showMessageWarning("Sem permissão de acesso!");
-        }
+        stageManager.switchScene(body, EFxmlView.FORM_TABLE);
     }
 
     @FXML
     @Restriction(value = "ROLE_VIEW_ABSORTANCIA")
     void showMaterialAbsortancia(ActionEvent event) {
-        if(Security.userHasRole("ROLE_VIEW_ABSORTANCIA")) {
-            stageManager.switchScene(body, EFxmlView.MATERIAL_ABSORTANCIA_TABLE);
-        } else {
-            MessagesUtil.showMessageWarning("Sem permissão de acesso!");
-        }
+        stageManager.switchScene(body, EFxmlView.MATERIAL_ABSORTANCIA_TABLE);
     }
 
     @FXML
