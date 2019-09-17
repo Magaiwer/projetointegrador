@@ -29,7 +29,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
-public class GrupoController implements Initializable {
+public class GrupoController implements Initializable, BaseController<GrupoController> {
 
     @FXML
     private AnchorPane root;
@@ -38,7 +38,7 @@ public class GrupoController implements Initializable {
     private JFXButton btnCancel;
 
     @FXML
-    private JFXButton btnSave;
+    private JFXButton btnSaveGroup;
 
     @FXML
     private JFXTextField txtName;
@@ -52,6 +52,15 @@ public class GrupoController implements Initializable {
 
     @FXML
     private TableColumn<Grupo, String> colunmName;
+
+    @FXML
+    private JFXButton btnEditGroup;
+
+    @FXML
+    private JFXButton btnNewGroup;
+
+    @FXML
+    private JFXButton btnDeleteGroup;
 
 
     @Autowired
@@ -74,8 +83,16 @@ public class GrupoController implements Initializable {
         }
     }
 
+
     @FXML
-    void save(ActionEvent event) {
+    @Override
+    public void onCancel(ActionEvent event) {
+        stageManager.switchScene(root, EFxmlView.GROUP_TABLE);
+    }
+
+    @FXML
+    @Override
+    public void onSave(ActionEvent event) {
         boolean noEmpty = EntityValidator.noEmpty(txtName);
 
         if (grupo != null && noEmpty) {
@@ -89,22 +106,11 @@ public class GrupoController implements Initializable {
             stageManager.switchScene(root, EFxmlView.GROUP_TABLE);
         }
         grupo = new Grupo();
-
     }
 
     @FXML
-    void cancel(ActionEvent event) {
-        stageManager.switchScene(root, EFxmlView.GROUP_TABLE);
-    }
-
-    @FXML
-    void newGroup(ActionEvent event) {
-        stageManager.switchScene(root, EFxmlView.GROUP);
-        txtName.requestFocus();
-    }
-
-    @FXML
-    void edit(ActionEvent event) {
+    @Override
+    public void onEdit(ActionEvent event) {
         grupo = tableGroup.getSelectionModel().getSelectedItem();
 
         if (grupo != null) {
@@ -116,7 +122,8 @@ public class GrupoController implements Initializable {
     }
 
     @FXML
-    void delete(ActionEvent event) {
+    @Override
+    public void onDelete(ActionEvent event) {
         grupo = tableGroup.getSelectionModel().getSelectedItem();
 
         if (grupo != null) {
@@ -130,17 +137,31 @@ public class GrupoController implements Initializable {
         } else {
             MessagesUtil.showMessageWarning("Selecione o grupo que deseja deletar");
         }
+    }
 
+    @FXML
+    @Override
+    public void onNew(ActionEvent event) {
+        stageManager.switchScene(root, EFxmlView.GROUP);
+        txtName.requestFocus();
+    }
+
+
+    @Override
+    public void initListeners() {
+
+    }
+
+    @FXML
+    @Override
+    public void initTable() {
+        colunmId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colunmName.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        tableGroup.setItems(listGroup());
     }
 
     private ObservableList<Grupo> listGroup() {
         return FXCollections.observableArrayList(grupoRepository.findAll());
-    }
-
-    private void initTable() {
-        colunmId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colunmName.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        tableGroup.setItems(listGroup());
     }
 
 }

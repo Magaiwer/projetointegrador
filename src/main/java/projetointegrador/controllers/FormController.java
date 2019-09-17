@@ -4,24 +4,18 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import javafx.beans.InvalidationListener;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -35,13 +29,10 @@ import projetointegrador.repository.FormRepository;
 import projetointegrador.service.FormService;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Observable;
 import java.util.ResourceBundle;
 
 @Controller
-public class FormController implements Initializable {
-
+public class FormController implements Initializable, BaseController<FormController> {
 
     @FXML
     private AnchorPane panel;
@@ -87,16 +78,16 @@ public class FormController implements Initializable {
     private TableColumn<Form, Entities> colunmEntity;
 
     @FXML
-    private JFXButton btnNew;
+    private JFXButton btnNewForm;
 
     @FXML
-    private JFXButton btnEdit;
+    private JFXButton btnEditForm;
 
     @FXML
-    private JFXButton btnDelete;
+    private JFXButton btnDeleteForm;
 
     @FXML
-    private JFXButton btnAudit;
+    private JFXButton btnAuditForm;
 
     @FXML
     private JFXComboBox<Entities> cboxEntity;
@@ -120,17 +111,24 @@ public class FormController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initTable();
         initCombo();
-        initListener();
+        initListeners();
+    }
+
+    @FXML
+    @Override
+    public void onDelete(ActionEvent event) {
 
     }
 
     @FXML
-    void cancel(ActionEvent event) {
+    @Override
+    public void onCancel(ActionEvent event) {
         stageManager.switchScene(panel, EFxmlView.FORM_TABLE);
     }
 
     @FXML
-    void save(ActionEvent event) {
+    @Override
+    public void onSave(ActionEvent event) {
         if (form != null) {
 
             form.setName(txtName.getText());
@@ -144,19 +142,8 @@ public class FormController implements Initializable {
     }
 
     @FXML
-    void onAudit(ActionEvent event) {
-        formService.updateAudit(tableForm.getItems());
-        listForms();
-        MessagesUtil.showMessageInformation("Formulários a serem auditados atualizado com sucesso!");
-    }
-
-    @FXML
-    void onDelete(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onEdit(ActionEvent event) {
+    @Override
+    public void onEdit(ActionEvent event) {
         form = tableForm.getSelectionModel().getSelectedItem();
 
         if (form != null) {
@@ -173,28 +160,21 @@ public class FormController implements Initializable {
 
 
     @FXML
-    void newForm(ActionEvent event) {
+    @Override
+    public void onNew(ActionEvent event) {
         stageManager.switchScene(root, EFxmlView.FORM);
         txtName.requestFocus();
     }
 
-
-    private ObservableList<Form> listForms() {
-        return FXCollections.observableArrayList(formService.loadForms());
+    @FXML
+    void onAudit(ActionEvent event) {
+        formService.updateAudit(tableForm.getItems());
+        listForms();
+        MessagesUtil.showMessageInformation("Formulários a serem auditados atualizado com sucesso!");
     }
 
-    private ObservableList<Entities> listEntities() {
-        return FXCollections.observableArrayList(entitiesRepository.findAll());
-
-    }
-
-    private void initCombo() {
-        if (cboxEntity != null) {
-            cboxEntity.setItems(listEntities());
-        }
-    }
-
-    private void initTable() {
+    @Override
+    public void initTable() {
         colunmId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colunmName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colunmDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -214,7 +194,8 @@ public class FormController implements Initializable {
         tableForm.setItems(listForms());
     }
 
-    private void initListener() {
+    @Override
+    public void initListeners() {
         tableCBAudit.selectedProperty().addListener((observable, oldValue, newValue) -> {
 
 /*
@@ -239,5 +220,20 @@ public class FormController implements Initializable {
 
 
         });
+    }
+
+    private void initCombo() {
+        if (cboxEntity != null) {
+            cboxEntity.setItems(listEntities());
+        }
+    }
+
+    private ObservableList<Form> listForms() {
+        return FXCollections.observableArrayList(formService.loadForms());
+    }
+
+    private ObservableList<Entities> listEntities() {
+        return FXCollections.observableArrayList(entitiesRepository.findAll());
+
     }
 }

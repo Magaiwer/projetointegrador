@@ -22,7 +22,7 @@ public class Security {
     public static void setPermissionForm(Parent node) {
         if (UsuarioService.usuarioLogado != null) {
             node.lookupAll("JFXButton").forEach(btn -> {
-                btn.setDisable(!userHasRole(btn.getId()));
+               // btn.setDisable(!userHasRole(btn.getId()));
             });
         }
     }

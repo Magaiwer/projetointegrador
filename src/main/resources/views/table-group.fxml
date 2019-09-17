@@ -13,16 +13,16 @@
               <TableColumn fx:id="colunmName" minWidth="0.0" prefWidth="779.0" text="Nome" />
           </columns>
       </TableView>
-      <JFXButton id="btnNew" fx:id="btnNew" graphicTextGap="8.0" layoutX="14.0" layoutY="46.0" onAction="#newGroup" prefHeight="29.0" prefWidth="101.0" text="Novo">
+      <JFXButton id="btnNew" fx:id="btnNewGroup" graphicTextGap="8.0" layoutX="14.0" layoutY="46.0" onAction="#onNew" prefHeight="29.0" prefWidth="101.0" text="Novo">
          <graphic>
             <FontAwesomeIconView glyphName="PLUS" />
          </graphic></JFXButton>
-      <JFXButton fx:id="btnEdit" graphicTextGap="8.0" layoutX="125.0" layoutY="46.0" onAction="#edit" prefHeight="29.0" prefWidth="101.0" text="Editar">
+      <JFXButton fx:id="btnEditGroup" graphicTextGap="8.0" layoutX="125.0" layoutY="46.0" onAction="#onEdit" prefHeight="29.0" prefWidth="101.0" text="Editar">
          <graphic>
             <FontAwesomeIconView glyphName="PENCIL" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="btnDelete" graphicTextGap="8.0" layoutX="235.0" layoutY="46.0" onAction="#delete" prefHeight="29.0" prefWidth="101.0" text="deletar">
+      <JFXButton fx:id="btnDeleteGroup" graphicTextGap="8.0" layoutX="235.0" layoutY="46.0" onAction="#onDelete" prefHeight="29.0" prefWidth="101.0" text="deletar">
          <graphic>
             <FontAwesomeIconView glyphName="TRASH" />
          </graphic>

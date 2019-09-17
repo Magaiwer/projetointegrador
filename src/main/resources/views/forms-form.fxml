@@ -12,8 +12,8 @@
       <Pane layoutY="-42.0" prefHeight="426.0" prefWidth="665.0" translateZ="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <JFXTextField fx:id="txtName" labelFloat="true" layoutX="26.0" layoutY="69.0" prefHeight="29.0" prefWidth="578.0" promptText="Nome" />
-            <JFXButton fx:id="btnSave" layoutX="25.0" layoutY="272.0" onAction="#save" prefHeight="60.0" prefWidth="144.0" text="Salvar" />
-            <JFXButton fx:id="btnCancel" layoutX="209.0" layoutY="264.0" onAction="#cancel" prefHeight="60.0" prefWidth="144.0" text="Cancelar" />
+            <JFXButton fx:id="btnSave" layoutX="25.0" layoutY="272.0" onAction="#onSave" prefHeight="60.0" prefWidth="144.0" text="Salvar" />
+            <JFXButton fx:id="btnCancel" layoutX="209.0" layoutY="264.0" onAction="#onCancel" prefHeight="60.0" prefWidth="144.0" text="Cancelar" />
             <JFXCheckBox fx:id="cbAudit" layoutX="26.0" layoutY="233.0" text="Auditar" />
             <JFXTextField fx:id="txtDescription" labelFloat="true" layoutX="28.0" layoutY="124.0" prefHeight="29.0" prefWidth="578.0" promptText="Descrição" />
             <JFXComboBox fx:id="cboxEntity" labelFloat="true" layoutX="25.0" layoutY="185.0" prefHeight="28.0" prefWidth="578.0" promptText="Entidade" />
