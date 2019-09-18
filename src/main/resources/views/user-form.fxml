@@ -20,8 +20,8 @@
             <JFXTextField fx:id="txtEmail" labelFloat="true" layoutX="26.0" layoutY="129.0" prefHeight="29.0" prefWidth="578.0" promptText="E-mail" />
             <JFXPasswordField fx:id="txtPassword" labelFloat="true" layoutX="26.0" layoutY="202.0" prefHeight="29.0" prefWidth="263.0" promptText="Senha" />
             <JFXPasswordField fx:id="txtConfirmePassword" labelFloat="true" layoutX="341.0" layoutY="202.0" prefHeight="29.0" prefWidth="263.0" promptText="Confirmação senha" />
-            <JFXButton fx:id="btnSave" layoutX="26.0" layoutY="482.0" onAction="#save" prefHeight="48.0" prefWidth="144.0" text="Salvar" />
-            <JFXButton fx:id="btnCancel" layoutX="229.0" layoutY="482.0" onAction="#cancel" prefHeight="48.0" prefWidth="144.0" text="Cancelar" />
+            <JFXButton fx:id="btnSave" layoutX="26.0" layoutY="482.0" onAction="#onSave" prefHeight="48.0" prefWidth="144.0" text="Salvar" />
+            <JFXButton fx:id="btnCancel" layoutX="229.0" layoutY="482.0" onAction="#onCancel" prefHeight="48.0" prefWidth="144.0" text="Cancelar" />
             <JFXComboBox fx:id="cboxGroups" layoutX="26.0" layoutY="272.0" prefHeight="28.0" prefWidth="464.0" promptText="Selecione os grupo" />
             <JFXButton fx:id="btnAddGroup" graphicTextGap="8.0" layoutX="495.0" layoutY="271.0" onAction="#addGroup" prefHeight="30.0" prefWidth="109.0" text="Adicionar">
                <graphic>

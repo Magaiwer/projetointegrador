@@ -33,7 +33,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
-public class UsuarioController implements Initializable {
+public class UsuarioController implements Initializable, BaseController<UsuarioController> {
 
     @FXML
     private JFXButton btnCancel;
@@ -123,7 +123,23 @@ public class UsuarioController implements Initializable {
     }
 
     @FXML
-    void save(ActionEvent event) {
+    void addGroup(ActionEvent event) {
+        Grupo grupo = cboxGroups.getSelectionModel().getSelectedItem();
+
+        if (!cViewGrupo.getChips().contains(grupo)) {
+            cViewGrupo.getChips().add(grupo);
+        }
+    }
+
+    @FXML
+    @Override
+    public void onCancel(ActionEvent event) {
+        stageManager.switchScene(root, EFxmlView.USER_TABLE);
+    }
+
+    @FXML
+    @Override
+    public void onSave(ActionEvent event) {
         boolean noEmpty = EntityValidator.noEmpty(txtName, txtEmail);
 
         if (usuario != null && noEmpty) {
@@ -141,29 +157,16 @@ public class UsuarioController implements Initializable {
     }
 
     @FXML
-    void cancel(ActionEvent event) {
-        stageManager.switchScene(root, EFxmlView.USER_TABLE);
-    }
-
-    @FXML
-    void newUser(ActionEvent event) {
-        stageManager.switchScene(root, EFxmlView.USER);
-        usuario = new Usuario();
-        txtName.requestFocus();
-        initCombo();
-
-    }
-
-    @FXML
-    void edit(ActionEvent event) {
+    @Override
+    public void onEdit(ActionEvent event) {
         usuario = tableUser.getSelectionModel().getSelectedItem();
 
         if (usuario != null) {
             stageManager.switchScene(root, EFxmlView.USER);
             Optional<Usuario> usuarioOptional = usuarioRepository.findUsuarioGrupos(usuario.getId());
 
-            usuarioOptional.ifPresent(u-> usuario = u);
-            usuarioOptional.ifPresent(u-> cViewGrupo.getChips().addAll(u.getGrupos()));
+            usuarioOptional.ifPresent(u -> usuario = u);
+            usuarioOptional.ifPresent(u -> cViewGrupo.getChips().addAll(u.getGrupos()));
 
             txtName.setText(usuario.getNome());
             txtEmail.setText(usuario.getLogin());
@@ -176,7 +179,8 @@ public class UsuarioController implements Initializable {
     }
 
     @FXML
-    void delete(ActionEvent event) {
+    @Override
+    public void onDelete(ActionEvent event) {
         Usuario usuario = tableUser.getSelectionModel().getSelectedItem();
 
         if (usuario != null) {
@@ -190,36 +194,24 @@ public class UsuarioController implements Initializable {
         } else {
             MessagesUtil.showMessageWarning("Selecione o usúario que deseja editar");
         }
-
     }
 
     @FXML
-    void addGroup(ActionEvent event) {
-        Grupo grupo = cboxGroups.getSelectionModel().getSelectedItem();
-
-        if (!cViewGrupo.getChips().contains(grupo)) {
-            cViewGrupo.getChips().add(grupo);
-        }
+    @Override
+    public void onNew(ActionEvent event) {
+        stageManager.switchScene(root, EFxmlView.USER);
+        usuario = new Usuario();
+        txtName.requestFocus();
+        initCombo();
     }
 
-    private void bindUser() {
-        usuario.setNome(txtName.getText());
-        usuario.setLogin(txtEmail.getText());
-        usuario.setAtivo(btnAtivo.isSelected());
-        usuario.setSenha(txtPassword.getText());
-        usuario.setConfirmacaoSenha(txtConfirmePassword.getText());
-        usuario.setGrupos(cViewGrupo.getChips());
+    @Override
+    public void initListeners() {
+
     }
 
-    private ObservableList<Usuario> listUsers() {
-        return FXCollections.observableArrayList(usuarioRepository.findAll());
-    }
-
-    private ObservableList<Grupo> listGroups() {
-        return FXCollections.observableArrayList(grupoRepository.findAll());
-    }
-
-    private void initTable() {
+    @Override
+    public void initTable() {
         colunmId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colunmName.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colunmEmail.setCellValueFactory(new PropertyValueFactory<>("login"));
@@ -252,5 +244,21 @@ public class UsuarioController implements Initializable {
         }
     }
 
+    private ObservableList<Usuario> listUsers() {
+        return FXCollections.observableArrayList(usuarioRepository.findAll());
+    }
+
+    private ObservableList<Grupo> listGroups() {
+        return FXCollections.observableArrayList(grupoRepository.findAll());
+    }
+
+    private void bindUser() {
+        usuario.setNome(txtName.getText());
+        usuario.setLogin(txtEmail.getText());
+        usuario.setAtivo(btnAtivo.isSelected());
+        usuario.setSenha(txtPassword.getText());
+        usuario.setConfirmacaoSenha(txtConfirmePassword.getText());
+        usuario.setGrupos(cViewGrupo.getChips());
+    }
 
 }
