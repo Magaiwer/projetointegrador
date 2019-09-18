@@ -2,7 +2,6 @@ package projetointegrador.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -25,6 +24,7 @@ import projetointegrador.model.MaterialAbsortancia;
 import projetointegrador.repository.MaterialAbsortanciaRepository;
 import projetointegrador.service.MaterialAbsortanciaService;
 import projetointegrador.service.exception.FieldRequeridException;
+import projetointegrador.validation.EntityValidator;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -32,7 +32,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
-public class MaterialAbsortanciaController implements Initializable {
+public class MaterialAbsortanciaController implements Initializable, BaseController<MaterialAbsortanciaController> {
 
     @FXML
     private AnchorPane root;
@@ -59,13 +59,13 @@ public class MaterialAbsortanciaController implements Initializable {
     private TableColumn<MaterialAbsortancia, BigDecimal> columnBetaFim;
 
     @FXML
-    private JFXButton btnNew;
+    private JFXButton btnNewMaterialAbsortancia;
 
     @FXML
-    private JFXButton btnEdit;
+    private JFXButton btnEditMaterialAbsortancia;
 
     @FXML
-    private JFXButton btnDelete;
+    private JFXButton btnDeleteMaterialAbsortancia;
 
     @FXML
     private AnchorPane panel;
@@ -102,7 +102,6 @@ public class MaterialAbsortanciaController implements Initializable {
     private MaterialAbsortanciaService materialAbsortanciaService;
 
     private MaterialAbsortancia materialAbsortancia = new MaterialAbsortancia();
-    private RequiredFieldValidator requiredFieldValidator;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -113,20 +112,21 @@ public class MaterialAbsortanciaController implements Initializable {
     }
 
     @FXML
-    void cancel(ActionEvent event) {
+    @Override
+    public void onCancel(ActionEvent event) {
         stageManager.switchScene(root, EFxmlView.MATERIAL_ABSORTANCIA_TABLE);
     }
 
     @FXML
-    void save(ActionEvent event) {
+    @Override
+    public void onSave(ActionEvent event) {
 
         if (materialAbsortancia != null) {
             materialAbsortancia.setSuperficie(txtSuperficie.getText());
-            materialAbsortancia.setAlfaIni(new BigDecimal(Double.parseDouble(txtAlfaIni.getText().isEmpty() ? "0.0" :txtAlfaIni.getText())));
-            materialAbsortancia.setAlfaFim(new BigDecimal(Double.parseDouble(txtAlfaFim.getText().isEmpty() ? "0.0" :txtAlfaFim.getText())));
-            materialAbsortancia.setBetaIni(new BigDecimal(Double.parseDouble(txtBetaIni.getText().isEmpty() ? "0.0" :txtBetaIni.getText())));
-            materialAbsortancia.setBetaFim(new BigDecimal(Double.parseDouble(txtBetaFim.getText().isEmpty() ? "0.0" :txtBetaFim.getText())));
-            materialAbsortancia.setSuperficie(txtSuperficie.getText());
+            materialAbsortancia.setAlfaIni(new BigDecimal(Double.parseDouble(txtAlfaIni.getText().isEmpty() ? "0.0" : txtAlfaIni.getText())));
+            materialAbsortancia.setAlfaFim(new BigDecimal(Double.parseDouble(txtAlfaFim.getText().isEmpty() ? "0.0" : txtAlfaFim.getText())));
+            materialAbsortancia.setBetaIni(new BigDecimal(Double.parseDouble(txtBetaIni.getText().isEmpty() ? "0.0" : txtBetaIni.getText())));
+            materialAbsortancia.setBetaFim(new BigDecimal(Double.parseDouble(txtBetaFim.getText().isEmpty() ? "0.0" : txtBetaFim.getText())));
 
             try {
                 materialAbsortanciaService.save(materialAbsortancia);
@@ -140,25 +140,8 @@ public class MaterialAbsortanciaController implements Initializable {
     }
 
     @FXML
-    void delete(ActionEvent event) {
-        MaterialAbsortancia materialAbsortancia = tableMaterialAbsortancia.getSelectionModel().getSelectedItem();
-
-        if (materialAbsortancia != null) {
-            Optional<ButtonType> confirm = MessagesUtil.showMessageConfirmation("Você deseja remover a superficie " + materialAbsortancia.getSuperficie());
-
-            if (confirm.get() == ButtonType.OK) {
-                materialAbsortanciaRepository.delete(materialAbsortancia);
-                initTable();
-            }
-
-        } else {
-            MessagesUtil.showMessageWarning("Selecione a superficie que deseja remover");
-        }
-
-    }
-
-    @FXML
-    void edit(ActionEvent event) {
+    @Override
+    public void onEdit(ActionEvent event) {
         materialAbsortancia = tableMaterialAbsortancia.getSelectionModel().getSelectedItem();
 
         if (materialAbsortancia != null) {
@@ -175,17 +158,33 @@ public class MaterialAbsortanciaController implements Initializable {
     }
 
     @FXML
-    void newAbsortancia(ActionEvent event) {
+    @Override
+    public void onDelete(ActionEvent event) {
+        MaterialAbsortancia materialAbsortancia = tableMaterialAbsortancia.getSelectionModel().getSelectedItem();
+
+        if (materialAbsortancia != null) {
+            Optional<ButtonType> confirm = MessagesUtil.showMessageConfirmation("Você deseja remover a superficie " + materialAbsortancia.getSuperficie());
+
+            if (confirm.get() == ButtonType.OK) {
+                materialAbsortanciaRepository.delete(materialAbsortancia);
+                initTable();
+            }
+
+        } else {
+            MessagesUtil.showMessageWarning("Selecione a superficie que deseja remover");
+        }
+    }
+
+    @FXML
+    @Override
+    public void onNew(ActionEvent event) {
         stageManager.switchScene(root, EFxmlView.MATERIAL_ABSORTANCIA);
         materialAbsortancia = new MaterialAbsortancia();
         txtSuperficie.requestFocus();
     }
 
-    private ObservableList<MaterialAbsortancia> listAbsortancias() {
-        return FXCollections.observableArrayList(materialAbsortanciaRepository.findAll());
-    }
-
-    private void initTable() {
+    @Override
+    public void initTable() {
         columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnSuperficie.setCellValueFactory(new PropertyValueFactory<>("superficie"));
         columnAlfaIni.setCellValueFactory(new PropertyValueFactory<>("alfaIni"));
@@ -195,11 +194,14 @@ public class MaterialAbsortanciaController implements Initializable {
         tableMaterialAbsortancia.setItems(listAbsortancias());
     }
 
-    private void initListeners() {
+    @Override
+    public void initListeners() {
+        final String regexDecimal = "\\d{0,7}([\\.]\\d{0,2})?";
+
         txtAlfaIni.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d{0,7}([\\.]\\d{0,2})?")) {
+                if (!newValue.matches(regexDecimal)) {
                     txtAlfaIni.setText(oldValue);
                 }
             }
@@ -207,7 +209,7 @@ public class MaterialAbsortanciaController implements Initializable {
         txtAlfaFim.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d{0,7}([\\.]\\d{0,2})?")) {
+                if (!newValue.matches(regexDecimal)) {
                     txtAlfaFim.setText(oldValue);
                 }
             }
@@ -215,7 +217,7 @@ public class MaterialAbsortanciaController implements Initializable {
         txtBetaIni.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d{0,7}([\\.]\\d{0,2})?")) {
+                if (!newValue.matches(regexDecimal)) {
                     txtBetaIni.setText(oldValue);
                 }
             }
@@ -223,10 +225,14 @@ public class MaterialAbsortanciaController implements Initializable {
         txtBetaFim.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d{0,7}([\\.]\\d{0,2})?")) {
+                if (!newValue.matches(regexDecimal)) {
                     txtBetaFim.setText(oldValue);
                 }
             }
         });
+    }
+
+    private ObservableList<MaterialAbsortancia> listAbsortancias() {
+        return FXCollections.observableArrayList(materialAbsortanciaRepository.findAll());
     }
 }
