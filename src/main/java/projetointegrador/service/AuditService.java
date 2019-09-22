@@ -19,7 +19,7 @@ public class AuditService {
     public void save(Audit audit) {
         AuditRepository auditRepository = BeanUtil.getBean(AuditRepository.class);
 
-        audit.setUsuario(UsuarioService.usuarioLogado);
+        audit.setUser(UserService.userLogged);
         Optional<Form> form = searchForm(audit);
         System.out.println(form.toString());
 
@@ -29,7 +29,7 @@ public class AuditService {
             }
 
         } catch (Exception ex) {
-            MDC.put("user", UsuarioService.usuarioLogado.getNome());
+            MDC.put("user", UserService.userLogged.getName());
             LOGGER.error(ex.getMessage());
         }
     }

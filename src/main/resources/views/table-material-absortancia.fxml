@@ -21,7 +21,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <JFXButton id="btnNew" fx:id="btnNewMaterialAbsortancia" graphicTextGap="8.0" layoutX="14.0" layoutY="46.0" onAction="#onNew" prefHeight="29.0" prefWidth="101.0" text="Novo">
+      <JFXButton  fx:id="btnNewMaterialAbsortancia" graphicTextGap="8.0" layoutX="14.0" layoutY="46.0" onAction="#onNew" prefHeight="29.0" prefWidth="101.0" text="Novo">
          <graphic>
             <FontAwesomeIconView glyphName="PLUS" />
          </graphic></JFXButton>

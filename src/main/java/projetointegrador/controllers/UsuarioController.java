@@ -18,11 +18,11 @@ import org.springframework.stereotype.Component;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.Util.MessagesUtil;
 import projetointegrador.config.StageManager;
-import projetointegrador.model.Grupo;
-import projetointegrador.model.Usuario;
-import projetointegrador.repository.GrupoRepository;
-import projetointegrador.repository.UsuarioRepository;
-import projetointegrador.service.UsuarioService;
+import projetointegrador.model.Group;
+import projetointegrador.model.User;
+import projetointegrador.repository.GroupRepository;
+import projetointegrador.repository.UserRepository;
+import projetointegrador.service.UserService;
 import projetointegrador.service.exception.EmailJaCadastradoException;
 import projetointegrador.service.exception.PasswordInvalidException;
 import projetointegrador.service.exception.RequiredPasswordException;
@@ -60,32 +60,32 @@ public class UsuarioController implements Initializable, BaseController<UsuarioC
     private JFXPasswordField txtPassword;
 
     @FXML
-    private JFXComboBox<Grupo> cboxGroups;
+    private JFXComboBox<Group> cboxGroups;
 
     @FXML
     private JFXButton btnAddGroup;
 
     @FXML
-    private JFXChipView<Grupo> cViewGrupo;
+    private JFXChipView<Group> cViewGrupo;
 
     @FXML
     private AnchorPane root;
 
     @FXML
-    private TableView<Usuario> tableUser;
+    private TableView<User> tableUser;
 
 
     @FXML
-    private TableColumn<Usuario, Long> colunmId;
+    private TableColumn<User, Long> colunmId;
 
     @FXML
-    private TableColumn<Usuario, String> colunmName;
+    private TableColumn<User, String> colunmName;
 
     @FXML
-    private TableColumn<Usuario, String> colunmEmail;
+    private TableColumn<User, String> colunmEmail;
 
     @FXML
-    private TableColumn<Usuario, String> colunmActive;
+    private TableColumn<User, String> colunmActive;
 
     @FXML
     private JFXButton btnNewUser;
@@ -97,19 +97,19 @@ public class UsuarioController implements Initializable, BaseController<UsuarioC
     private JFXButton btnDeleteUser;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private GrupoRepository grupoRepository;
+    private GroupRepository groupRepository;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UserService userService;
 
     @Lazy
     @Autowired
     private StageManager stageManager;
 
-    private Usuario usuario = new Usuario();
+    private User user = new User();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -124,10 +124,10 @@ public class UsuarioController implements Initializable, BaseController<UsuarioC
 
     @FXML
     void addGroup(ActionEvent event) {
-        Grupo grupo = cboxGroups.getSelectionModel().getSelectedItem();
+        Group group = cboxGroups.getSelectionModel().getSelectedItem();
 
-        if (!cViewGrupo.getChips().contains(grupo)) {
-            cViewGrupo.getChips().add(grupo);
+        if (!cViewGrupo.getChips().contains(group)) {
+            cViewGrupo.getChips().add(group);
         }
     }
 
@@ -142,11 +142,11 @@ public class UsuarioController implements Initializable, BaseController<UsuarioC
     public void onSave(ActionEvent event) {
         boolean noEmpty = EntityValidator.noEmpty(txtName, txtEmail);
 
-        if (usuario != null && noEmpty) {
+        if (user != null && noEmpty) {
             bindUser();
 
             try {
-                usuarioService.save(usuario);
+                userService.save(user);
                 MessagesUtil.showMessageInformation("Usuário salvo com sucesso");
                 stageManager.switchScene(root, EFxmlView.USER_TABLE);
 
@@ -159,19 +159,19 @@ public class UsuarioController implements Initializable, BaseController<UsuarioC
     @FXML
     @Override
     public void onEdit(ActionEvent event) {
-        usuario = tableUser.getSelectionModel().getSelectedItem();
+        user = tableUser.getSelectionModel().getSelectedItem();
 
-        if (usuario != null) {
+        if (user != null) {
             stageManager.switchScene(root, EFxmlView.USER);
-            Optional<Usuario> usuarioOptional = usuarioRepository.findUsuarioGrupos(usuario.getId());
+            Optional<User> usuarioOptional = userRepository.findUserGroups(user.getId());
 
-            usuarioOptional.ifPresent(u -> usuario = u);
-            usuarioOptional.ifPresent(u -> cViewGrupo.getChips().addAll(u.getGrupos()));
+            usuarioOptional.ifPresent(u -> user = u);
+            usuarioOptional.ifPresent(u -> cViewGrupo.getChips().addAll(u.getGroups()));
 
-            txtName.setText(usuario.getNome());
-            txtEmail.setText(usuario.getLogin());
+            txtName.setText(user.getName());
+            txtEmail.setText(user.getLogin());
             txtEmail.setDisable(true);
-            btnAtivo.setSelected(usuario.isAtivo());
+            btnAtivo.setSelected(user.isActive());
 
         } else {
             MessagesUtil.showMessageWarning("Selecione um Usuário");
@@ -181,13 +181,13 @@ public class UsuarioController implements Initializable, BaseController<UsuarioC
     @FXML
     @Override
     public void onDelete(ActionEvent event) {
-        Usuario usuario = tableUser.getSelectionModel().getSelectedItem();
+        User user = tableUser.getSelectionModel().getSelectedItem();
 
-        if (usuario != null) {
-            Optional<ButtonType> confirm = MessagesUtil.showMessageConfirmation("Você deseja remover o usuário " + usuario.getNome());
+        if (user != null) {
+            Optional<ButtonType> confirm = MessagesUtil.showMessageConfirmation("Você deseja remover o usuário " + user.getName());
 
             if (confirm.get() == ButtonType.OK) {
-                usuarioRepository.delete(usuario);
+                userRepository.delete(user);
                 initTable();
             }
 
@@ -200,7 +200,7 @@ public class UsuarioController implements Initializable, BaseController<UsuarioC
     @Override
     public void onNew(ActionEvent event) {
         stageManager.switchScene(root, EFxmlView.USER);
-        usuario = new Usuario();
+        user = new User();
         txtName.requestFocus();
         initCombo();
     }
@@ -213,9 +213,9 @@ public class UsuarioController implements Initializable, BaseController<UsuarioC
     @Override
     public void initTable() {
         colunmId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colunmName.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colunmName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colunmEmail.setCellValueFactory(new PropertyValueFactory<>("login"));
-        colunmActive.setCellValueFactory(new PropertyValueFactory<>("ativo"));
+        colunmActive.setCellValueFactory(new PropertyValueFactory<>("labelActive"));
         tableUser.setItems(listUsers());
     }
 
@@ -228,14 +228,14 @@ public class UsuarioController implements Initializable, BaseController<UsuarioC
     private void initConverter() {
         if (cboxGroups != null) {
 
-            StringConverter<Grupo> grupoStringConverter = new StringConverter<Grupo>() {
+            StringConverter<Group> grupoStringConverter = new StringConverter<Group>() {
                 @Override
-                public String toString(Grupo grupo) {
-                    return grupo.getNome();
+                public String toString(Group grupo) {
+                    return grupo.getName();
                 }
 
                 @Override
-                public Grupo fromString(String string) {
+                public Group fromString(String string) {
                     return null;
                 }
             };
@@ -244,21 +244,21 @@ public class UsuarioController implements Initializable, BaseController<UsuarioC
         }
     }
 
-    private ObservableList<Usuario> listUsers() {
-        return FXCollections.observableArrayList(usuarioRepository.findAll());
+    private ObservableList<User> listUsers() {
+        return FXCollections.observableArrayList(userRepository.findAll());
     }
 
-    private ObservableList<Grupo> listGroups() {
-        return FXCollections.observableArrayList(grupoRepository.findAll());
+    private ObservableList<Group> listGroups() {
+        return FXCollections.observableArrayList(groupRepository.findAll());
     }
 
     private void bindUser() {
-        usuario.setNome(txtName.getText());
-        usuario.setLogin(txtEmail.getText());
-        usuario.setAtivo(btnAtivo.isSelected());
-        usuario.setSenha(txtPassword.getText());
-        usuario.setConfirmacaoSenha(txtConfirmePassword.getText());
-        usuario.setGrupos(cViewGrupo.getChips());
+        user.setName(txtName.getText());
+        user.setLogin(txtEmail.getText());
+        user.setActive(btnAtivo.isSelected());
+        user.setPassword(txtPassword.getText());
+        user.setConfimationPassword(txtConfirmePassword.getText());
+        user.setGroups(cViewGrupo.getChips());
     }
 
 }

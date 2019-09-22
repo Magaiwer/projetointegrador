@@ -19,10 +19,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.config.StageManager;
-import projetointegrador.model.Usuario;
-import projetointegrador.repository.UsuarioRepository;
+import projetointegrador.model.User;
+import projetointegrador.repository.UserRepository;
 import projetointegrador.service.FormService;
-import projetointegrador.service.UsuarioService;
+import projetointegrador.service.UserService;
 
 import java.net.URL;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class LoginController implements Initializable {
     private StageManager stageManager;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -80,18 +80,18 @@ public class LoginController implements Initializable {
     }
 
     private void login() {
-        Optional<Usuario> usuario = usuarioRepository.findByLoginAndAtivoTrue(txtUser.getText());
+        Optional<User> user = userRepository.findByLoginAndActiveTrue(txtUser.getText());
 
-        if (usuario.isPresent()) {
+        if (user.isPresent()) {
 
-            boolean isPasswordValid = bCryptPasswordEncoder.matches(txtPassword.getText(), usuario.get().getSenha());
+            boolean isPasswordValid = bCryptPasswordEncoder.matches(txtPassword.getText(), user.get().getPassword());
 
             if (isPasswordValid) {
-                Long id = usuario.get().getId();
-                UsuarioService.usuarioLogado = usuarioRepository.findUsuarioWithGrupos(id).get();
+                Long id = user.get().getId();
+                UserService.userLogged = userRepository.findUserWithGroups(id).get();
 
                 formService.loadForms();
-                MDC.put("user", usuario.get().getNome());
+                MDC.put("user", user.get().getName());
 
                 stageManager.switchScene(EFxmlView.HOME);
             } else {

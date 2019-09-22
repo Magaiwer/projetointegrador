@@ -5,7 +5,7 @@ CREATE TABLE AUDIT (
   command varchar not null,
   user_id BIGINT not null,
   constraint pk_audit primary key (id),
-  constraint fk_audit_userid foreign key (user_id) references usuario
+  constraint fk_audit_userid foreign key (user_id) references public.user
 
 );
 

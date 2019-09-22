@@ -24,7 +24,6 @@ import projetointegrador.model.MaterialAbsortancia;
 import projetointegrador.repository.MaterialAbsortanciaRepository;
 import projetointegrador.service.MaterialAbsortanciaService;
 import projetointegrador.service.exception.FieldRequeridException;
-import projetointegrador.validation.EntityValidator;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -120,7 +119,6 @@ public class MaterialAbsortanciaController implements Initializable, BaseControl
     @FXML
     @Override
     public void onSave(ActionEvent event) {
-
         if (materialAbsortancia != null) {
             materialAbsortancia.setSuperficie(txtSuperficie.getText());
             materialAbsortancia.setAlfaIni(new BigDecimal(Double.parseDouble(txtAlfaIni.getText().isEmpty() ? "0.0" : txtAlfaIni.getText())));

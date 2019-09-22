@@ -13,7 +13,7 @@
               <TableColumn fx:id="colunmName" minWidth="0.0" prefWidth="779.0" text="Nome" />
           </columns>
       </TableView>
-      <JFXButton id="btnNew" fx:id="btnNewGroup" graphicTextGap="8.0" layoutX="14.0" layoutY="46.0" onAction="#onNew" prefHeight="29.0" prefWidth="101.0" text="Novo">
+      <JFXButton  fx:id="btnNewGroup" graphicTextGap="8.0" layoutX="14.0" layoutY="46.0" onAction="#onNew" prefHeight="29.0" prefWidth="101.0" text="Novo">
          <graphic>
             <FontAwesomeIconView glyphName="PLUS" />
          </graphic></JFXButton>

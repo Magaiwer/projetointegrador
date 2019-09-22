@@ -14,7 +14,7 @@
              <TableColumn fx:id="columnCondutividadeTermica" minWidth="250.0"  prefWidth="250.0" text="Condutividade térmica" />
           </columns>
       </TableView>
-      <JFXButton id="btnNew" fx:id="btnNew" graphicTextGap="8.0" layoutX="14.0" layoutY="46.0" onAction="#newMaterial" prefHeight="29.0" prefWidth="101.0" text="Novo">
+      <JFXButton  fx:id="btnNew" graphicTextGap="8.0" layoutX="14.0" layoutY="46.0" onAction="#newMaterial" prefHeight="29.0" prefWidth="101.0" text="Novo">
          <graphic>
             <FontAwesomeIconView glyphName="PLUS" />
          </graphic></JFXButton>

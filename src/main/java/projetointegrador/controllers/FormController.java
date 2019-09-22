@@ -32,7 +32,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-public class FormController implements Initializable, BaseController<FormController> {
+public class FormController implements Initializable, BaseController<FormController>  {
 
     @FXML
     private AnchorPane panel;

@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.Util.MessagesUtil;
 import projetointegrador.config.StageManager;
-import projetointegrador.model.Grupo;
-import projetointegrador.repository.GrupoRepository;
+import projetointegrador.model.Group;
+import projetointegrador.repository.GroupRepository;
 import projetointegrador.validation.EntityValidator;
 
 import java.net.URL;
@@ -44,14 +44,14 @@ public class GrupoController implements Initializable, BaseController<GrupoContr
     private JFXTextField txtName;
 
     @FXML
-    private TableView<Grupo> tableGroup;
+    private TableView<Group> tableGroup;
 
 
     @FXML
-    private TableColumn<Grupo, Long> colunmId;
+    private TableColumn<Group, Long> colunmId;
 
     @FXML
-    private TableColumn<Grupo, String> colunmName;
+    private TableColumn<Group, String> colunmName;
 
     @FXML
     private JFXButton btnEditGroup;
@@ -64,15 +64,15 @@ public class GrupoController implements Initializable, BaseController<GrupoContr
 
 
     @Autowired
-    private GrupoRepository grupoRepository;
+    private GroupRepository groupRepository;
 
     @Lazy
     @Autowired
     private StageManager stageManager;
 
-    private static Logger LOGGER = LoggerFactory.getLogger(Grupo.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(Group.class);
 
-    private Grupo grupo = new Grupo();
+    private Group group = new Group();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -95,47 +95,47 @@ public class GrupoController implements Initializable, BaseController<GrupoContr
     public void onSave(ActionEvent event) {
         boolean noEmpty = EntityValidator.noEmpty(txtName);
 
-        if (grupo != null && noEmpty) {
-            grupo.setNome(txtName.getText());
+        if (group != null && noEmpty) {
+            group.setName(txtName.getText());
             try {
-                grupoRepository.save(grupo);
+                groupRepository.save(group);
             } catch (Exception e) {
                 LOGGER.error(e.getMessage());
             }
 
             stageManager.switchScene(root, EFxmlView.GROUP_TABLE);
         }
-        grupo = new Grupo();
+        group = new Group();
     }
 
     @FXML
     @Override
     public void onEdit(ActionEvent event) {
-        grupo = tableGroup.getSelectionModel().getSelectedItem();
+        group = tableGroup.getSelectionModel().getSelectedItem();
 
-        if (grupo != null) {
+        if (group != null) {
             stageManager.switchScene(root, EFxmlView.GROUP);
-            txtName.setText(grupo.getNome());
+            txtName.setText(group.getName());
         } else {
-            MessagesUtil.showMessageWarning("Selecione o grupo que deseja editar");
+            MessagesUtil.showMessageWarning("Selecione o group que deseja editar");
         }
     }
 
     @FXML
     @Override
     public void onDelete(ActionEvent event) {
-        grupo = tableGroup.getSelectionModel().getSelectedItem();
+        group = tableGroup.getSelectionModel().getSelectedItem();
 
-        if (grupo != null) {
+        if (group != null) {
 
-            Optional<ButtonType> confirm = MessagesUtil.showMessageConfirmation("Você deseja remover o grupo " + grupo.getNome());
+            Optional<ButtonType> confirm = MessagesUtil.showMessageConfirmation("Você deseja remover o group " + group.getName());
 
             if (confirm.get() == ButtonType.OK) {
-                grupoRepository.delete(grupo);
+                groupRepository.delete(group);
                 initTable();
             }
         } else {
-            MessagesUtil.showMessageWarning("Selecione o grupo que deseja deletar");
+            MessagesUtil.showMessageWarning("Selecione o group que deseja deletar");
         }
     }
 
@@ -156,12 +156,12 @@ public class GrupoController implements Initializable, BaseController<GrupoContr
     @Override
     public void initTable() {
         colunmId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colunmName.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colunmName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tableGroup.setItems(listGroup());
     }
 
-    private ObservableList<Grupo> listGroup() {
-        return FXCollections.observableArrayList(grupoRepository.findAll());
+    private ObservableList<Group> listGroup() {
+        return FXCollections.observableArrayList(groupRepository.findAll());
     }
 
 }

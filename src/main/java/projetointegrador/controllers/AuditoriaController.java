@@ -13,7 +13,7 @@ import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import projetointegrador.model.Audit;
-import projetointegrador.model.Usuario;
+import projetointegrador.model.User;
 import projetointegrador.repository.AuditRepository;
 
 import java.net.URL;
@@ -38,7 +38,7 @@ public class AuditoriaController implements Initializable
     private TableColumn<Audit, String> columnCommand;
 
     @FXML
-    private TableColumn<Audit, Usuario> columnUserId;
+    private TableColumn<Audit, User> columnUserId;
 
     @Autowired
     private AuditRepository auditRepository;
@@ -62,10 +62,10 @@ public class AuditoriaController implements Initializable
        // columnId.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
         columnNewValue.setCellValueFactory(new PropertyValueFactory<>("newValue"));
         columnCommand.setCellValueFactory(new PropertyValueFactory<>("command"));
-        columnUserId.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Audit, Usuario>, ObservableValue<Usuario>>() {
+        columnUserId.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Audit, User>, ObservableValue<User>>() {
             @Override
-            public ObservableValue call(TableColumn.CellDataFeatures<Audit, Usuario> param) {
-                return new SimpleStringProperty(param.getValue().getUsuario().getNome());
+            public ObservableValue call(TableColumn.CellDataFeatures<Audit, User> param) {
+                return new SimpleStringProperty(param.getValue().getUser().getName());
             }
         });
         tableAudit.setItems(listAudit());

@@ -7,23 +7,23 @@ import java.util.Date;
 
 @EntityListeners(AuditListeners.class)
 @Entity
-@Table(name = "pessoa")
-public class Pessoa {
+@Table(name = "person")
+public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String nome;
+    private String name;
 
     @Column
     private String email;
 
     @Column
-    private String telefone;
+    private String fone;
 
     @Column
-    private Date dataNascimento;
+    private Date birthDate;
 
 }

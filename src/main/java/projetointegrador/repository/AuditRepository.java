@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface AuditRepository extends JpaRepository<Audit, Long> {
 
-    @Query("from Audit A left join fetch A.usuario")
+    @Query("from Audit A left join fetch A.user")
     List<Audit> findAllWithUsers();
 
 }

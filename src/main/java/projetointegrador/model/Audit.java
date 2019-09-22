@@ -28,7 +28,7 @@ public class Audit {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Usuario usuario;
+    private User user;
 
     @Transient
     private String entityName;

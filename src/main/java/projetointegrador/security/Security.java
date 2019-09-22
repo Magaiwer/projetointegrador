@@ -2,7 +2,7 @@ package projetointegrador.security;
 
 import javafx.scene.Parent;
 import projetointegrador.model.Permission;
-import projetointegrador.service.UsuarioService;
+import projetointegrador.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +13,16 @@ public class Security {
         List<Permission> permissionList = new ArrayList<>();
 
 
-        UsuarioService.usuarioLogado.getGrupos().forEach(grupo -> permissionList.addAll(grupo.getPermissions()));
+        UserService.userLogged.getGroups().forEach(grupo -> permissionList.addAll(grupo.getPermissions()));
 
         return permissionList.stream()
                 .map(Permission::getRole).anyMatch(r -> r.equals(role));
     }
 
     public static void setPermissionForm(Parent node) {
-        if (UsuarioService.usuarioLogado != null) {
+        if (UserService.userLogged != null) {
             node.lookupAll("JFXButton").forEach(btn -> {
-               // btn.setDisable(!userHasRole(btn.getId()));
+                btn.setDisable(!userHasRole(btn.getId()));
             });
         }
     }

@@ -2,13 +2,14 @@ package projetointegrador.model;
 
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "permission")
-@Data
+@Data @ToString(exclude={"form"})
 public class Permission implements Serializable {
 
     @Id
@@ -24,4 +25,7 @@ public class Permission implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "form_id")
     private Form form;
+
+    @Transient
+    private boolean hasRole;
 }

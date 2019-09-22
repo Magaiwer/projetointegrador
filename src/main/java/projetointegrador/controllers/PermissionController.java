@@ -1,46 +1,44 @@
 package projetointegrador.controllers;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import projetointegrador.Util.MessagesUtil;
 import projetointegrador.config.StageManager;
-import projetointegrador.model.Form;
-import projetointegrador.model.Grupo;
+import projetointegrador.model.Group;
 import projetointegrador.model.Permission;
-import projetointegrador.repository.FormRepository;
-import projetointegrador.repository.GrupoRepository;
+import projetointegrador.repository.GroupRepository;
 import projetointegrador.repository.PermissionRepository;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
-public class PermissionController implements Initializable {
+public class PermissionController implements Initializable, BaseController<PermissionController> {
 
     @FXML
-    private JFXComboBox<Grupo> cbGroups;
-
+    private JFXComboBox<Group> cbGroups;
 
     @FXML
     private TableView<Permission> tablePermissions;
@@ -52,12 +50,25 @@ public class PermissionController implements Initializable {
     private TableColumn<Permission, String> columnPermission;
 
     @FXML
-    private TableColumn<Boolean, Boolean> columnEnable;
+    private TableColumn<Permission, Boolean> columnEnable;
+
+    @FXML
+    private JFXButton btnUpdatePermission;
+
+    CheckBoxTableCell<Permission, Boolean> checkBoxTableCell;
+
+    @FXML
+    private JFXTextField txtFilterPermissions;
+
+    @FXML
+    private JFXCheckBox cbxUpdateAll;
+
+
     @Autowired
     private PermissionRepository permissionRepository;
 
     @Autowired
-    private GrupoRepository grupoRepository;
+    private GroupRepository groupRepository;
 
     @Lazy
     @Autowired
@@ -68,68 +79,152 @@ public class PermissionController implements Initializable {
         initConverter();
         initCombo();
         initTable();
+        initListeners();
     }
 
     private void initCombo() {
         cbGroups.setItems(listGroup());
     }
 
-    private ObservableList<Grupo> listGroup() {
-        return FXCollections.observableArrayList(grupoRepository.findAll());
+    private ObservableList<Group> listGroup() {
+        return FXCollections.observableArrayList(groupRepository.findAll());
     }
 
-    private ObservableList<Permission> listForms() {
-        return FXCollections.observableArrayList(permissionRepository.findPermissionWithForms());
+    private ObservableList<Permission> listPermissionForms() {
+        List<Permission> permissions = permissionRepository.findPermissionWithForms();
+
+        if (cbGroups.getSelectionModel().isEmpty()) {
+            return FXCollections.observableArrayList(permissions);
+        } else {
+
+            List<Permission> permissionsGroup = cbGroups.getSelectionModel().getSelectedItem().getPermissions();
+
+            permissionsGroup
+                    .stream()
+                    .mapToLong(Permission::getId)
+                    .forEach(value -> permissions
+                            .stream()
+                            .filter(permission -> permission.getId() == value)
+                            .forEach(permission -> permission.setHasRole(true)));
+
+            return FXCollections.observableArrayList(permissions);
+        }
+
     }
 
     private void initConverter() {
-        cbGroups.setConverter(new StringConverter<Grupo>() {
+        cbGroups.setConverter(new StringConverter<Group>() {
             @Override
-            public String toString(Grupo grupo) {
-                return grupo.getNome();
+            public String toString(Group group) {
+                return group.getName();
             }
 
             @Override
-            public Grupo fromString(String string) {
+            public Group fromString(String string) {
                 return null;
             }
         });
     }
 
-    private void initTable() {
-        columnForm.setCellValueFactory(param -> {
-            return new SimpleStringProperty(param.getValue().getForm().getName());
-        });
-
-        columnPermission.setCellValueFactory(new PropertyValueFactory<>("description"));
-
- /*       columnEnable.setCellValueFactory(param -> {
-            BooleanProperty auditProperty = new SimpleBooleanProperty(form.isAudit());
-            auditProperty.addListener((observable, oldValue, newValue) -> form.setAudit(newValue));
-            return auditProperty;
-        });*/
-
-
-
-        tablePermissions.setItems(listForms());
+    @Override
+    public void onCancel(ActionEvent event) {
 
     }
 
+    @Override
+    public void onSave(ActionEvent event) {
 
-    private static final class PermissionObjectTree extends RecursiveTreeObject<PermissionObjectTree> {
+    }
+
+    @Override
+    public void onEdit(ActionEvent event) {
+
+    }
+
+    @Override
+    public void onDelete(ActionEvent event) {
+
+    }
+
+    @Override
+    public void onNew(ActionEvent event) {
+
+    }
+
+    @Override
+    public void initListeners() {
+        cbGroups.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            initTable();
+        });
+
+        cbxUpdateAll.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            List<Permission> permissionList = tablePermissions.getItems();
+            permissionList.forEach(permission -> permission.setHasRole(newValue));
+            tablePermissions.setItems(FXCollections.observableArrayList(permissionList));
+        });
+    }
+
+    @Override
+    public void initTable() {
+        columnForm.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getForm().getName()));
+
+        columnPermission.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        columnEnable.setCellFactory(CheckBoxTableCell.forTableColumn(columnEnable));
+
+        columnEnable.setCellValueFactory(param -> {
+            Permission permission = param.getValue();
+
+            BooleanProperty permissionProperty = new SimpleBooleanProperty(permission.isHasRole());
+            permissionProperty.addListener((observable, oldValue, newValue) -> permission.setHasRole(newValue));
+            return permissionProperty;
+        });
 
 
-        @Getter
-        private Permission permission;
+        FilteredList<Permission> permissionFilteredList = new FilteredList<>(listPermissionForms(), permission -> true);
 
-        @Getter
-        private Form form;
+        txtFilterPermissions.textProperty().addListener((observable, oldValue, newValue) -> {
+            permissionFilteredList.setPredicate(permission -> {
 
-        public PermissionObjectTree(Permission permission) {
-            this.permission = permission;
-        }
-        public PermissionObjectTree(Form form) {
-            this.form = form;
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String filterLowerCase = newValue.toLowerCase();
+
+                if (permission.getForm().getName().toLowerCase().contains(filterLowerCase)) {
+                    return true;
+                } else if (permission.getDescription().toLowerCase().contains(filterLowerCase)) {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        SortedList<Permission> permissionSortedList = new SortedList<>(permissionFilteredList);
+        permissionSortedList.comparatorProperty().bind(tablePermissions.comparatorProperty());
+
+        tablePermissions.setItems(permissionSortedList);
+    }
+
+    @FXML
+    void updatePermission(ActionEvent event) {
+        if (!cbGroups.getSelectionModel().isEmpty()) {
+
+            List<Permission> permissionList = tablePermissions.getItems().filtered(Permission::isHasRole);
+            Group group = cbGroups.getSelectionModel().getSelectedItem();
+            group.setPermissions(permissionList);
+
+            try {
+                groupRepository.saveAndFlush(group);
+                MessagesUtil.showMessageInformation("Permissões atualizadas com sucesso!");
+                txtFilterPermissions.clear();
+
+            } catch (Exception e) {
+                MessagesUtil.showMessageError("Erro ao aplicar permissões, tente novamente!");
+            }
+        } else {
+            MessagesUtil.showMessageWarning("Selecione um grupo para aplicar as permissões");
         }
     }
 

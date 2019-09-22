@@ -14,7 +14,7 @@ import java.util.List;
 @EntityListeners(AuditListeners.class)
 @Table(name = "form")
 @DynamicUpdate
-@Data @ToString(exclude={"entity", "permissions"}) @EqualsAndHashCode(of="entity")
+@Data @ToString(exclude={"entity", "permissions"}) @EqualsAndHashCode(exclude = "entity")
 public class Form {
 
     @Id

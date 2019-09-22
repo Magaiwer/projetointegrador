@@ -1,17 +1,10 @@
 package projetointegrador.security;
 
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-import projetointegrador.annotation.Restriction;
 import projetointegrador.model.Permission;
-import projetointegrador.service.UsuarioService;
+import projetointegrador.service.UserService;
 
-import java.security.SecurityPermission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +40,7 @@ public class SecurityInterceptor  {
     public boolean userHasRole(String role) {
         List<Permission> permissionList = new ArrayList<>();
 
-        UsuarioService.usuarioLogado.getGrupos().forEach(grupo -> permissionList.addAll(grupo.getPermissions()));
+        UserService.userLogged.getGroups().forEach(grupo -> permissionList.addAll(grupo.getPermissions()));
 
         return permissionList.stream()
                 .map(Permission::getRole).anyMatch(r -> r.equals(role));

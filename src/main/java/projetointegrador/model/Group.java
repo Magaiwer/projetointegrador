@@ -11,21 +11,21 @@ import java.util.List;
 
 @EntityListeners(AuditListeners.class)
 @Entity
-@Table(name = "grupo")
+@Table(name = "group", schema = "public")
 @DynamicUpdate
 @Data @ToString(exclude={"permissions"})
-public class Grupo {
+public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String nome;
+    private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "grupo_permission",
-            joinColumns = @JoinColumn(name = "grupo_id"),
+    @JoinTable(name = "group_permission",
+            joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permissions;
 }
