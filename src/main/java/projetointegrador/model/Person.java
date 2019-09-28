@@ -3,6 +3,7 @@ package projetointegrador.model;
 import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @EntityListeners(AuditListeners.class)
@@ -24,6 +25,6 @@ public class Person {
     private String fone;
 
     @Column
-    private Date birthDate;
+    private LocalDate birthDate;
 
 }

@@ -164,6 +164,28 @@ public enum EFxmlView {
         public String getFxmlFile() {
             return "/views/table-group-permissions.fxml";
         }
+    },
+    PROJECT {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("project.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/views/moc.fxml";
+        }
+    },
+    PROJECT_TABLE {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("project.table");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/views/table-project.fxml";
+        }
     };
 
     public abstract String getTitle();

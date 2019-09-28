@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.ProjectController">
+   <children>
+      <JFXButton fx:id="btnPreviousProject" buttonType="RAISED" layoutX="26.0" layoutY="478.0" onAction="#onPrevious" text="Anterior" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="5.0">
+         <graphic>
+            <FontAwesomeIconView fill="#3ab037" glyphName="BACKWARD" />
+         </graphic></JFXButton>
+      <JFXButton fx:id="btnNextProject" buttonType="RAISED" layoutX="676.0" layoutY="611.0" onAction="#onNext" text="Próximo" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="5.0">
+         <graphic>
+            <FontAwesomeIconView fill="#3ab037" glyphName="FORWARD" />
+         </graphic></JFXButton>
+      <JFXTabPane fx:id="tabPane" layoutX="714.0" prefHeight="659.0" prefWidth="760.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <tabs>
+            <Tab fx:id="tabProject" text="Projeto">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="760.0">
+                     <children>
+                        <JFXTextField fx:id="txtNameProject" layoutX="14.0" layoutY="14.0" prefHeight="28.0" prefWidth="301.0" promptText="Nome" />
+                        <JFXTextField fx:id="txtDescription" layoutX="14.0" layoutY="62.0" prefHeight="28.0" prefWidth="635.0" promptText="Descrição" />
+                        <JFXComboBox fx:id="comboCustumer" layoutX="14.0" layoutY="111.0" prefHeight="28.0" prefWidth="643.0" promptText="Cliente" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab fx:id="tabRoom" text="Comodo">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <JFXTextField fx:id="txtNameRoom" layoutX="14.0" layoutY="30.0" prefHeight="28.0" prefWidth="526.0" promptText="Nome" />
+                        <TableView layoutX="14.0" layoutY="129.0" prefHeight="292.0" prefWidth="659.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
+                           <columns>
+                              <TableColumn prefWidth="75.0" text="C1" />
+                              <TableColumn prefWidth="75.0" text="C2" />
+                           </columns>
+                        </TableView>
+                        <JFXButton fx:id="btnAddRoom" graphicTextGap="15.0" layoutX="587.0" layoutY="30.0" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
+                           <graphic>
+                              <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
+                           </graphic>
+                        </JFXButton>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab fx:id="tabFace" text="Face">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <JFXTextField fx:id="txtNameFace" layoutX="16.0" layoutY="14.0" prefHeight="28.0" prefWidth="519.0" promptText="Nome" />
+                        <TableView layoutX="16.0" layoutY="147.0" prefHeight="311.0" prefWidth="669.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
+                           <columns>
+                              <TableColumn prefWidth="75.0" text="C1" />
+                              <TableColumn prefWidth="75.0" text="C2" />
+                           </columns>
+                        </TableView>
+                        <JFXButton fx:id="btnAddFace" buttonType="RAISED" graphicTextGap="15.0" layoutX="573.0" layoutY="54.0" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
+                           <graphic>
+                              <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
+                           </graphic></JFXButton>
+                        <JFXComboBox fx:id="comboRoom" layoutX="14.0" layoutY="53.0" prefHeight="28.0" prefWidth="522.0" promptText="Comodo" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab fx:id="tabLayer" text="Conjunto Material">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <JFXComboBox fx:id="comboFace" layoutX="25.0" layoutY="24.0" prefHeight="28.0" prefWidth="469.0" promptText="Face" />
+                        <JFXComboBox fx:id="comboMaterial" layoutX="24.0" layoutY="81.0" prefHeight="28.0" prefWidth="472.0" promptText="Material" />
+                        <JFXTextField fx:id="txtThickness" layoutX="26.0" layoutY="141.0" prefHeight="28.0" prefWidth="468.0" promptText="Expessura" />
+                        <TableView layoutX="25.0" layoutY="358.0" prefHeight="200.0" prefWidth="625.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="250.0">
+                           <columns>
+                              <TableColumn prefWidth="75.0" text="C1" />
+                              <TableColumn prefWidth="75.0" text="C2" />
+                           </columns>
+                        </TableView>
+                        <JFXButton fx:id="btnAddLayer" buttonType="RAISED" graphicTextGap="15.0" layoutX="543.0" layoutY="140.0" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
+                           <graphic>
+                              <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
+                           </graphic>
+                        </JFXButton>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab fx:id="tabFinal" text="Final">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <JFXTextField fx:id="txtTemperatureOutside" layoutX="21.0" layoutY="23.0" prefHeight="28.0" prefWidth="252.0" promptText="Temperatura Externa" />
+                        <JFXTextField fx:id="txtTemperatureInside" layoutX="350.0" layoutY="23.0" prefHeight="28.0" prefWidth="252.0" promptText="Temperatura Interna" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+   </children>
+</AnchorPane>

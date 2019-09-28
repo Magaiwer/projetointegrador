@@ -53,6 +53,11 @@
                         <FontAwesomeIconView fill="#f5f5f5" glyphName="LOCK" />
                      </graphic>
                   </JFXButton>
+                  <JFXButton fx:id="menuProject" buttonType="RAISED" onAction="#showProject" prefHeight="48.0" prefWidth="189.0" text="Projeto" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="#fffbfb" glyphName="FILE" />
+                     </graphic>
+                  </JFXButton>
                   <Label prefHeight="28.0" prefWidth="184.0" styleClass="menu-label" text="Configurações" textFill="#fcfcfc">
                      <graphic>
                         <FontAwesomeIconView fill="#f8f4f4" glyphName="GEARS" />

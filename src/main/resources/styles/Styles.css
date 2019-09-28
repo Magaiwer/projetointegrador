@@ -20,7 +20,9 @@
 }
 
 .sid-bar{
-    -fx-background-color: #4059a9;
+   /* -fx-background-color: #4059a9;*/
+    -fx-background-color: #3a1c52;
+    /*-fx-background-color: #7159c1;*/
 }
 
 .menu-button {
@@ -130,4 +132,17 @@
 
 .column-alignment-center .column-header .table-cell{
     -fx-alignment: top-center;
+}
+
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #3a1c52;
+    /*-fx-background-color: #7159c1;*/
+   /* -fx-background-color: cornflowerblue;*/
+   /* -fx-background-color: #4059a9;*/
+
+}
+.jfx-tab-pane .tab-selected-line {
+   /* -fx-background-color: white;*/
+    -fx-background-color: green;
 }

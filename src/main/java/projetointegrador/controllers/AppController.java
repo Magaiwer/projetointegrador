@@ -48,6 +48,9 @@ public class AppController implements Initializable {
     private JFXButton menuPermissions;
 
     @FXML
+    private JFXButton menuProject;
+
+    @FXML
     private AnchorPane body;
 
     @Lazy
@@ -97,6 +100,11 @@ public class AppController implements Initializable {
     @FXML
     void showPermissions(ActionEvent event) {
         stageManager.switchScene(body, EFxmlView.PERMISSIONS_TABLE);
+    }
+
+    @FXML
+    void showProject(ActionEvent event) {
+        stageManager.switchScene(body, EFxmlView.PROJECT);
     }
 
 
