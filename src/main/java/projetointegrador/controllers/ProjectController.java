@@ -1,18 +1,24 @@
 package projetointegrador.controllers;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.TabPane;
-import org.springframework.stereotype.Component;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import projetointegrador.model.Material;
+import projetointegrador.model.Person;
+import projetointegrador.model.Room;
+import projetointegrador.repository.PersonRepository;
+import projetointegrador.repository.RoomRepository;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -42,7 +48,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXTextField txtDescription;
 
     @FXML
-    private JFXComboBox<?> comboCustumer;
+    private JFXComboBox<Person> comboCustumer;
 
     @FXML
     private Tab tabRoom;
@@ -72,7 +78,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXComboBox<?> comboFace;
 
     @FXML
-    private JFXComboBox<?> comboMaterial;
+    private JFXComboBox<Material> comboMaterial;
 
     @FXML
     private JFXTextField txtThickness;
@@ -89,11 +95,15 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @FXML
     private JFXTextField txtTemperatureInside;
 
+    @Autowired
+    private PersonRepository personRepository;
 
+    @Autowired
+    private RoomRepository roomRepository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        initCombo();
     }
 
     @FXML
@@ -136,13 +146,47 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     }
 
+    private void initCombo() {
+        FilteredList<Person> personFilteredList = new FilteredList<>(listPerson(), person -> true);
+        comboCustumer.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            personFilteredList.setPredicate(person -> {
+
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String filterLowerCase = newValue.toLowerCase();
+
+                return person.getName().toLowerCase().contains(filterLowerCase);
+            });
+        });
+
+        comboCustumer.setItems(personFilteredList);
+
+
+        FilteredList<Room> roomFilteredList = new FilteredList<>(listRoom(), room -> true);
+
+        comboRoom.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            roomFilteredList.setPredicate(room -> room.getName().toLowerCase().contains(newValue.toLowerCase()));
+        });
+
+    }
+
     @FXML
     void onNext(ActionEvent event) {
-       tabPane.getSelectionModel().selectNext();
+        tabPane.getSelectionModel().selectNext();
     }
 
     @FXML
     void onPrevious(ActionEvent event) {
         tabPane.getSelectionModel().selectPrevious();
+    }
+
+    private ObservableList<Person> listPerson() {
+        return FXCollections.observableArrayList(personRepository.findAll());
+    }
+
+    private ObservableList<Room> listRoom() {
+        return FXCollections.observableArrayList(roomRepository.findAll());
     }
 }

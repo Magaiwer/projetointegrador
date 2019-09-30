@@ -1,5 +1,6 @@
 package projetointegrador.model;
 
+import lombok.Data;
 import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.Date;
 @EntityListeners(AuditListeners.class)
 @Entity
 @Table(name = "person")
+@Data
 public class Person {
 
     @Id
