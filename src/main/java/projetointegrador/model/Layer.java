@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -25,4 +26,10 @@ public class Layer implements Serializable {
     @ManyToOne
     @JoinColumn(name = "face_id")
     private Face face;
+
+    @ManyToMany()
+    @JoinTable(name = "layer_material",
+            joinColumns = @JoinColumn(name = "layer_id"),
+            inverseJoinColumns = @JoinColumn(name = "material_id"))
+    private List<Material> materials;
 }

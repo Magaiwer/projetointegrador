@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -24,4 +25,7 @@ public class Face implements Serializable {
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
+
+    @OneToMany
+    private List<Layer> layers;
 }
