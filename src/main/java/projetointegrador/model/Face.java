@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "face")
 @Data
-@ToString(exclude = "room") @EqualsAndHashCode(exclude = "room")
+@ToString(exclude = {"room" , "layers"}) @EqualsAndHashCode(exclude = {"room","layers"})
 public class Face implements Serializable {
 
     @Id

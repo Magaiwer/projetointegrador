@@ -1,9 +1,6 @@
 package projetointegrador.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTabPane;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -11,15 +8,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import projetointegrador.model.Material;
-import projetointegrador.model.Person;
-import projetointegrador.model.Room;
+import projetointegrador.model.*;
 import projetointegrador.repository.PersonRepository;
 import projetointegrador.repository.RoomRepository;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -51,10 +50,22 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXComboBox<Person> comboCustumer;
 
     @FXML
+    private JFXComboBox<Region> comboRegion;
+
+    @FXML
+    private JFXTextField txtIndex;
+
+    @FXML
     private Tab tabRoom;
 
     @FXML
     private JFXTextField txtNameRoom;
+
+    @FXML
+    private TableView<Room> tableRoom;
+
+    @FXML
+    private TableColumn<Room, String> columnNameRoom;
 
     @FXML
     private JFXButton btnAddRoom;
@@ -66,22 +77,43 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXTextField txtNameFace;
 
     @FXML
+    private TableView<?> tableFace;
+
+    @FXML
+    private TableColumn<Face, String> columnNameFace;
+
+    @FXML
+    private TableColumn<Face, String> columnFaceRoom;
+
+    @FXML
     private JFXButton btnAddFace;
 
     @FXML
-    private JFXComboBox<?> comboRoom;
+    private JFXComboBox<Room> comboRoom;
 
     @FXML
     private Tab tabLayer;
 
     @FXML
-    private JFXComboBox<?> comboFace;
+    private JFXComboBox<Face> comboFace;
 
     @FXML
     private JFXComboBox<Material> comboMaterial;
 
     @FXML
     private JFXTextField txtThickness;
+
+    @FXML
+    private TableView<Layer> tableLayerMaterial;
+
+    @FXML
+    private TableColumn<Layer, String> columnMaterialLayer;
+
+    @FXML
+    private TableColumn<Layer, BigDecimal> columnThicknessLayer;
+
+    @FXML
+    private TableColumn<Layer, String> columnFaceLayer;
 
     @FXML
     private JFXButton btnAddLayer;
@@ -94,6 +126,22 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     @FXML
     private JFXTextField txtTemperatureInside;
+
+    @FXML
+    private JFXComboBox<MaterialAbsortancia> comboAbsortance;
+
+    @FXML
+    private JFXRadioButton rgWinter;
+
+    @FXML
+    private ToggleGroup toggleGroup;
+
+    @FXML
+    private JFXRadioButton rgSummer;
+
+    @FXML
+    private JFXTextField txtAlpha;
+
 
     @Autowired
     private PersonRepository personRepository;

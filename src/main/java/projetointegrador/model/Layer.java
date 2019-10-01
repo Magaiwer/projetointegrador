@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -22,6 +23,9 @@ public class Layer implements Serializable {
 
     @Column
     private String name;
+
+    @Column
+    private BigDecimal thinckness;
 
     @ManyToOne
     @JoinColumn(name = "face_id")
