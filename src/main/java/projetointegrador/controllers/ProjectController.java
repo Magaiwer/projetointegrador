@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import projetointegrador.model.*;
+import projetointegrador.repository.FaceRepository;
 import projetointegrador.repository.PersonRepository;
 import projetointegrador.repository.RoomRepository;
 
@@ -149,6 +150,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @Autowired
     private RoomRepository roomRepository;
 
+    @Autowired
+    private FaceRepository faceRepository;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initCombo();
@@ -218,6 +222,8 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             roomFilteredList.setPredicate(room -> room.getName().toLowerCase().contains(newValue.toLowerCase()));
         });
 
+        comboFace.setItems(listFace());
+
     }
 
     @FXML
@@ -236,5 +242,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     private ObservableList<Room> listRoom() {
         return FXCollections.observableArrayList(roomRepository.findAll());
+    }
+
+    private ObservableList<Face> listFace() {
+        return FXCollections.observableArrayList(faceRepository.findAll());
     }
 }
