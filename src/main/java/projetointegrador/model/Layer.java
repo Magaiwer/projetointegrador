@@ -22,10 +22,7 @@ public class Layer implements Serializable {
     private Long id;
 
     @Column
-    private String name;
-
-    @Column
-    private BigDecimal thinckness;
+    private BigDecimal thickness;
 
     @ManyToOne
     @JoinColumn(name = "face_id")

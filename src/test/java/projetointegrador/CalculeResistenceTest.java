@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import projetointegrador.model.Material;
 import projetointegrador.repository.FaceRepository;
+import projetointegrador.repository.LayerRepository;
 
 import java.math.BigDecimal;
 
@@ -21,36 +22,37 @@ public class CalculeResistenceTest {
     @Autowired(required = true)
     private FaceRepository faceRepository;
 
+    @Autowired(required = true)
+    private LayerRepository layerRepository;
+
 
     @Test
     @After
     public void calculateResistence() {
 
-        faceRepository.findAll().forEach(face -> {
-            face.getLayers().forEach(layer -> {
+
+        layerRepository.findByFace(1L)
+                .forEach(layer -> {
+
+                            BigDecimal condutividade = layer
+                                    .getMaterials()
+                                    .stream()
+                                    .map(Material::getCondutividadeTermica)
+                                    .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+                            Assert.assertEquals(BigDecimal.TEN, condutividade);
+                        }
+                );
 
 
-               BigDecimal condutividade = layer.getMaterials()
-                       .stream()
-                       .map(Material::getCondutividadeTermica)
-                       .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
 
-                Assert.assertEquals(2L, condutividade);
 
-            });
-        });
+
 
 /*        MensagemCB result = mensagemCB.getMensagemCBList().stream()
                 .filter(item -> item.getVeiID() == 263888).findFirst().orElse(null);*/
 
 
     }
-
-
-
-
-
-
 
 
 }

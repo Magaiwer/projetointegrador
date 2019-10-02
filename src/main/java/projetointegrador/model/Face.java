@@ -26,6 +26,6 @@ public class Face implements Serializable {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @OneToMany
+    @OneToMany(mappedBy = "face", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Layer> layers;
 }
