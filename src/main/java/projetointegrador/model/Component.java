@@ -22,9 +22,6 @@ public class Component implements Serializable {
     private Long id;
 
     @Column
-    private BigDecimal thickness;
-
-    @Column
     private BigDecimal resistanceTotal;
 
     @ManyToOne
@@ -41,7 +38,7 @@ public class Component implements Serializable {
     List<ComponentMaterial> componentMaterials;
 
 
-    public BigDecimal getResistenceTotal() {
+    public BigDecimal getResistanceTotal() {
         return this.componentMaterials
                 .stream()
                 .map(ComponentMaterial::getResistance)

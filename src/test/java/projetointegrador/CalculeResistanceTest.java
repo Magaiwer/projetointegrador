@@ -47,11 +47,8 @@ public class CalculeResistanceTest {
                 }
         );*/
 
-        List<Component> components = new ArrayList<>();
-
         Component component1 = new Component();
         component1.setId(1L);
-        component1.setThickness(new BigDecimal(8));
 
         Material material1 = new Material();
         material1.setCondutividadeTermica(new BigDecimal(2));
@@ -65,12 +62,11 @@ public class CalculeResistanceTest {
         component1.setMaterials(Arrays.asList(material1, material2));
 
         component1.getComponentMaterials()
-                .forEach(layerMaterial -> {
-                    layerMaterial.calculateResistance(component1.getThickness());
-
+                .forEach(componentMaterial -> {
+                    componentMaterial.calculateResistance(material1.getCondutividadeTermica());
                 });
 
-        System.out.println(component1.getResistenceTotal());
+        System.out.println(component1.getResistanceTotal());
 
 
     }

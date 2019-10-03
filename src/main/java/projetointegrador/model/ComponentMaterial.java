@@ -22,17 +22,15 @@ public class ComponentMaterial {
     @JoinColumn(name = "material_id", insertable = false, updatable = false)
     private Material material;
 
+    @Column
     private BigDecimal thickness;
 
-
+    @Column
     private BigDecimal resistance;
 
-    public BigDecimal calculateResistance(BigDecimal  thickness) {
-        return calculateResistance(thickness, this.material.getCondutividadeTermica());
-    }
 
-    private BigDecimal calculateResistance(BigDecimal thickness, BigDecimal thermalCondutivity) {
-        return this.resistance = thickness.divide(thermalCondutivity, RoundingMode.CEILING);
+    public BigDecimal calculateResistance(BigDecimal thermalConductivity) {
+        return this.resistance = this.thickness.divide(thermalConductivity, RoundingMode.CEILING);
     }
 
 }
