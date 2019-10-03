@@ -6,10 +6,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import projetointegrador.model.Layer;
+import projetointegrador.model.Component;
 import projetointegrador.model.Material;
 import projetointegrador.repository.FaceRepository;
-import projetointegrador.repository.LayerRepository;
+import projetointegrador.repository.ComponentRepository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,40 +18,40 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CalculeResistenceTest {
+public class CalculeResistanceTest {
 
     @Autowired(required = true)
     private FaceRepository faceRepository;
 
     @Autowired(required = true)
-    private LayerRepository layerRepository;
+    private ComponentRepository componentRepository;
 
 
     @Test
     @After
-    public void calculateResistence() {
+    public void calculateResistance() {
 
-  /*      List<Layer> layers = layerRepository.findByFace(1L);
+  /*      List<Component> components = layerRepository.findByFace(1L);
 
 
-        layers.forEach(layer -> {
+        components.forEach(component -> {
 
-                    BigDecimal condutividade = layer
+                    BigDecimal condutividade = component
                             .getMaterials()
                             .stream()
                             .map(Material::getCondutividadeTermica)
                             .findFirst().orElse(BigDecimal.ZERO);
 
-                    layer.setResistence(layer.calculateResistence(condutividade));
+                    component.setResistence(component.calculateResistence(condutividade));
 
                 }
         );*/
 
-        List<Layer> layers = new ArrayList<>();
+        List<Component> components = new ArrayList<>();
 
-        Layer layer1 = new Layer();
-        layer1.setId(1L);
-        layer1.setThickness(new BigDecimal(8));
+        Component component1 = new Component();
+        component1.setId(1L);
+        component1.setThickness(new BigDecimal(8));
 
         Material material1 = new Material();
         material1.setCondutividadeTermica(new BigDecimal(2));
@@ -62,15 +62,15 @@ public class CalculeResistenceTest {
         material2.setId(2L);
 
 
-        layer1.setMaterials(Arrays.asList(material1, material2));
+        component1.setMaterials(Arrays.asList(material1, material2));
 
-        layer1.getLayerMaterials()
+        component1.getComponentMaterials()
                 .forEach(layerMaterial -> {
-                    layerMaterial.calculateResistence(layer1.getThickness());
+                    layerMaterial.calculateResistance(component1.getThickness());
 
                 });
 
-        System.out.println(layer1.getResistenceTotal());
+        System.out.println(component1.getResistenceTotal());
 
 
     }

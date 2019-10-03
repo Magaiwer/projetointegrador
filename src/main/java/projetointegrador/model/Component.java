@@ -7,17 +7,15 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
-import java.util.Set;
 
 
 @Entity
-@Table(name = "layer")
+@Table(name = "component")
 @Data
 @ToString(exclude = "face")
 @EqualsAndHashCode(exclude = "face")
-public class Layer implements Serializable {
+public class Component implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,26 +25,26 @@ public class Layer implements Serializable {
     private BigDecimal thickness;
 
     @Column
-    private BigDecimal resistenceTotal;
+    private BigDecimal resistanceTotal;
 
     @ManyToOne
     @JoinColumn(name = "face_id")
     private Face face;
 
     @ManyToMany()
-    @JoinTable(name = "layer_material",
-            joinColumns = @JoinColumn(name = "layer_id"),
+    @JoinTable(name = "component_material",
+            joinColumns = @JoinColumn(name = "component_id"),
             inverseJoinColumns = @JoinColumn(name = "material_id"))
     private List<Material> materials;
 
-    @OneToMany(mappedBy = "layer")
-    List<LayerMaterial> layerMaterials;
+    @OneToMany(mappedBy = "component")
+    List<ComponentMaterial> componentMaterials;
 
 
     public BigDecimal getResistenceTotal() {
-        return this.layerMaterials
+        return this.componentMaterials
                 .stream()
-                .map(LayerMaterial::getResistence)
+                .map(ComponentMaterial::getResistance)
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO);
     }

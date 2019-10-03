@@ -13,7 +13,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import projetointegrador.model.*;
 import projetointegrador.repository.FaceRepository;
 import projetointegrador.repository.PersonRepository;
@@ -23,7 +22,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@Component
+@org.springframework.stereotype.Component
 public class ProjectController implements Initializable, BaseController<ProjectController> {
 
     @FXML
@@ -105,16 +104,16 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXTextField txtThickness;
 
     @FXML
-    private TableView<Layer> tableLayerMaterial;
+    private TableView<Component> tableLayerMaterial;
 
     @FXML
-    private TableColumn<Layer, String> columnMaterialLayer;
+    private TableColumn<Component, String> columnMaterialLayer;
 
     @FXML
-    private TableColumn<Layer, BigDecimal> columnThicknessLayer;
+    private TableColumn<Component, BigDecimal> columnThicknessLayer;
 
     @FXML
-    private TableColumn<Layer, String> columnFaceLayer;
+    private TableColumn<Component, String> columnFaceLayer;
 
     @FXML
     private JFXButton btnAddLayer;

@@ -38,29 +38,33 @@ CREATE TABLE ROOM (
 CREATE TABLE FACE (
   id serial not null,
   name varchar (100),
+  transmittance decimal,
   room_id BIGINT not null,
   constraint pk_face primary key (id),
   constraint fk_room_face foreign key(room_id) references ROOM
 );
 
-CREATE TABLE LAYER (
+CREATE TABLE COMPONENT (
   id serial not null,
-  thickness decimal not null,
+  name varchar(45) not null,
+  total_resistence decimal ,
   qfo decimal ,
   qft decimal,
   m2 decimal,
   face_id BIGINT not null,
-  constraint pk_layer primary key (id),
-  constraint fk_face_layer foreign key(face_id) references FACE
+  constraint pk_component primary key (id),
+  constraint fk_face_component foreign key(face_id) references FACE
 );
 
 
-CREATE TABLE LAYER_MATERIAL (
-  layer_id BIGINT  not null,
+CREATE TABLE COMPONENT_MATERIAL (
+  component_id BIGINT  not null,
   material_id BIGINT not null,
-  constraint fk_layer_material foreign key (layer_id) references LAYER,
-  constraint fk_material_layer foreign key (material_id) references MATERIAL,
-  constraint pk_layer_material primary key (layer_id,material_id)
+  thickness decimal ,
+  resistence decimal,
+  constraint fk_component_material foreign key (component_id) references COMPONENT,
+  constraint fk_material_component foreign key (material_id) references MATERIAL,
+  constraint pk_component_material primary key (component_id,material_id)
 );
 
 alter table material add column glass boolean;

@@ -5,10 +5,10 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-public class LayerMaterialId implements Serializable {
+public class ComponentMaterialId implements Serializable {
 
-    @Column(name = "layer_id")
-    private Layer layerId;
+    @Column(name = "component_id")
+    private Component componentId;
 
     @Column(name = "material_id")
     private Long materialId;
