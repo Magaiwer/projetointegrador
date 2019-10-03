@@ -7,6 +7,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 
@@ -25,7 +26,7 @@ public class Face implements Serializable {
     private String name;
 
     @Column
-    private BigDecimal transmittance;
+    private BigDecimal transmittanceAverage;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
@@ -34,10 +35,20 @@ public class Face implements Serializable {
     @OneToMany(mappedBy = "face", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Component> components;
 
-/*    private BigDecimal calculateTransmittance() {
-        /return this.transmittance = new BigDecimal(1).divide(getTotalResistence(), RoundingMode.CEILING);
-    }*/
+    public BigDecimal calculateTransmittanceAverage() {
+        this.transmittanceAverage = BigDecimal.valueOf(this.components
+                .stream()
+                .map(Component::getTransmittance)
+                .mapToDouble(BigDecimal::doubleValue)
+                .average().orElse(BigDecimal.ZERO.doubleValue()));
 
+        return this.transmittanceAverage;
+    }
+
+    public BigDecimal calculateHeatFlowWinter(BigDecimal outsideTemperature, BigDecimal insideTemperature ) {
+        return this.transmittanceAverage
+                .multiply(outsideTemperature.subtract(insideTemperature)).setScale(4, RoundingMode.HALF_EVEN);
+    }
 
 
 }

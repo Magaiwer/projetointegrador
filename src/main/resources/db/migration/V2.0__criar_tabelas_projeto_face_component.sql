@@ -38,7 +38,7 @@ CREATE TABLE ROOM (
 CREATE TABLE FACE (
   id serial not null,
   name varchar (100),
-  transmittance decimal,
+  transmittance_average decimal,
   room_id BIGINT not null,
   constraint pk_face primary key (id),
   constraint fk_room_face foreign key(room_id) references ROOM
@@ -48,6 +48,7 @@ CREATE TABLE COMPONENT (
   id serial not null,
   name varchar(45) not null,
   total_resistence decimal ,
+  transmittance decimal,
   qfo decimal ,
   qft decimal,
   m2 decimal,

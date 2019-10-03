@@ -7,6 +7,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 
@@ -24,6 +25,9 @@ public class Component implements Serializable {
     @Column
     private BigDecimal resistanceTotal;
 
+    @Column
+    private BigDecimal transmittance;
+
     @ManyToOne
     @JoinColumn(name = "face_id")
     private Face face;
@@ -35,15 +39,24 @@ public class Component implements Serializable {
     private List<Material> materials;
 
     @OneToMany(mappedBy = "component")
-    List<ComponentMaterial> componentMaterials;
+    private List<ComponentMaterial> componentMaterials;
 
 
-    public BigDecimal getResistanceTotal() {
-        return this.componentMaterials
+    public BigDecimal calculateResistanceTotal() {
+        return this.resistanceTotal = this.componentMaterials
                 .stream()
                 .map(ComponentMaterial::getResistance)
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO);
     }
+
+    public BigDecimal calculateTransmittance() {
+        return this.transmittance = new BigDecimal(1).divide(this.resistanceTotal,4, RoundingMode.HALF_EVEN);
+    }
+
+    public void addMaterial(Material material) {
+        this.getComponentMaterials().forEach(componentMaterial -> componentMaterial.setMaterial(material));
+    }
+
 
 }

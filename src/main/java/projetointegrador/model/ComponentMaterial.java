@@ -29,8 +29,8 @@ public class ComponentMaterial {
     private BigDecimal resistance;
 
 
-    public BigDecimal calculateResistance(BigDecimal thermalConductivity) {
-        return this.resistance = this.thickness.divide(thermalConductivity, RoundingMode.CEILING);
+    public BigDecimal calculateResistance() {
+        return this.resistance = this.thickness.divide(material.getCondutividadeTermica(), RoundingMode.CEILING);
     }
 
 }
