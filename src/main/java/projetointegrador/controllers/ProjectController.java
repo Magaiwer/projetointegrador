@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.Util.MessagesUtil;
 import projetointegrador.model.*;
+import projetointegrador.model.Component;
 import projetointegrador.repository.FaceRepository;
 import projetointegrador.repository.PersonRepository;
 import projetointegrador.repository.ProjectRepository;

@@ -4,13 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import projetointegrador.model.Face;
+import projetointegrador.model.Component;
 
 import java.util.List;
 
 @Repository
-public interface FaceRepository extends JpaRepository<Face, Long> {
+public interface ComponentRepository extends JpaRepository<Component, Long> {
 
-  /*  @Query("from Face f inner join fetch f.getComponents l inner join l.materials where f.id =:id  ")
-    List<Face> findByIdWithLaywers(@Param("id") Long id);*/
+ /*   @Query("from Component c inner join fetch c.materials m where c.face.id = :id")
+    List<Component> findByFace(@Param("id") Long id);*/
 }

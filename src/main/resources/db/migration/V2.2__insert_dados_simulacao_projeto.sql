@@ -11,14 +11,14 @@ insert into room(name, project_id) values('Quarto casal',1);
 insert into face(name, room_id) values('norte',1);
 insert into face(name, room_id) values('sul',1);
 
-insert into layer(thickness, qfo,qft,m2, face_id) values(2.0, 0.0, 0.0, 0.0, 1);
-insert into layer(thickness, qfo,qft,m2, face_id) values(2.0, 0.0, 0.0, 0.0, 1);
-insert into layer(thickness, qfo,qft,m2, face_id) values(2.0, 0.0, 0.0, 0.0, 1);
+insert into component(name, qfo,qft,m2, face_id) values(2.0, 0.0, 0.0, 0.0, 1);
+insert into component(name, qfo,qft,m2, face_id) values(2.0, 0.0, 0.0, 0.0, 1);
+insert into component(name, qfo,qft,m2, face_id) values(2.0, 0.0, 0.0, 0.0, 1);
 
 insert into material(nome, condutividade_termica) values('argamassa', 10.0);
 insert into material(nome, condutividade_termica) values('tijolo', 8.0);
 
-insert into layer_material values(1,1);
-insert into layer_material values(2,2);
-insert into layer_material values(3,1);
+insert into component_material (component_id, material_id)  values(1,1);
+insert into component_material (component_id, material_id)  values(2,2);
+insert into component_material (component_id, material_id)  values(3,1);
 

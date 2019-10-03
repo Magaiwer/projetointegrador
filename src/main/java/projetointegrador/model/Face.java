@@ -6,13 +6,16 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 
 @Entity
 @Table(name = "face")
 @Data
-@ToString(exclude = {"room" , "layers"}) @EqualsAndHashCode(exclude = {"room","layers"})
+@ToString(exclude = {"room", "components"})
+@EqualsAndHashCode(exclude = {"room", "components"})
 public class Face implements Serializable {
 
     @Id
@@ -22,10 +25,30 @@ public class Face implements Serializable {
     @Column
     private String name;
 
+    @Column
+    private BigDecimal transmittanceAverage;
+
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @OneToMany
-    private List<Layer> layers;
+    @OneToMany(mappedBy = "face", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Component> components;
+
+    public BigDecimal calculateTransmittanceAverage() {
+        this.transmittanceAverage = BigDecimal.valueOf(this.components
+                .stream()
+                .map(Component::getTransmittance)
+                .mapToDouble(BigDecimal::doubleValue)
+                .average().orElse(BigDecimal.ZERO.doubleValue()));
+
+        return this.transmittanceAverage;
+    }
+
+    public BigDecimal calculateHeatFlowWinter(BigDecimal outsideTemperature, BigDecimal insideTemperature ) {
+        return this.transmittanceAverage
+                .multiply(outsideTemperature.subtract(insideTemperature)).setScale(4, RoundingMode.HALF_EVEN);
+    }
+
+
 }
