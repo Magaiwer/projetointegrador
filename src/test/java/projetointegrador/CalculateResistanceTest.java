@@ -14,6 +14,7 @@ import projetointegrador.repository.FaceRepository;
 import projetointegrador.repository.ComponentRepository;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +34,7 @@ public class CalculateResistanceTest {
 
         Component component1 = new Component();
         component1.setId(1L);
+        component1.setRsi(new BigDecimal(0.13));
 
         Material material1 = new Material();
         material1.setCondutividadeTermica(new BigDecimal(2));
@@ -43,7 +45,7 @@ public class CalculateResistanceTest {
         componentMaterial1.setMaterial(material1);
         componentMaterial1.setComponent(component1);
 
-        Assert.assertEquals(new BigDecimal(5),componentMaterial1.calculateResistance());
+        Assert.assertEquals(new BigDecimal(5), componentMaterial1.calculateResistance());
 
 
     }
@@ -54,6 +56,7 @@ public class CalculateResistanceTest {
 
         Component component1 = new Component();
         component1.setId(1L);
+        component1.setRsi(new BigDecimal(0.13));
 
         Material material1 = new Material();
         material1.setCondutividadeTermica(new BigDecimal(2));
@@ -68,18 +71,18 @@ public class CalculateResistanceTest {
         componentMaterial1.setMaterial(material1);
         componentMaterial1.setComponent(component1);
 
-
         ComponentMaterial componentMaterial2 = new ComponentMaterial();
         componentMaterial2.setThickness(new BigDecimal(8));
         componentMaterial2.setMaterial(material2);
         componentMaterial2.setComponent(component1);
 
-        component1.setComponentMaterials(Arrays.asList(componentMaterial1,componentMaterial2));
+        component1.setComponentMaterials(Arrays.asList(componentMaterial1, componentMaterial2));
 
         component1.getComponentMaterials()
                 .forEach(ComponentMaterial::calculateResistance);
 
-        Assert.assertEquals(new BigDecimal(9),component1.calculateResistanceTotal());
+        BigDecimal expectedValue = new BigDecimal(9.1700).setScale(4, RoundingMode.HALF_EVEN);
+        Assert.assertEquals(expectedValue, component1.calculateResistanceTotal());
 
     }
 
