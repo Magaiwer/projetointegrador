@@ -88,20 +88,20 @@ public class Component implements Serializable {
     public BigDecimal calculateHeatFlowSummer(BigDecimal outsideTemperature, BigDecimal insideTemperature) {
         BigDecimal deltaTemperature = outsideTemperature.subtract(insideTemperature).abs();
 
-        this.qfo = this.transmittance.multiply(this.alpha.multiply(this.indexRadiation).multiply(RSE).add(deltaTemperature))
+        return this.transmittance.multiply(this.alpha.multiply(this.indexRadiation).multiply(RSE).add(deltaTemperature))
                 .setScale(4, RoundingMode.HALF_EVEN);
 
-        return calculateQFO(this.qfo);
+
     }
 
-    private BigDecimal calculateQFO(BigDecimal qfo) {
+    public BigDecimal calculateQFO(BigDecimal qfo) {
         return this.qfo = qfo.multiply(this.m2);
     }
 
 
-    public BigDecimal calculateQFT(BigDecimal outsideTemperature, BigDecimal insideTemperature, BigDecimal solarFactor) {
-        this.qft = outsideTemperature.subtract(insideTemperature).abs().add(solarFactor.multiply(this.indexRadiation));
-        return this.qfo.multiply(m2);
+    public BigDecimal calculateQFT(BigDecimal outsideTemperature, BigDecimal insideTemperature, BigDecimal solarFactor, BigDecimal transmittance) {
+        this.qft = transmittance.multiply(outsideTemperature.subtract(insideTemperature).abs()).add(solarFactor.multiply(this.indexRadiation));
+        return this.qft.multiply(m2);
     }
 
 
