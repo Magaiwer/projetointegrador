@@ -50,5 +50,10 @@ public class Face implements Serializable {
                 .multiply(outsideTemperature.subtract(insideTemperature)).setScale(4, RoundingMode.HALF_EVEN);
     }
 
+    public BigDecimal calculateHeatFlowSummer(BigDecimal outsideTemperature, BigDecimal insideTemperature ) {
+        return this.transmittanceAverage
+                .multiply(outsideTemperature.subtract(insideTemperature)).setScale(4, RoundingMode.HALF_EVEN);
+    }
+
 
 }

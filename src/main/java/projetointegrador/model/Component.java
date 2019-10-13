@@ -18,6 +18,8 @@ import java.util.List;
 @EqualsAndHashCode(exclude = "face")
 public class Component implements Serializable {
 
+    private final BigDecimal RSE = new BigDecimal(0.04);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,13 +43,18 @@ public class Component implements Serializable {
     @OneToMany(mappedBy = "component")
     private List<ComponentMaterial> componentMaterials;
 
+    @Transient
+    private BigDecimal rsi;
 
     public BigDecimal calculateResistanceTotal() {
-        return this.resistanceTotal = this.componentMaterials
+        return this.resistanceTotal =
+                RSE.add(
+                this.componentMaterials
                 .stream()
                 .map(ComponentMaterial::getResistance)
                 .reduce(BigDecimal::add)
-                .orElse(BigDecimal.ZERO);
+                .orElse(BigDecimal.ZERO))
+                .add(this.rsi).setScale(4, RoundingMode.HALF_EVEN);
     }
 
     public BigDecimal calculateTransmittance() {

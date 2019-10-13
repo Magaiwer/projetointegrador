@@ -21,6 +21,7 @@ public class CalculateTransmittanceTest {
 
         Component component1 = new Component();
         component1.setId(1L);
+        component1.setRsi(new BigDecimal(0.13));
 
         Material material1 = new Material();
         material1.setCondutividadeTermica(new BigDecimal(2));
@@ -48,8 +49,10 @@ public class CalculateTransmittanceTest {
         component1.calculateResistanceTotal();
         component1.calculateTransmittance();
 
-        Assert.assertEquals(new BigDecimal(9), component1.getResistanceTotal());
-        Assert.assertEquals(new BigDecimal(0.1111).setScale(4, RoundingMode.HALF_EVEN), component1.getTransmittance());
+        BigDecimal expectedValue = new BigDecimal(9.1700).setScale(4, RoundingMode.HALF_EVEN);
+
+        Assert.assertEquals(expectedValue, component1.getResistanceTotal());
+        Assert.assertEquals(new BigDecimal(0.1091).setScale(4, RoundingMode.HALF_EVEN), component1.getTransmittance());
 
     }
 
@@ -60,6 +63,7 @@ public class CalculateTransmittanceTest {
         // COMPONENTE 1
         Component component1 = new Component();
         component1.setId(1L);
+        component1.setRsi(new BigDecimal(0.13));
 
         ComponentMaterial componentMaterial1 = builderComponent(new BigDecimal(2), new BigDecimal(10), component1);
 
@@ -76,6 +80,7 @@ public class CalculateTransmittanceTest {
         // COMPONENTE 2
         Component component2 = new Component();
         component2.setId(2L);
+        component2.setRsi(new BigDecimal(0.13));
 
         ComponentMaterial componentMaterial3 = builderComponent(new BigDecimal(2), new BigDecimal(10), component2);
         ComponentMaterial componentMaterial4 = builderComponent(new BigDecimal(2), new BigDecimal(20), component2);
@@ -92,15 +97,17 @@ public class CalculateTransmittanceTest {
         face1.setComponents(Arrays.asList(component1, component2));
         face1.calculateTransmittanceAverage();
 
+        BigDecimal expectedValue = new BigDecimal(15.1700).setScale(4, RoundingMode.HALF_EVEN);
+
         // COMPONENTE 1
-        Assert.assertEquals(new BigDecimal(15), component1.getResistanceTotal());
-        Assert.assertEquals(new BigDecimal(0.0667).setScale(4, RoundingMode.HALF_EVEN), component1.getTransmittance());
+        Assert.assertEquals(expectedValue, component1.getResistanceTotal());
+        Assert.assertEquals(new BigDecimal(0.0659).setScale(4, RoundingMode.HALF_EVEN), component1.getTransmittance());
 
         // COMPONENTE 2
-        Assert.assertEquals(new BigDecimal(15), component1.getResistanceTotal());
-        Assert.assertEquals(new BigDecimal(0.0667).setScale(4, RoundingMode.HALF_EVEN), component1.getTransmittance());
+        Assert.assertEquals(expectedValue, component1.getResistanceTotal());
+        Assert.assertEquals(new BigDecimal(0.0659).setScale(4, RoundingMode.HALF_EVEN), component1.getTransmittance());
 
-        Assert.assertEquals(new BigDecimal(0.0667).setScale(4, RoundingMode.HALF_EVEN), face1.getTransmittanceAverage());
+        Assert.assertEquals(new BigDecimal(0.0659).setScale(4, RoundingMode.HALF_EVEN), face1.getTransmittanceAverage());
 
     }
 
