@@ -8,7 +8,6 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -35,7 +34,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
-public class PermissionController implements Initializable, BaseController<PermissionController> {
+public class PermissionController implements Initializable {
 
     @FXML
     private JFXComboBox<Group> cbGroups;
@@ -126,46 +125,22 @@ public class PermissionController implements Initializable, BaseController<Permi
         });
     }
 
-    @Override
-    public void onCancel(ActionEvent event) {
 
-    }
-
-    @Override
-    public void onSave(ActionEvent event) {
-
-    }
-
-    @Override
-    public void onEdit(ActionEvent event) {
-
-    }
-
-    @Override
-    public void onDelete(ActionEvent event) {
-
-    }
-
-    @Override
-    public void onNew(ActionEvent event) {
-
-    }
-
-    @Override
-    public void initListeners() {
+    private void initListeners() {
         cbGroups.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             initTable();
         });
 
         cbxUpdateAll.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            List<Permission> permissionList = tablePermissions.getItems();
-            permissionList.forEach(permission -> permission.setHasRole(newValue));
-            tablePermissions.setItems(FXCollections.observableArrayList(permissionList));
+
+            tablePermissions.getItems().forEach(permission -> permission.setHasRole(newValue));
+            tablePermissions.refresh();
+
         });
+
     }
 
-    @Override
-    public void initTable() {
+    private void initTable() {
         columnForm.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getForm().getName()));
 
         columnPermission.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -211,7 +186,10 @@ public class PermissionController implements Initializable, BaseController<Permi
     void updatePermission(ActionEvent event) {
         if (!cbGroups.getSelectionModel().isEmpty()) {
 
+            txtFilterPermissions.clear();
+
             List<Permission> permissionList = tablePermissions.getItems().filtered(Permission::isHasRole);
+
             Group group = cbGroups.getSelectionModel().getSelectedItem();
             group.setPermissions(permissionList);
 
