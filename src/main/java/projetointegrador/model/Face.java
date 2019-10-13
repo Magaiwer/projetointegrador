@@ -28,6 +28,9 @@ public class Face implements Serializable {
     @Column
     private BigDecimal transmittanceAverage;
 
+    @Column
+    private BigDecimal thermalLoad;
+
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
@@ -45,15 +48,13 @@ public class Face implements Serializable {
         return this.transmittanceAverage;
     }
 
-    public BigDecimal calculateHeatFlowWinter(BigDecimal outsideTemperature, BigDecimal insideTemperature ) {
-        return this.transmittanceAverage
-                .multiply(outsideTemperature.subtract(insideTemperature)).setScale(4, RoundingMode.HALF_EVEN);
+    public BigDecimal calculateThermalLoad() {
+        return this.components.stream()
+                .map(component -> component.getQfo().add(component.getQft()))
+                .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
     }
 
-    public BigDecimal calculateHeatFlowSummer(BigDecimal outsideTemperature, BigDecimal insideTemperature ) {
-        return this.transmittanceAverage
-                .multiply(outsideTemperature.subtract(insideTemperature)).setScale(4, RoundingMode.HALF_EVEN);
-    }
+
 
 
 }

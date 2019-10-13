@@ -18,10 +18,11 @@ public class HeatFlowAmountTest {
     @Test
     @After
     public void mustBeCalculateWinterHeatFlow () {
-        Face face1 = new Face();
-        face1.setTransmittanceAverage(new BigDecimal(0.0667));
+        Component component = new Component();
+        component.setTransmittance(new BigDecimal(0.0667));
 
-        BigDecimal qfo = face1.calculateHeatFlowWinter(new BigDecimal(30), new BigDecimal(25));
+        BigDecimal qfo = component.calculateHeatFlowWinter(new BigDecimal(30), new BigDecimal(25));
+
         BigDecimal expectedValue = new BigDecimal(0.3335).setScale(4, RoundingMode.HALF_EVEN);
 
         Assert.assertEquals(expectedValue, qfo.setScale(4, RoundingMode.HALF_EVEN));
