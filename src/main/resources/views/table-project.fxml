@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.ProjectController">
+   <children>
+      <TableView fx:id="tableProject" editable="true" layoutX="14.0" layoutY="101.0" prefHeight="395.0" prefWidth="832.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="105.0">
+         <columns>
+            <TableColumn fx:id="columnIdProject" minWidth="5.0" prefWidth="76.0" styleClass="column-alignment-center" text="Cod." />
+            <TableColumn fx:id="columnNameProject" minWidth="188.0" prefWidth="188.0" text="Projeto" />
+            <TableColumn fx:id="columnClientProject" prefWidth="274.0" sortable="false" style="-fx-alignment: CENTER;" text="Cliente" />
+            <TableColumn fx:id="columnRegionProject" prefWidth="75.0" text="Região" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <Label layoutX="15.0" layoutY="9.0" prefHeight="18.0" prefWidth="329.0" text="Cadastro de Projetos">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="txtFilterProject" labelFloat="true" layoutX="555.0" layoutY="68.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="294.0" promptText="Filtrar" AnchorPane.rightAnchor="14.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </JFXTextField>
+      <JFXButton fx:id="btnNewProject" graphicTextGap="8.0" layoutX="19.0" layoutY="68.0" onAction="#onNew" prefHeight="29.0" prefWidth="101.0" text="Novo">
+         <graphic>
+            <FontAwesomeIconView glyphName="PLUS" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="btnEditProject" graphicTextGap="8.0" layoutX="130.0" layoutY="68.0" onAction="#onEdit" prefHeight="29.0" prefWidth="101.0" text="Editar">
+         <graphic>
+            <FontAwesomeIconView glyphName="PENCIL" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="btnDeleteProject" graphicTextGap="8.0" layoutX="240.0" layoutY="68.0" onAction="#onDelete" prefHeight="29.0" prefWidth="101.0" text="Deletar">
+         <graphic>
+            <FontAwesomeIconView glyphName="TRASH" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="btnDetailProject" buttonType="RAISED" graphicTextGap="8.0" layoutX="341.0" layoutY="68.0" prefHeight="29.0" prefWidth="101.0" text="Detalhes">
+         <graphic>
+            <FontAwesomeIconView glyphName="LIST_ALT" size="12" wrappingWidth="12.0" />
+         </graphic>
+         <tooltip>
+            <Tooltip text="Visualizar detalhes do Projeto" />
+         </tooltip>
+      </JFXButton>
+   </children>
+</AnchorPane>

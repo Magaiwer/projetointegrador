@@ -7,30 +7,28 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.Util.MessagesUtil;
-import projetointegrador.model.*;
+import projetointegrador.config.StageManager;
 import projetointegrador.model.Component;
-import projetointegrador.repository.FaceRepository;
-import projetointegrador.repository.PersonRepository;
-import projetointegrador.repository.ProjectRepository;
-import projetointegrador.repository.RoomRepository;
-import projetointegrador.repository.RegionRepository;
+import projetointegrador.model.*;
+import projetointegrador.repository.*;
 import projetointegrador.service.ProjectService;
 import projetointegrador.validation.EntityValidator;
 
-import java.awt.*;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @org.springframework.stereotype.Component
@@ -58,7 +56,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXTextField txtDescription;
 
     @FXML
-    private JFXComboBox<Person> comboCustumer;
+    private JFXComboBox<Person> comboCustomer;
 
     @FXML
     private JFXComboBox<Region> comboRegion;
@@ -88,10 +86,10 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXTextField txtNameFace;
 
     @FXML
-    private TableView<?> tableFace;
+    private TableView<Face> tableFace;
 
     @FXML
-    private TableColumn<Face, String> columnNameFace;
+    private TableColumn<Face, String> columnFace;
 
     @FXML
     private TableColumn<Face, String> columnFaceRoom;
@@ -103,13 +101,31 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXComboBox<Room> comboRoom;
 
     @FXML
-    private Tab tabLayer;
+    private Tab tabComponent;
 
     @FXML
-    private Tab tabLayerMaterial;
+    private JFXTextField txtNameComponent;
+
+    @FXML
+    private TableView<?> tableComponent;
+
+    @FXML
+    private TableColumn<Component, String> columnNameFace;
+
+    @FXML
+    private TableColumn<Component, String> columnNameComponent;
+
+    @FXML
+    private JFXButton btnAddComponent;
 
     @FXML
     private JFXComboBox<Face> comboFace;
+
+    @FXML
+    private Tab tabComponentMaterial;
+
+    @FXML
+    private JFXComboBox<Component> comboComponent;
 
     @FXML
     private JFXComboBox<Material> comboMaterial;
@@ -118,19 +134,19 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXTextField txtThickness;
 
     @FXML
-    private TableView<Component> tableLayerMaterial;
+    private TableView<ComponentMaterial> tableComponentMaterial;
 
     @FXML
-    private TableColumn<Component, String> columnMaterialLayer;
+    private TableColumn<ComponentMaterial, String> columnComponentMaterial;
 
     @FXML
-    private TableColumn<Component, BigDecimal> columnThicknessLayer;
+    private TableColumn<ComponentMaterial, String> columnMaterialComponent;
 
     @FXML
-    private TableColumn<Component, String> columnFaceLayer;
+    private TableColumn<ComponentMaterial, BigDecimal> columnThicknessComponent;
 
     @FXML
-    private JFXButton btnAddLayer;
+    private JFXButton btnAddComponentMaterial;
 
     @FXML
     private Tab tabFinal;
@@ -142,7 +158,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXTextField txtTemperatureInside;
 
     @FXML
-    private JFXComboBox<MaterialAbsortancia> comboAbsortance;
+    private JFXComboBox<MaterialAbsortancia> comboAbsorbance;
 
     @FXML
     private JFXRadioButton rgWinter;
@@ -156,8 +172,36 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @FXML
     private JFXTextField txtAlpha;
 
+
     @FXML
-    private JFXTextField txtNameLayer;
+    private TableView<Project> tableProject;
+
+    @FXML
+    private TableColumn<Project, Long> columnIdProject;
+
+    @FXML
+    private TableColumn<Project, String> columnNameProject;
+
+    @FXML
+    private TableColumn<Project, String> columnClientProject;
+
+    @FXML
+    private TableColumn<Project, String> columnRegionProject;
+
+    @FXML
+    private JFXTextField txtFilterProject;
+
+    @FXML
+    private JFXButton btnNewProject;
+
+    @FXML
+    private JFXButton btnEditProject;
+
+    @FXML
+    private JFXButton btnDeleteProject;
+
+    @FXML
+    private JFXButton btnDetailProject;
 
     @Autowired
     private PersonRepository personRepository;
@@ -177,13 +221,31 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @Autowired
     private ProjectService projectService;
 
-    private ObservableList <Room> listRoom;
-    private Project project = new Project();
-    private Room room = new Room();
+    @Lazy
+    @Autowired
+    private StageManager stageManager;
+
+    private Project project;
+    private List<Room> listRoom;
+    private Room room;
+
+    private void initializeFormWizzard() {
+
+        if(txtIndex != null) {
+            project = new Project();
+            room = new Room();
+            listRoom = new ArrayList<>();
+
+            initCombo();
+            initTableRoom();
+        }
+
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initCombo();
+        initTable();
+        initializeFormWizzard();
     }
 
     @FXML
@@ -195,15 +257,12 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @FXML
     void onAddRoom(ActionEvent event)
     {
-        tableRoom.getColumns().clear();
         boolean noEmpty = EntityValidator.noEmpty(txtNameRoom);
         if(room != null && noEmpty)
         {
             bindRoom();
-            columnNameRoom.setCellValueFactory(new PropertyValueFactory<>("name"));
-            tableRoom.getColumns().addAll(columnNameRoom);
-            tableRoom.refresh();
-            MessagesUtil.showMessageInformation("Comodo inserido!");
+            listRoom.add(room);
+            tableRoom.setItems(FXCollections.observableArrayList(listRoom));
         }
     }
 
@@ -240,11 +299,11 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         {
 
         }
-        if(tabLayer.isSelected())
+        if(tabComponent.isSelected())
         {
 
         }
-        if(tabLayerMaterial.isSelected())
+        if(tabComponentMaterial.isSelected())
         {
 
         }
@@ -258,12 +317,13 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     {
         project.setName(txtNameProject.getText());
         project.setDescription(txtDescription.getText());
-        project.setPerson(comboCustumer.getValue());
+        project.setPerson(comboCustomer.getValue());
         project.setRegion(comboRegion.getValue());
     }
 
     private void bindRoom()
     {
+        room = new Room();
         room.setProject(project);
         room.setName(txtNameRoom.getText());
     }
@@ -284,7 +344,8 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @FXML
     @Override
     public void onNew(ActionEvent event) {
-
+        stageManager.switchScene(root, EFxmlView.PROJECT);
+        txtNameProject.requestFocus();
     }
 
     @Override
@@ -295,11 +356,21 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @Override
     public void initTable() {
 
+                     /*Table project*/
+        columnIdProject.setCellValueFactory(new PropertyValueFactory<>("id"));
+        columnNameProject.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnClientProject.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnRegionProject.setCellValueFactory(new PropertyValueFactory<>("name"));
     }
+
+    public void initTableRoom() {
+        columnNameRoom.setCellValueFactory(new PropertyValueFactory<>("name"));
+    }
+
 
     private void initCombo() {
         FilteredList<Person> personFilteredList = new FilteredList<>(listPerson(), person -> true);
-        comboCustumer.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+        comboCustomer.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             personFilteredList.setPredicate(person -> {
 
                 if (newValue == null || newValue.isEmpty()) {
@@ -312,7 +383,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             });
         });
 
-        comboCustumer.setItems(personFilteredList);
+        comboCustomer.setItems(personFilteredList);
 
 
         FilteredList<Room> roomFilteredList = new FilteredList<>(listRoom(), room -> true);

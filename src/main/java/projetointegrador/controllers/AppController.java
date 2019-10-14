@@ -104,7 +104,7 @@ public class AppController implements Initializable {
 
     @FXML
     void showProject(ActionEvent event) {
-        stageManager.switchScene(body, EFxmlView.PROJECT);
+        stageManager.switchScene(body, EFxmlView.PROJECT_TABLE);
     }
 
 
