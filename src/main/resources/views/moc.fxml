@@ -28,11 +28,11 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="760.0">
                      <children>
-                        <JFXTextField fx:id="txtNameProject" labelFloat="true" layoutX="14.0" layoutY="40.0" prefHeight="28.0" prefWidth="658.0" promptText="Nome" AnchorPane.topAnchor="40.0" />
+                        <JFXTextField fx:id="txtNameProject" labelFloat="true" layoutX="14.0" layoutY="40.0" prefHeight="28.0" prefWidth="658.0" promptText="Nome *" AnchorPane.topAnchor="40.0" />
                         <JFXTextField fx:id="txtDescription" labelFloat="true" layoutX="14.0" layoutY="95.0" prefHeight="28.0" prefWidth="658.0" promptText="Descrição" />
-                        <JFXComboBox fx:id="comboCustumer" labelFloat="true" layoutX="14.0" layoutY="147.0" prefHeight="28.0" prefWidth="658.0" promptText="Cliente" />
-                        <JFXComboBox fx:id="comboRegion" labelFloat="true" layoutX="14.0" layoutY="200.0" prefHeight="28.0" prefWidth="487.0" promptText="Região" />
-                        <JFXTextField fx:id="txtIndex" labelFloat="true" layoutX="521.0" layoutY="200.0" prefHeight="28.0" prefWidth="151.0" promptText="Indice " />
+                        <JFXComboBox fx:id="comboCustumer" labelFloat="true" layoutX="14.0" layoutY="147.0" prefHeight="28.0" prefWidth="658.0" promptText="Cliente *" />
+                        <JFXComboBox fx:id="comboRegion" labelFloat="true" layoutX="14.0" layoutY="200.0" prefHeight="28.0" prefWidth="487.0" promptText="Região *" />
+                        <JFXTextField fx:id="txtIndex" labelFloat="true" layoutX="521.0" layoutY="200.0" prefHeight="28.0" prefWidth="151.0" promptText="Indice *" />
                      </children>
                   </AnchorPane>
               </content>
@@ -41,7 +41,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXTextField fx:id="txtNameRoom" labelFloat="true" layoutX="14.0" layoutY="30.0" prefHeight="28.0" prefWidth="526.0" promptText="Nome" AnchorPane.topAnchor="40.0" />
+                        <JFXTextField fx:id="txtNameRoom" labelFloat="true" layoutX="14.0" layoutY="30.0" prefHeight="28.0" prefWidth="526.0" promptText="Nome *" AnchorPane.topAnchor="40.0" />
                         <TableView fx:id="tableRoom" layoutX="14.0" layoutY="129.0" prefHeight="292.0" prefWidth="659.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
                            <columns>
                               <TableColumn fx:id="columnNameRoom" prefWidth="75.0" text="Comodo" />
@@ -63,7 +63,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXTextField fx:id="txtNameFace" labelFloat="true" layoutX="16.0" layoutY="14.0" prefHeight="28.0" prefWidth="519.0" promptText="Nome" AnchorPane.topAnchor="40.0" />
+                        <JFXTextField fx:id="txtNameFace" labelFloat="true" layoutX="16.0" layoutY="14.0" prefHeight="28.0" prefWidth="519.0" promptText="Nome *" AnchorPane.topAnchor="40.0" />
                         <TableView fx:id="tableFace" layoutX="16.0" layoutY="150.0" prefHeight="334.0" prefWidth="740.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="150.0">
                            <columns>
                               <TableColumn fx:id="columnNameFace" prefWidth="75.0" text="Face" />
@@ -77,7 +77,7 @@
                            <graphic>
                               <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
                            </graphic></JFXButton>
-                        <JFXComboBox fx:id="comboRoom" labelFloat="true" layoutX="15.0" layoutY="95.0" prefHeight="28.0" prefWidth="522.0" promptText="Comodo" />
+                        <JFXComboBox fx:id="comboRoom" labelFloat="true" layoutX="15.0" layoutY="95.0" prefHeight="28.0" prefWidth="522.0" promptText="Comodo *" />
                      </children>
                   </AnchorPane>
               </content>
@@ -86,7 +86,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXTextField fx:id="txtNameLayer" labelFloat="true" layoutX="17.0" layoutY="94.0" prefHeight="28.0" prefWidth="519.0" promptText="Nome" AnchorPane.topAnchor="94.0" />
+                        <JFXTextField fx:id="txtNameLayer" labelFloat="true" layoutX="17.0" layoutY="94.0" prefHeight="28.0" prefWidth="519.0" promptText="Nome *" AnchorPane.topAnchor="94.0" />
                         <TableView fx:id="tableFace1" layoutX="16.0" layoutY="150.0" prefHeight="334.0" prefWidth="740.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="150.0">
                            <columns>
                               <TableColumn fx:id="columnNameFace1" prefWidth="75.0" text="Face" />
@@ -101,7 +101,7 @@
                               <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
                            </graphic>
                         </JFXButton>
-                        <JFXComboBox fx:id="comboNameLayer" labelFloat="true" layoutX="16.0" layoutY="41.0" prefHeight="28.0" prefWidth="522.0" promptText="Face" />
+                        <JFXComboBox fx:id="comboNameLayer" labelFloat="true" layoutX="16.0" layoutY="41.0" prefHeight="28.0" prefWidth="522.0" promptText="Face *" />
                      </children>
                   </AnchorPane>
                </content>
@@ -110,9 +110,9 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXComboBox fx:id="comboFace" labelFloat="true" layoutX="25.0" layoutY="24.0" prefHeight="28.0" prefWidth="469.0" promptText="Conjunto" AnchorPane.topAnchor="40.0" />
-                        <JFXComboBox fx:id="comboMaterial" labelFloat="true" layoutX="24.0" layoutY="102.0" prefHeight="28.0" prefWidth="472.0" promptText="Material" />
-                        <JFXTextField fx:id="txtThickness" labelFloat="true" layoutX="26.0" layoutY="163.0" prefHeight="28.0" prefWidth="468.0" promptText="Espessura" />
+                        <JFXComboBox fx:id="comboFace" labelFloat="true" layoutX="25.0" layoutY="24.0" prefHeight="28.0" prefWidth="469.0" promptText="Conjunto *" AnchorPane.topAnchor="40.0" />
+                        <JFXComboBox fx:id="comboMaterial" labelFloat="true" layoutX="24.0" layoutY="102.0" prefHeight="28.0" prefWidth="472.0" promptText="Material *" />
+                        <JFXTextField fx:id="txtThickness" labelFloat="true" layoutX="26.0" layoutY="163.0" prefHeight="28.0" prefWidth="468.0" promptText="Espessura *" />
                         <TableView fx:id="tableLayerMaterial" layoutX="25.0" layoutY="231.0" prefHeight="253.0" prefWidth="740.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="231.0">
                            <columns>
                               <TableColumn fx:id="columnMaterialLayer" prefWidth="75.0" text="Conjunto" />
@@ -136,16 +136,16 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXTextField fx:id="txtTemperatureOutside" labelFloat="true" layoutX="21.0" layoutY="23.0" prefHeight="28.0" prefWidth="178.0" promptText="Temperatura Externa" AnchorPane.topAnchor="40.0" />
-                        <JFXTextField fx:id="txtTemperatureInside" labelFloat="true" layoutX="270.0" layoutY="23.0" prefHeight="28.0" prefWidth="200.0" promptText="Temperatura Interna" AnchorPane.topAnchor="40.0" />
-                        <JFXComboBox fx:id="comboAbsortance" labelFloat="true" layoutX="21.0" layoutY="105.0" prefHeight="26.0" prefWidth="453.0" promptText="Absortancia" />
+                        <JFXTextField fx:id="txtTemperatureOutside" labelFloat="true" layoutX="21.0" layoutY="23.0" prefHeight="28.0" prefWidth="178.0" promptText="Temperatura Externa *" AnchorPane.topAnchor="40.0" />
+                        <JFXTextField fx:id="txtTemperatureInside" labelFloat="true" layoutX="270.0" layoutY="23.0" prefHeight="28.0" prefWidth="200.0" promptText="Temperatura Interna *" AnchorPane.topAnchor="40.0" />
+                        <JFXComboBox fx:id="comboAbsortance" labelFloat="true" layoutX="21.0" layoutY="105.0" prefHeight="26.0" prefWidth="453.0" promptText="Absortancia *" />
                         <JFXRadioButton fx:id="rgWinter" layoutX="508.0" layoutY="37.0" selected="true" text="Inverno" AnchorPane.topAnchor="40.0">
                            <toggleGroup>
                               <ToggleGroup fx:id="toggleGroup" />
                            </toggleGroup>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="rgSummer" layoutX="614.0" layoutY="37.0" text="Verão" toggleGroup="$toggleGroup" AnchorPane.topAnchor="40.0" />
-                        <JFXTextField fx:id="txtAlpha" labelFloat="true" layoutX="508.0" layoutY="104.0" prefHeight="28.0" prefWidth="178.0" promptText="Alfa" />
+                        <JFXTextField fx:id="txtAlpha" labelFloat="true" layoutX="508.0" layoutY="104.0" prefHeight="28.0" prefWidth="178.0" promptText="Alfa *" />
                      </children>
                   </AnchorPane>
               </content>
