@@ -25,6 +25,10 @@ public class Project implements Serializable {
     @JoinColumn(name = "person_id")
     private Person person;
 
+    @ManyToOne
+    @JoinColumn(name = "region_id")
+    private Region region;
+
     @OneToMany
     private List<Room> rooms;
 
