@@ -1,5 +1,6 @@
 package projetointegrador.model;
 
+import javafx.beans.property.SimpleStringProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

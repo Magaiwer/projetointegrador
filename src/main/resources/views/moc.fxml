@@ -50,7 +50,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <JFXButton fx:id="btnAddRoom" graphicTextGap="15.0" layoutX="587.0" layoutY="30.0" prefHeight="28.0" prefWidth="124.0" text="Adicionar" AnchorPane.topAnchor="40.0">
+                        <JFXButton fx:id="btnAddRoom" graphicTextGap="15.0" layoutX="587.0" layoutY="30.0" onAction="#onAddRoom" prefHeight="28.0" prefWidth="124.0" text="Adicionar" AnchorPane.topAnchor="40.0">
                            <graphic>
                               <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
                            </graphic>
