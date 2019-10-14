@@ -7,11 +7,14 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.Util.MessagesUtil;
@@ -174,7 +177,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @Autowired
     private ProjectService projectService;
 
+    private ObservableList <Room> listRoom;
     private Project project = new Project();
+    private Room room = new Room();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -185,6 +190,21 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @Override
     public void onCancel(ActionEvent event) {
 
+    }
+
+    @FXML
+    void onAddRoom(ActionEvent event)
+    {
+        tableRoom.getColumns().clear();
+        boolean noEmpty = EntityValidator.noEmpty(txtNameRoom);
+        if(room != null && noEmpty)
+        {
+            bindRoom();
+            columnNameRoom.setCellValueFactory(new PropertyValueFactory<>("name"));
+            tableRoom.getColumns().addAll(columnNameRoom);
+            tableRoom.refresh();
+            MessagesUtil.showMessageInformation("Comodo inserido!");
+        }
     }
 
     @FXML
@@ -240,6 +260,12 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         project.setDescription(txtDescription.getText());
         project.setPerson(comboCustumer.getValue());
         project.setRegion(comboRegion.getValue());
+    }
+
+    private void bindRoom()
+    {
+        room.setProject(project);
+        room.setName(txtNameRoom.getText());
     }
 
 
