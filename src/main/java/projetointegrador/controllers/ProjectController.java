@@ -23,7 +23,9 @@ import projetointegrador.Util.MessagesUtil;
 import projetointegrador.config.StageManager;
 import projetointegrador.model.*;
 import projetointegrador.repository.*;
+import projetointegrador.service.FaceService;
 import projetointegrador.service.ProjectService;
+import projetointegrador.service.RoomService;
 import projetointegrador.validation.EntityValidator;
 
 import java.math.BigDecimal;
@@ -225,25 +227,35 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private RoomService roomService;
+
+    @Autowired
+    private FaceService faceService;
+
     @Lazy
     @Autowired
     private StageManager stageManager;
 
     private Project project;
     private List<Room> listRoom;
+    private List<Face> listFace;
     private Room room;
+    private Face face;
 
     private void initializeFormWizzard() {
 
         if(txtIndex != null) {
             project = new Project();
             room = new Room();
+            face = new Face();
             listRoom = new ArrayList<>();
+            listFace = new ArrayList<>();
 
             initCombo();
             initTableRoom();
+            initTableFace();
         }
-
     }
 
     @Override
@@ -267,6 +279,18 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             bindRoom();
             listRoom.add(room);
             tableRoom.setItems(FXCollections.observableArrayList(listRoom));
+        }
+    }
+
+    @FXML
+    void onAddFace(ActionEvent event)
+    {
+        boolean noEmpty = EntityValidator.noEmpty(txtNameFace);
+        if(face != null && noEmpty)
+        {
+            bindFace();
+            listFace.add(face);
+            tableFace.setItems(FXCollections.observableArrayList(listFace));
         }
     }
 
@@ -297,11 +321,41 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         }
         if(tabRoom.isSelected())
         {
+            boolean noEmpty = EntityValidator.noEmpty(txtNameRoom);
 
+            if(room != null && noEmpty)
+            {
+                bindRoom();
+
+                try
+                {
+                    tableRoom.getItems().forEach(room-> roomService.save(room));
+                    MessagesUtil.showMessageInformation("Comodo(s) salvo(s) com sucesso");
+                }
+                catch(Exception e)
+                {
+                    MessagesUtil.showMessageError(e.getMessage());
+                }
+            }
         }
         if(tabFace.isSelected())
         {
+            boolean noEmpty = EntityValidator.noEmpty(txtNameFace);
 
+            if(face != null && noEmpty)
+            {
+                bindFace();
+
+                try
+                {
+                    tableFace.getItems().forEach(face-> faceService.save(face));
+                    MessagesUtil.showMessageInformation("Face(s) salva(s) com sucesso");
+                }
+                catch(Exception e)
+                {
+                    MessagesUtil.showMessageError(e.getMessage());
+                }
+            }
         }
         if(tabComponent.isSelected())
         {
@@ -332,6 +386,13 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         room.setName(txtNameRoom.getText());
     }
 
+    private void bindFace()
+    {
+        face = new Face();
+        face.setName(txtNameFace.getText());
+        face.setRoom(room);
+    }
+
 
     @FXML
     @Override
@@ -359,6 +420,11 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     public void initTableRoom() {
         columnNameRoom.setCellValueFactory(new PropertyValueFactory<>("name"));
+    }
+
+    public void initTableFace() {
+        columnFace.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnFaceRoom.setCellValueFactory(new PropertyValueFactory<>("room"));
     }
 
     @Override
@@ -415,12 +481,14 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
         comboCustomer.setItems(personFilteredList);
 
-
+        /*
         FilteredList<Room> roomFilteredList = new FilteredList<>(listRoom(), room -> true);
 
         comboRoom.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             roomFilteredList.setPredicate(room -> room.getName().toLowerCase().contains(newValue.toLowerCase()));
         });
+        */
+        comboRoom.setItems(listRoom());
 
         comboFace.setItems(listFace());
 
