@@ -1,14 +1,20 @@
 package projetointegrador.model;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "project")
-@Data @ToString(exclude = "person") @EqualsAndHashCode(exclude = "person")
+@Data
+@ToString(exclude = "person")
+@EqualsAndHashCode(exclude = "person")
 public class Project implements Serializable {
 
     @Id
@@ -20,6 +26,10 @@ public class Project implements Serializable {
 
     @Column
     private String description;
+
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+    @Column
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "person_id")

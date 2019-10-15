@@ -1,9 +1,11 @@
 package projetointegrador.controllers;
 
 import com.jfoenix.controls.*;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,15 +18,14 @@ import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import projetointegrador.Util.EFxmlView;
+import projetointegrador.Util.Formatter;
 import projetointegrador.Util.MessagesUtil;
 import projetointegrador.config.StageManager;
-import projetointegrador.model.Component;
 import projetointegrador.model.*;
 import projetointegrador.repository.*;
 import projetointegrador.service.ProjectService;
 import projetointegrador.validation.EntityValidator;
 
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
@@ -187,6 +188,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     @FXML
     private TableColumn<Project, String> columnRegionProject;
+
+    @FXML
+    private TableColumn<Project, String> columnDateProject;
 
     @FXML
     private JFXTextField txtFilterProject;
@@ -353,20 +357,46 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     }
 
-    @Override
-    public void initTable() {
-
-                     /*Table project*/
-        columnIdProject.setCellValueFactory(new PropertyValueFactory<>("id"));
-        columnNameProject.setCellValueFactory(new PropertyValueFactory<>("name"));
-        columnClientProject.setCellValueFactory(new PropertyValueFactory<>("name"));
-        columnRegionProject.setCellValueFactory(new PropertyValueFactory<>("name"));
-    }
-
     public void initTableRoom() {
         columnNameRoom.setCellValueFactory(new PropertyValueFactory<>("name"));
     }
 
+    @Override
+    public void initTable() {
+                     /*Table project*/
+        columnIdProject.setCellValueFactory(new PropertyValueFactory<>("id"));
+        columnNameProject.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnClientProject.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getPerson().getName()));
+        columnRegionProject.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getRegion().getName()));
+        columnDateProject.setCellValueFactory(param -> new SimpleStringProperty(Formatter.getDateTextFormated(param.getValue().getDate(), Formatter.FORMAT_PT_BR_WITH_TIME)));
+
+        FilteredList<Project> projectFilteredList = new FilteredList<>(listProject(), project -> true);
+
+        txtFilterProject.textProperty().addListener((observable, oldValue, newValue) -> projectFilteredList.setPredicate(project -> {
+            if (newValue == null || newValue.isEmpty()) {
+                return true;
+            }
+
+            String filterLowerCase = newValue.toLowerCase();
+            return predicatePersonProjectRegion(project, filterLowerCase);
+        }));
+
+        SortedList<Project> projectSortedList = new SortedList<>(projectFilteredList);
+        projectSortedList.comparatorProperty().bind(tableProject.comparatorProperty());
+        tableProject.setItems(projectSortedList);
+
+    }
+
+    private boolean predicatePersonProjectRegion(Project project, String filterLowerCase) {
+        String date = Formatter.getDateTextFormated(project.getDate(),Formatter.FORMAT_PT_BR_WITH_TIME );
+
+        return  date.contains(filterLowerCase)
+                || project.getId().toString().contains(filterLowerCase)
+                || project.getPerson().getName().toLowerCase().contains(filterLowerCase)
+                || project.getName().toLowerCase().contains(filterLowerCase)
+                || project.getRegion().getName().toLowerCase().contains(filterLowerCase);
+
+    }
 
     private void initCombo() {
         FilteredList<Person> personFilteredList = new FilteredList<>(listPerson(), person -> true);
@@ -422,5 +452,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     private ObservableList<Region> listRegion() {
         return FXCollections.observableArrayList(regionRepository.findAll());
+    }
+
+    private ObservableList<Project> listProject() {
+        return FXCollections.observableArrayList(projectRepository.findAll());
     }
 }

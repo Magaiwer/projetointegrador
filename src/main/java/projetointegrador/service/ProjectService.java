@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import projetointegrador.model.Project;
 import projetointegrador.repository.ProjectRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +25,7 @@ public class ProjectService {
     @Transactional
     public void save(Project project)
     {
-
+        project.setDate(LocalDateTime.now());
         projectRepository.saveAndFlush(project);
     }
 }
