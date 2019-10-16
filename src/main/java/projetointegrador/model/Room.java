@@ -25,7 +25,8 @@ public class Room implements Serializable {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    /*
     @OneToMany
     private List<Face> faces;
-
+    */
 }

@@ -15,6 +15,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import projetointegrador.Util.EFxmlView;
@@ -23,7 +24,10 @@ import projetointegrador.Util.MessagesUtil;
 import projetointegrador.config.StageManager;
 import projetointegrador.model.*;
 import projetointegrador.repository.*;
+import projetointegrador.service.ComponentService;
+import projetointegrador.service.FaceService;
 import projetointegrador.service.ProjectService;
+import projetointegrador.service.RoomService;
 import projetointegrador.validation.EntityValidator;
 
 import java.math.BigDecimal;
@@ -108,7 +112,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXTextField txtNameComponent;
 
     @FXML
-    private TableView<?> tableComponent;
+    private TableView<Component> tableComponent;
 
     @FXML
     private TableColumn<Component, String> columnNameFace;
@@ -225,25 +229,53 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private RoomService roomService;
+
+    @Autowired
+    private FaceService faceService;
+
+    @Autowired
+    private ComponentService componentService;
+
     @Lazy
     @Autowired
     private StageManager stageManager;
 
     private Project project;
     private List<Room> listRoom;
+    private List<Face> listFace;
+    private List<Component> listComponent;
+    private List<ComponentMaterial> listComponentMaterial;
     private Room room;
+    private Face face;
+    private Component component;
+    private ComponentMaterial componentMaterial;
 
     private void initializeFormWizzard() {
 
         if(txtIndex != null) {
             project = new Project();
             room = new Room();
+            face = new Face();
+            component = new Component();
+            componentMaterial = new ComponentMaterial();
             listRoom = new ArrayList<>();
+            listFace = new ArrayList<>();
+            listComponent = new ArrayList<>();
+            listComponentMaterial = new ArrayList<>();
+
 
             initCombo();
             initTableRoom();
+            initTableFace();
+            initTableComponent();
+            initTableComponentMaterial();
+            initConverter();
+            EntityValidator.noEmpty(txtNameProject, txtIndex, txtNameRoom, txtNameFace, txtNameComponent, txtAlpha,
+                txtThickness, txtTemperatureInside, txtTemperatureOutside
+            );
         }
-
     }
 
     @Override
@@ -267,6 +299,42 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             bindRoom();
             listRoom.add(room);
             tableRoom.setItems(FXCollections.observableArrayList(listRoom));
+        }
+    }
+
+    @FXML
+    void onAddFace(ActionEvent event)
+    {
+        boolean noEmpty = EntityValidator.noEmpty(txtNameFace);
+        if(face != null && noEmpty)
+        {
+            bindFace();
+            listFace.add(face);
+            tableFace.setItems(FXCollections.observableArrayList(listFace));
+        }
+    }
+
+    @FXML
+    void onAddComponent(ActionEvent event)
+    {
+        boolean noEmpty = EntityValidator.noEmpty(txtNameComponent);
+        if(component != null && noEmpty)
+        {
+            bindComponent();
+            listComponent.add(component);
+            tableComponent.setItems(FXCollections.observableArrayList(listComponent));
+        }
+    }
+
+    @FXML
+    void onAddComponentMaterial(ActionEvent event)
+    {
+        boolean noEmpty = EntityValidator.noEmpty(txtThickness);
+        if(componentMaterial != null && noEmpty)
+        {
+            bindComponent();
+            listComponentMaterial.add(componentMaterial);
+            tableComponentMaterial.setItems(FXCollections.observableArrayList(listComponentMaterial));
         }
     }
 
@@ -297,19 +365,82 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         }
         if(tabRoom.isSelected())
         {
+            boolean noEmpty = EntityValidator.noEmpty(txtNameRoom);
 
+            if(room != null && noEmpty)
+            {
+                bindRoom();
+
+                try
+                {
+
+                    List<Room> roomList = roomService.saveAll(tableRoom.getItems());
+
+                    comboRoom.setItems(FXCollections.observableArrayList(roomList));
+
+                    MessagesUtil.showMessageInformation("Comodo(s) salvo(s) com sucesso");
+                }
+                catch(Exception e)
+                {
+                    MessagesUtil.showMessageError(e.getMessage());
+                }
+            }
         }
         if(tabFace.isSelected())
         {
+            boolean noEmpty = EntityValidator.noEmpty(txtNameFace);
 
+            if(face != null && noEmpty)
+            {
+                bindFace();
+
+                try
+                {
+                    List<Face> faceList = faceService.saveAll(tableFace.getItems());
+
+                    comboFace.setItems(FXCollections.observableArrayList(faceList));
+
+                    MessagesUtil.showMessageInformation("Face(s) salva(s) com sucesso");
+                }
+                catch(Exception e)
+                {
+                    MessagesUtil.showMessageError(e.getMessage());
+                }
+            }
         }
         if(tabComponent.isSelected())
         {
+            bindComponent();
 
+            try
+            {
+                List<Component> componentList = componentService.saveAll(tableComponent.getItems());
+
+                comboComponent.setItems(FXCollections.observableArrayList(componentList));
+
+                MessagesUtil.showMessageInformation("Componente(s) da face salvo(s) com sucesso");
+            }
+            catch(Exception e)
+            {
+                MessagesUtil.showMessageError(e.getMessage());
+            }
         }
         if(tabComponentMaterial.isSelected())
         {
+            bindComponentMaterial();
+            boolean noEmpty = EntityValidator.noEmpty(txtThickness);
 
+            if(component != null && noEmpty) {
+                try {
+
+                    component.setComponentMaterials(tableComponentMaterial.getItems());
+                    componentService.save(component);
+
+                    MessagesUtil.showMessageInformation("Conjunto de materiais do(s) componente(s) da face foram salvo(s) com sucesso");
+                } catch (Exception e) {
+                    MessagesUtil.showMessageError(e.getMessage());
+                }
+            }
         }
         if(tabFinal.isSelected())
         {
@@ -331,6 +462,29 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         room.setProject(project);
         room.setName(txtNameRoom.getText());
     }
+
+    private void bindFace()
+    {
+        face = new Face();
+        face.setName(txtNameFace.getText());
+        face.setRoom(comboRoom.getSelectionModel().getSelectedItem());
+    }
+
+    private void bindComponent() {
+        component = new Component();
+        component.setName(txtNameComponent.getText());
+        component.setFace(comboFace.getSelectionModel().getSelectedItem());
+    }
+
+    private void bindComponentMaterial() {
+        ComponentMaterial componentMaterial = new ComponentMaterial();
+        component = comboComponent.getSelectionModel().getSelectedItem();
+
+        componentMaterial.setComponent(component);
+        componentMaterial.setMaterial(comboMaterial.getSelectionModel().getSelectedItem());
+        componentMaterial.setThickness(new BigDecimal(txtThickness.getText()));
+    }
+
 
 
     @FXML
@@ -359,6 +513,22 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     public void initTableRoom() {
         columnNameRoom.setCellValueFactory(new PropertyValueFactory<>("name"));
+    }
+
+    public void initTableFace() {
+        columnFace.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnFaceRoom.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getRoom().getName()));
+    }
+
+    public void initTableComponent() {
+        columnNameComponent.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnNameFace.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFace().getName()));
+    }
+
+    public void initTableComponentMaterial() {
+        columnComponentMaterial.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getComponent().getName()));
+        columnMaterialComponent.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getMaterial().getNome()));
+        columnThicknessComponent.setCellValueFactory(new PropertyValueFactory<>("thickness"));
     }
 
     @Override
@@ -415,17 +585,108 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
         comboCustomer.setItems(personFilteredList);
 
-
+        /*
         FilteredList<Room> roomFilteredList = new FilteredList<>(listRoom(), room -> true);
 
         comboRoom.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             roomFilteredList.setPredicate(room -> room.getName().toLowerCase().contains(newValue.toLowerCase()));
         });
+        */
+        comboRoom.setItems(listRoom());
 
         comboFace.setItems(listFace());
 
         comboRegion.setItems(listRegion());
     }
+
+    private void initConverter() {
+        comboRoom.setConverter(new StringConverter<Room>() {
+            @Override
+            public String toString(Room room) {
+                return room.getName();
+            }
+
+            @Override
+            public Room fromString(String string) {
+                return null;
+            }
+        });
+
+        comboFace.setConverter(new StringConverter<Face>() {
+            @Override
+            public String toString(Face face) {
+                return face.getName() ;
+            }
+
+            @Override
+            public Face fromString(String string) {
+                return null;
+            }
+        });
+
+        comboCustomer.setConverter(new StringConverter<Person>() {
+            @Override
+            public String toString(Person person) {
+                return person.getName();
+            }
+
+            @Override
+            public Person fromString(String string) {
+                return null;
+            }
+        });
+
+        comboRegion.setConverter(new StringConverter<Region>() {
+            @Override
+            public String toString(Region region) {
+                return region.getName();
+            }
+
+            @Override
+            public Region fromString(String string) {
+                return null;
+            }
+        });
+
+        comboAbsorbance.setConverter(new StringConverter<MaterialAbsortancia>() {
+            @Override
+            public String toString(MaterialAbsortancia object) {
+                return object.getSuperficie();
+            }
+
+            @Override
+            public MaterialAbsortancia fromString(String string) {
+                return null;
+            }
+        });
+
+        comboComponent.setConverter(new StringConverter<Component>() {
+            @Override
+            public String toString(Component component) {
+                return component.getName();
+            }
+
+            @Override
+            public Component fromString(String string) {
+                return null;
+            }
+        });
+
+        comboMaterial.setConverter(new StringConverter<Material>() {
+            @Override
+            public String toString(Material object) {
+                return object.getNome();
+            }
+
+            @Override
+            public Material fromString(String string) {
+                return null;
+            }
+        });
+
+
+    }
+
 
     @FXML
     void onNext(ActionEvent event) {
