@@ -31,7 +31,7 @@
                         <JFXTextField fx:id="txtNameProject" labelFloat="true" layoutX="14.0" layoutY="40.0" prefHeight="28.0" prefWidth="658.0" promptText="Nome *" AnchorPane.topAnchor="40.0" />
                         <JFXTextField fx:id="txtDescription" labelFloat="true" layoutX="14.0" layoutY="95.0" prefHeight="28.0" prefWidth="658.0" promptText="Descrição" />
                         <JFXComboBox fx:id="comboCustomer" labelFloat="true" layoutX="14.0" layoutY="147.0" prefHeight="28.0" prefWidth="658.0" promptText="Cliente *" />
-                        <JFXComboBox fx:id="comboRegion" labelFloat="true" layoutX="14.0" layoutY="200.0" prefHeight="28.0" prefWidth="487.0" promptText="Região *" />
+                        <JFXComboBox fx:id="comboRegion" labelFloat="true" layoutX="14.0" layoutY="200.0" onAction="#onChangeRegion" prefHeight="28.0" prefWidth="487.0" promptText="Região *" />
                         <JFXTextField fx:id="txtIndex" labelFloat="true" layoutX="521.0" layoutY="200.0" prefHeight="28.0" prefWidth="151.0" promptText="Indice *" />
                      </children>
                   </AnchorPane>
@@ -111,7 +111,7 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <JFXComboBox fx:id="comboComponent" labelFloat="true" layoutX="25.0" layoutY="24.0" prefHeight="28.0" prefWidth="469.0" promptText="Conjunto *" AnchorPane.topAnchor="40.0" />
-                        <JFXComboBox fx:id="comboMaterial" labelFloat="true" layoutX="24.0" layoutY="102.0" prefHeight="28.0" prefWidth="472.0" promptText="Material *" />
+                        <JFXComboBox fx:id="comboMaterial" labelFloat="true" layoutX="24.0" layoutY="102.0" onAction="#onChangeMaterial" prefHeight="28.0" prefWidth="472.0" promptText="Material *" />
                         <JFXTextField fx:id="txtThickness" labelFloat="true" layoutX="26.0" layoutY="163.0" prefHeight="28.0" prefWidth="468.0" promptText="Espessura *" />
                         <TableView fx:id="tableComponentMaterial" layoutX="25.0" layoutY="231.0" prefHeight="253.0" prefWidth="740.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="231.0">
                            <columns>
@@ -123,7 +123,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <JFXButton fx:id="btnAddComponentMaterial" buttonType="RAISED" graphicTextGap="15.0" layoutX="540.0" layoutY="162.0" onAction="#onAddComponentMaterial"  prefHeight="28.0" prefWidth="124.0" text="Adicionar">
+                        <JFXButton fx:id="btnAddComponentMaterial" buttonType="RAISED" graphicTextGap="15.0" layoutX="540.0" layoutY="162.0" onAction="#onAddComponentMaterial" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
                            <graphic>
                               <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
                            </graphic>
