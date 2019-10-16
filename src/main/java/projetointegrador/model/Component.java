@@ -3,6 +3,7 @@ package projetointegrador.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,8 +17,10 @@ import java.util.List;
 @Data
 @ToString(exclude = "face")
 @EqualsAndHashCode(exclude = "face")
+@DynamicUpdate
 public class Component implements Serializable {
 
+    @Transient
     private final BigDecimal RSE = new BigDecimal(0.04);
 
     @Id
@@ -25,7 +28,11 @@ public class Component implements Serializable {
     private Long id;
 
     @Column
+    private String name;
+
+    @Column
     private BigDecimal resistanceTotal;
+
 
     @Column
     private BigDecimal transmittance;

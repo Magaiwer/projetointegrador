@@ -10,6 +10,7 @@ import projetointegrador.model.Room;
 import projetointegrador.repository.RoomRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class RoomService {
@@ -20,8 +21,13 @@ public class RoomService {
     private RoomRepository roomRepository;
 
     @Transactional
-    public void save(Room room)
+    public List<Room> saveAll(List<Room> roomList)
     {
-        roomRepository.saveAndFlush(room);
+       return roomRepository.saveAll(roomList);
+    }
+
+    @Transactional
+    public void save(Room room) {
+        roomRepository.save(room);
     }
 }

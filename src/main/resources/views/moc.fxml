@@ -96,7 +96,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <JFXButton fx:id="btnAddComponent" buttonType="RAISED" graphicTextGap="15.0" layoutX="572.0" layoutY="94.0" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
+                        <JFXButton fx:id="btnAddComponent" buttonType="RAISED" graphicTextGap="15.0" layoutX="572.0" layoutY="94.0" onAction="#onAddComponent" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
                            <graphic>
                               <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
                            </graphic>
@@ -123,7 +123,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <JFXButton fx:id="btnAddComponentMaterial" buttonType="RAISED" graphicTextGap="15.0" layoutX="540.0" layoutY="162.0" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
+                        <JFXButton fx:id="btnAddComponentMaterial" buttonType="RAISED" graphicTextGap="15.0" layoutX="540.0" layoutY="162.0" onAction="#onAddComponentMaterial"  prefHeight="28.0" prefWidth="124.0" text="Adicionar">
                            <graphic>
                               <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
                            </graphic>
