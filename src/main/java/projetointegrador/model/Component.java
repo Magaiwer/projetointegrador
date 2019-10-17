@@ -15,8 +15,8 @@ import java.util.List;
 @Entity
 @Table(name = "component")
 @Data
-@ToString(exclude = "face")
-@EqualsAndHashCode(exclude = "face")
+@ToString(exclude = {"face", "componentMaterials"})
+@EqualsAndHashCode(exclude = {"face", "componentMaterials"})
 @DynamicUpdate
 public class Component implements Serializable {
 
@@ -68,6 +68,12 @@ public class Component implements Serializable {
     @Transient
     private BigDecimal rsi;
 
+    @Transient
+    private BigDecimal transmittanceGlass;
+
+    @Transient
+    private BigDecimal solarFactor;
+
     public BigDecimal calculateResistanceTotal() {
         BigDecimal resistanceSum = this.componentMaterials
                 .stream()
@@ -97,8 +103,6 @@ public class Component implements Serializable {
 
         return this.transmittance.multiply(this.alpha.multiply(this.indexRadiation).multiply(RSE).add(deltaTemperature))
                 .setScale(4, RoundingMode.HALF_EVEN);
-
-
     }
 
     public BigDecimal calculateQFO(BigDecimal qfo) {
@@ -106,8 +110,8 @@ public class Component implements Serializable {
     }
 
 
-    public BigDecimal calculateQFT(BigDecimal outsideTemperature, BigDecimal insideTemperature, BigDecimal solarFactor, BigDecimal transmittance) {
-        this.qft = transmittance.multiply(outsideTemperature.subtract(insideTemperature).abs()).add(solarFactor.multiply(this.indexRadiation));
+    public BigDecimal calculateQFT(BigDecimal outsideTemperature, BigDecimal insideTemperature) {
+        this.qft = this.transmittanceGlass.multiply(outsideTemperature.subtract(insideTemperature).abs()).add(this.solarFactor.multiply(this.indexRadiation));
         return this.qft.multiply(m2);
     }
 

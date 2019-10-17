@@ -25,4 +25,7 @@ public class Material
 
     @Column
     private BigDecimal condutividadeTermica;
+
+    @Column
+    private boolean glass;
 }

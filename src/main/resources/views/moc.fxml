@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.ProjectController">
@@ -28,10 +29,10 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="760.0">
                      <children>
-                        <JFXTextField fx:id="txtNameProject" labelFloat="true" layoutX="14.0" layoutY="40.0" prefHeight="28.0" prefWidth="658.0" promptText="Nome *" AnchorPane.topAnchor="40.0" />
+                        <JFXTextField fx:id="txtNameProject" labelFloat="true" layoutX="14.0" layoutY="37.0" prefHeight="28.0" prefWidth="658.0" promptText="Nome *" AnchorPane.topAnchor="37.0" />
                         <JFXTextField fx:id="txtDescription" labelFloat="true" layoutX="14.0" layoutY="95.0" prefHeight="28.0" prefWidth="658.0" promptText="Descrição" />
-                        <JFXComboBox fx:id="comboCustomer" labelFloat="true" layoutX="14.0" layoutY="147.0" prefHeight="28.0" prefWidth="658.0" promptText="Cliente *" />
-                        <JFXComboBox fx:id="comboRegion" labelFloat="true" layoutX="14.0" layoutY="200.0" onAction="#onChangeRegion" prefHeight="28.0" prefWidth="487.0" promptText="Região *" />
+                        <JFXComboBox fx:id="comboCustomer" labelFloat="true" layoutX="14.0" layoutY="149.0" prefHeight="28.0" prefWidth="658.0" promptText="Cliente *" />
+                        <JFXComboBox fx:id="comboRegion" labelFloat="true" layoutX="14.0" layoutY="200.0" prefHeight="28.0" prefWidth="487.0" promptText="Região *" />
                         <JFXTextField fx:id="txtIndex" labelFloat="true" layoutX="521.0" layoutY="200.0" prefHeight="28.0" prefWidth="151.0" promptText="Indice *" />
                      </children>
                   </AnchorPane>
@@ -41,7 +42,10 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXTextField fx:id="txtNameRoom" labelFloat="true" layoutX="14.0" layoutY="30.0" prefHeight="28.0" prefWidth="526.0" promptText="Nome *" AnchorPane.topAnchor="40.0" />
+                        <JFXTextField fx:id="txtNameRoom" labelFloat="true" layoutX="14.0" layoutY="30.0" prefHeight="28.0" prefWidth="526.0" promptText="Nome *" AnchorPane.topAnchor="40.0">
+                           <tooltip>
+                              <Tooltip text="Nome do comodo. Ex: Sala, Quarto" />
+                           </tooltip></JFXTextField>
                         <TableView fx:id="tableRoom" layoutX="14.0" layoutY="129.0" prefHeight="292.0" prefWidth="659.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
                            <columns>
                               <TableColumn fx:id="columnNameRoom" prefWidth="75.0" text="Comodo" />
@@ -63,7 +67,10 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXTextField fx:id="txtNameFace" labelFloat="true" layoutX="16.0" layoutY="14.0" prefHeight="28.0" prefWidth="519.0" promptText="Nome *" AnchorPane.topAnchor="40.0" />
+                        <JFXTextField fx:id="txtNameFace" labelFloat="true" layoutX="17.0" layoutY="96.0" prefHeight="28.0" prefWidth="519.0" promptText="Nome *" AnchorPane.topAnchor="96.0">
+                           <tooltip>
+                              <Tooltip text="Descrição da face. Ex: Face Sul, Face Leste" />
+                           </tooltip></JFXTextField>
                         <TableView fx:id="tableFace" layoutX="16.0" layoutY="150.0" prefHeight="334.0" prefWidth="740.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="150.0">
                            <columns>
                               <TableColumn fx:id="columnFace" prefWidth="75.0" text="Face" />
@@ -77,16 +84,19 @@
                            <graphic>
                               <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
                            </graphic></JFXButton>
-                        <JFXComboBox fx:id="comboRoom" labelFloat="true" layoutX="15.0" layoutY="95.0" prefHeight="28.0" prefWidth="522.0" promptText="Comodo *" />
+                        <JFXComboBox fx:id="comboRoom" labelFloat="true" layoutX="15.0" layoutY="39.0" prefHeight="28.0" prefWidth="522.0" promptText="Comodo *" />
                      </children>
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab fx:id="tabComponent" text="Conjunto">
+            <Tab fx:id="tabComponent" text="Componentes">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXTextField fx:id="txtNameComponent" labelFloat="true" layoutX="17.0" layoutY="94.0" prefHeight="28.0" prefWidth="519.0" promptText="Nome *" AnchorPane.topAnchor="94.0" />
+                        <JFXTextField fx:id="txtNameComponent" labelFloat="true" layoutX="17.0" layoutY="94.0" prefHeight="28.0" prefWidth="519.0" promptText="Nome *" AnchorPane.topAnchor="94.0">
+                           <tooltip>
+                              <Tooltip text="Descrição dos componentes da face. Ex: Parte superior madeira, Parte inferior concreto" />
+                           </tooltip></JFXTextField>
                         <TableView fx:id="tableComponent" layoutX="16.0" layoutY="150.0" prefHeight="334.0" prefWidth="740.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="150.0">
                            <columns>
                               <TableColumn fx:id="columnNameFace" prefWidth="169.0" text="Face" />
@@ -110,9 +120,9 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXComboBox fx:id="comboComponent" labelFloat="true" layoutX="25.0" layoutY="24.0" prefHeight="28.0" prefWidth="469.0" promptText="Conjunto *" AnchorPane.topAnchor="40.0" />
-                        <JFXComboBox fx:id="comboMaterial" labelFloat="true" layoutX="24.0" layoutY="102.0" onAction="#onChangeMaterial" prefHeight="28.0" prefWidth="472.0" promptText="Material *" />
-                        <JFXTextField fx:id="txtThickness" labelFloat="true" layoutX="26.0" layoutY="163.0" prefHeight="28.0" prefWidth="468.0" promptText="Espessura *" />
+                        <JFXComboBox fx:id="comboComponent" labelFloat="true" layoutX="25.0" layoutY="24.0" prefHeight="28.0" prefWidth="357.0" promptText="Conjunto *" AnchorPane.topAnchor="40.0" />
+                        <JFXComboBox fx:id="comboMaterial" labelFloat="true" layoutX="24.0" layoutY="102.0" prefHeight="28.0" prefWidth="359.0" promptText="Material *" />
+                        <JFXTextField fx:id="txtThickness" labelFloat="true" layoutX="26.0" layoutY="163.0" prefHeight="28.0" prefWidth="357.0" promptText="Espessura *" />
                         <TableView fx:id="tableComponentMaterial" layoutX="25.0" layoutY="231.0" prefHeight="253.0" prefWidth="740.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="231.0">
                            <columns>
                               <TableColumn fx:id="columnComponentMaterial" prefWidth="75.0" text="Conjunto" />
@@ -123,16 +133,20 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <JFXButton fx:id="btnAddComponentMaterial" buttonType="RAISED" graphicTextGap="15.0" layoutX="540.0" layoutY="162.0" onAction="#onAddComponentMaterial" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
+                        <JFXButton fx:id="btnAddComponentMaterial" buttonType="RAISED" graphicTextGap="15.0" layoutX="579.0" layoutY="163.0" onAction="#onAddComponentMaterial" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
                            <graphic>
                               <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
                            </graphic>
                         </JFXButton>
+                        <JFXTextField fx:id="txtThermalConductivity" editable="false" labelFloat="true" layoutX="396.0" layoutY="164.0" prefHeight="28.0" prefWidth="160.0" promptText="Condutividade Térmica *" />
+                        <JFXTextField fx:id="txtFaceComponentMaterial" editable="false" labelFloat="true" layoutX="395.0" layoutY="40.0" prefHeight="28.0" prefWidth="339.0" promptText="Face" />
+                        <JFXTextField fx:id="txtTransmittance" labelFloat="true" layoutX="395.0" layoutY="102.0" prefHeight="28.0" prefWidth="155.0" promptText="Trasmitâcia Fabricante *" visible="false" />
+                        <JFXTextField fx:id="txtSolarFactor" labelFloat="true" layoutX="579.0" layoutY="102.0" prefHeight="28.0" prefWidth="155.0" promptText="Fator Solar Fabricante *" visible="false" />
                      </children>
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab fx:id="tabFinal" text="Final">
+            <Tab fx:id="tabFinal" text="Finalizar">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -146,6 +160,11 @@
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="rgSummer" layoutX="614.0" layoutY="37.0" text="Verão" toggleGroup="$toggleGroup" AnchorPane.topAnchor="40.0" />
                         <JFXTextField fx:id="txtAlpha" labelFloat="true" layoutX="508.0" layoutY="104.0" prefHeight="28.0" prefWidth="178.0" promptText="Alfa *" />
+                        <JFXButton fx:id="btnCalculate" layoutX="21.0" layoutY="173.0" onAction="#onCalculate" prefHeight="28.0" prefWidth="274.0" text="Calcular">
+                           <graphic>
+                              <FontAwesomeIconView />
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </AnchorPane>
               </content>

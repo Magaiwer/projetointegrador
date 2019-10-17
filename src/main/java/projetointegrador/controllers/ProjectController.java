@@ -143,6 +143,18 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXTextField txtThickness;
 
     @FXML
+    private JFXTextField txtThermalConductivity;
+
+    @FXML
+    private JFXTextField txtFaceComponentMaterial;
+
+    @FXML
+    private JFXTextField txtTransmittance;
+
+    @FXML
+    private JFXTextField txtSolarFactor;
+
+    @FXML
     private TableView<ComponentMaterial> tableComponentMaterial;
 
     @FXML
@@ -215,6 +227,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @FXML
     private JFXButton btnDetailProject;
 
+    @FXML
+    private JFXButton btnCalculate;
+
     @Autowired
     private PersonRepository personRepository;
 
@@ -235,6 +250,8 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     @Autowired
     private MaterialRepository materialRepository;
+    @Autowired
+    private MaterialAbsortanciaRepository absorbanceRpository;
 
     @Autowired
     private ProjectService projectService;
@@ -263,19 +280,17 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private List<Component> listComponent;
     private List<ComponentMaterial> listComponentMaterial;
 
-    private void initializeFormWizzard()
-    {
-        if(txtIndex != null)
-        {
-            project           = new Project();
-            room              = new Room();
-            face              = new Face();
-            component         = new Component();
+    private void initializeFormWizzard() {
+        if (txtIndex != null) {
+            project = new Project();
+            room = new Room();
+            face = new Face();
+            component = new Component();
             componentMaterial = new ComponentMaterial();
 
-            listRoom              = new ArrayList<>();
-            listFace              = new ArrayList<>();
-            listComponent         = new ArrayList<>();
+            listRoom = new ArrayList<>();
+            listFace = new ArrayList<>();
+            listComponent = new ArrayList<>();
             listComponentMaterial = new ArrayList<>();
 
             initCombo();
@@ -284,33 +299,30 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             initTableComponent();
             initTableComponentMaterial();
             initConverter();
+            initListeners();
 
             EntityValidator.noEmpty(txtNameProject, txtIndex, txtNameRoom, txtNameFace, txtNameComponent, txtAlpha,
-                txtThickness, txtTemperatureInside, txtTemperatureOutside
+                    txtThickness, txtTemperatureInside, txtTemperatureOutside
             );
         }
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
         initTable();
         initializeFormWizzard();
     }
 
     @FXML
     @Override
-    public void onCancel(ActionEvent event)
-    {
+    public void onCancel(ActionEvent event) {
 
     }
 
     @FXML
-    void onAddRoom(ActionEvent event)
-    {
+    void onAddRoom(ActionEvent event) {
         boolean noEmpty = EntityValidator.noEmpty(txtNameRoom);
-        if(room != null && noEmpty)
-        {
+        if (room != null && noEmpty) {
             bindRoom();
             listRoom.add(room);
             tableRoom.setItems(FXCollections.observableArrayList(listRoom));
@@ -318,11 +330,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     }
 
     @FXML
-    void onAddFace(ActionEvent event)
-    {
+    void onAddFace(ActionEvent event) {
         boolean noEmpty = EntityValidator.noEmpty(txtNameFace);
-        if(face != null && noEmpty)
-        {
+        if (face != null && noEmpty) {
             bindFace();
             listFace.add(face);
             tableFace.setItems(FXCollections.observableArrayList(listFace));
@@ -330,41 +340,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     }
 
     @FXML
-    void onChangeRegion(ActionEvent event)
-    {
-        EventHandler<ActionEvent> eventChangeRegion =
-                new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent e)
-                    {
-                        txtIndex.setText(comboRegion.getValue().getIndex().toString());
-                    }
-                };
-
-        // Set on action
-        comboRegion.setOnAction(eventChangeRegion);
-    }
-
-    @FXML
-    void onChangeMaterial(ActionEvent event)
-    {
-        EventHandler<ActionEvent> eventChangeRegion =
-                new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent e)
-                    {
-                        txtThickness.setText(comboMaterial.getValue().getCondutividadeTermica().toString());
-                    }
-                };
-
-        // Set on action
-        comboMaterial.setOnAction(eventChangeRegion);
-    }
-
-    @FXML
-    void onAddComponent(ActionEvent event)
-    {
+    void onAddComponent(ActionEvent event) {
         boolean noEmpty = EntityValidator.noEmpty(txtNameComponent);
-        if(component != null && noEmpty)
-        {
+        if (component != null && noEmpty) {
             bindComponent();
             listComponent.add(component);
             tableComponent.setItems(FXCollections.observableArrayList(listComponent));
@@ -372,161 +350,132 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     }
 
     @FXML
-    void onAddComponentMaterial(ActionEvent event)
-    {
+    void onAddComponentMaterial(ActionEvent event) {
         boolean noEmpty = EntityValidator.noEmpty(txtThickness);
-        if(componentMaterial != null && noEmpty)
-        {
-            bindComponent();
+        if (componentMaterial != null && noEmpty) {
+            bindComponentMaterial();
             listComponentMaterial.add(componentMaterial);
             tableComponentMaterial.setItems(FXCollections.observableArrayList(listComponentMaterial));
         }
     }
 
     @FXML
+    void onCalculate(ActionEvent event) {
+
+    }
+
+    @FXML
     @Override
-    public void onSave(ActionEvent event)
-    {
-        if(tabProject.isSelected())
-        {
+    public void onSave(ActionEvent event) {
+        if (tabProject.isSelected()) {
             boolean noEmpty = EntityValidator.noEmpty(txtNameProject, txtIndex);
 
-            if (project != null && noEmpty)
-            {
+            if (project != null && noEmpty) {
                 bindProject();
 
-                try
-                {
+                try {
                     projectService.save(project);
                     MessagesUtil.showMessageInformation("Projeto salvo com sucesso");
 
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     MessagesUtil.showMessageError(e.getMessage());
                 }
             }
 
         }
-        if(tabRoom.isSelected())
-        {
+        if (tabRoom.isSelected()) {
             boolean noEmpty = EntityValidator.noEmpty(txtNameRoom);
 
-            if(room != null && noEmpty)
-            {
+            if (room != null && noEmpty) {
                 bindRoom();
 
-                try
-                {
+                try {
                     List<Room> roomList = roomService.saveAll(tableRoom.getItems());
 
                     comboRoom.setItems(FXCollections.observableArrayList(roomList));
 
                     MessagesUtil.showMessageInformation("Comodo(s) salvo(s) com sucesso");
-                }
-                catch(Exception e)
-                {
+                } catch (Exception e) {
                     MessagesUtil.showMessageError(e.getMessage());
                 }
             }
         }
-        if(tabFace.isSelected())
-        {
+        if (tabFace.isSelected()) {
             boolean noEmpty = EntityValidator.noEmpty(txtNameFace);
 
-            if(face != null && noEmpty)
-            {
+            if (face != null && noEmpty) {
                 bindFace();
 
-                try
-                {
+                try {
                     List<Face> faceList = faceService.saveAll(tableFace.getItems());
 
                     comboFace.setItems(FXCollections.observableArrayList(faceList));
 
                     MessagesUtil.showMessageInformation("Face(s) salva(s) com sucesso");
-                }
-                catch(Exception e)
-                {
+                } catch (Exception e) {
                     MessagesUtil.showMessageError(e.getMessage());
                 }
             }
         }
-        if(tabComponent.isSelected())
-        {
+        if (tabComponent.isSelected()) {
             bindComponent();
 
-            try
-            {
+            try {
                 List<Component> componentList = componentService.saveAll(tableComponent.getItems());
 
                 comboComponent.setItems(FXCollections.observableArrayList(componentList));
 
                 MessagesUtil.showMessageInformation("Componente(s) da face salvo(s) com sucesso");
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 MessagesUtil.showMessageError(e.getMessage());
             }
         }
-        if(tabComponentMaterial.isSelected())
-        {
-            bindComponentMaterial();
-            boolean noEmpty = EntityValidator.noEmpty(txtThickness);
+        if (tabComponentMaterial.isSelected()) {
+            if (componentMaterial != null) {
+                try {
 
-            if(component != null && noEmpty)
-            {
-                try
-                {
                     component.setComponentMaterials(tableComponentMaterial.getItems());
+                    System.out.println(component);
                     componentService.save(component);
 
                     MessagesUtil.showMessageInformation("Conjunto de materiais do(s) componente(s) da face foram salvo(s) com sucesso");
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     MessagesUtil.showMessageError(e.getMessage());
                 }
             }
         }
-        if(tabFinal.isSelected())
-        {
+        if (tabFinal.isSelected()) {
 
         }
     }
 
-    private void bindProject()
-    {
+    private void bindProject() {
         project.setName(txtNameProject.getText());
         project.setDescription(txtDescription.getText());
         project.setPerson(comboCustomer.getValue());
         project.setRegion(comboRegion.getValue());
     }
 
-    private void bindRoom()
-    {
+    private void bindRoom() {
         room = new Room();
         room.setProject(project);
         room.setName(txtNameRoom.getText());
     }
 
-    private void bindFace()
-    {
+    private void bindFace() {
         face = new Face();
         face.setName(txtNameFace.getText());
         face.setRoom(comboRoom.getSelectionModel().getSelectedItem());
     }
 
-    private void bindComponent()
-    {
+    private void bindComponent() {
         component = new Component();
         component.setName(txtNameComponent.getText());
         component.setFace(comboFace.getSelectionModel().getSelectedItem());
     }
 
-    private void bindComponentMaterial()
-    {
-        ComponentMaterial componentMaterial = new ComponentMaterial();
+    private void bindComponentMaterial() {
+        componentMaterial = new ComponentMaterial();
         component = comboComponent.getSelectionModel().getSelectedItem();
 
         componentMaterial.setComponent(component);
@@ -536,60 +485,60 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     @FXML
     @Override
-    public void onEdit(ActionEvent event)
-    {
+    public void onEdit(ActionEvent event) {
 
     }
 
     @FXML
     @Override
-    public void onDelete(ActionEvent event)
-    {
+    public void onDelete(ActionEvent event) {
 
     }
 
     @FXML
     @Override
-    public void onNew(ActionEvent event)
-    {
+    public void onNew(ActionEvent event) {
         stageManager.switchScene(root, EFxmlView.PROJECT);
         txtNameProject.requestFocus();
     }
 
     @Override
-    public void initListeners()
-    {
+    public void initListeners() {
+        comboRegion.valueProperty().addListener((observable, oldValue, newValue) -> txtIndex.setText(newValue.getIndex().toString()));
 
+        comboMaterial.valueProperty().addListener((observable, oldValue, newValue) -> {
+            txtThermalConductivity.setText(newValue.getCondutividadeTermica().toString());
+            txtTransmittance.setVisible(newValue.isGlass());
+            txtSolarFactor.setVisible(newValue.isGlass());
+        });
+
+        comboAbsorbance.valueProperty().addListener((observable, oldValue, newValue) -> txtAlpha.setText(newValue.getAlfaIni().toString()));
+        comboComponent.valueProperty().addListener((observable, oldValue, newValue) -> txtFaceComponentMaterial.setText(newValue.getFace().getName()));
     }
 
-    public void initTableRoom()
-    {
+    public void initTableRoom() {
         columnNameRoom.setCellValueFactory(new PropertyValueFactory<>("name"));
     }
 
-    public void initTableFace()
-    {
+    public void initTableFace() {
         columnFace.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnFaceRoom.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getRoom().getName()));
     }
 
-    public void initTableComponent()
-    {
+    public void initTableComponent() {
         columnNameComponent.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnNameFace.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFace().getName()));
     }
 
-    public void initTableComponentMaterial()
-    {
+    public void initTableComponentMaterial() {
         columnComponentMaterial.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getComponent().getName()));
         columnMaterialComponent.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getMaterial().getNome()));
         columnThicknessComponent.setCellValueFactory(new PropertyValueFactory<>("thickness"));
     }
 
     @Override
-    public void initTable()
-    {
-                     /*Table project*/
+    public void initTable() {
+        /*Table project*/
         columnIdProject.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnNameProject.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnClientProject.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getPerson().getName()));
@@ -600,8 +549,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
         txtFilterProject.textProperty().addListener((observable, oldValue, newValue) -> projectFilteredList.setPredicate(project ->
         {
-            if (newValue == null || newValue.isEmpty())
-            {
+            if (newValue == null || newValue.isEmpty()) {
                 return true;
             }
 
@@ -615,11 +563,10 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     }
 
-    private boolean predicatePersonProjectRegion(Project project, String filterLowerCase)
-    {
-        String date = Formatter.getDateTextFormated(project.getDate(),Formatter.FORMAT_PT_BR_WITH_TIME );
+    private boolean predicatePersonProjectRegion(Project project, String filterLowerCase) {
+        String date = Formatter.getDateTextFormated(project.getDate(), Formatter.FORMAT_PT_BR_WITH_TIME);
 
-        return  date.contains(filterLowerCase)
+        return date.contains(filterLowerCase)
                 || project.getId().toString().contains(filterLowerCase)
                 || project.getPerson().getName().toLowerCase().contains(filterLowerCase)
                 || project.getName().toLowerCase().contains(filterLowerCase)
@@ -627,16 +574,14 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     }
 
-    private void initCombo()
-    {
+    private void initCombo() {
         FilteredList<Person> personFilteredList = new FilteredList<>(listPerson(), person -> true);
         comboCustomer.getEditor().textProperty().addListener((observable, oldValue, newValue) ->
         {
             personFilteredList.setPredicate(person ->
             {
 
-                if (newValue == null || newValue.isEmpty())
-                {
+                if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
 
@@ -647,127 +592,99 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         });
 
         comboCustomer.setItems(personFilteredList);
-
-        comboRoom.setItems(listRoom());
-
-        comboFace.setItems(listFace());
-
         comboRegion.setItems(listRegion());
-
         comboMaterial.setItems(listMaterial());
+        comboAbsorbance.setItems(listMaterialAbsorbance());
     }
 
-    private void initConverter()
-    {
-        comboRoom.setConverter(new StringConverter<Room>()
-        {
+    private void initConverter() {
+        comboRoom.setConverter(new StringConverter<Room>() {
             @Override
-            public String toString(Room room)
-            {
+            public String toString(Room room) {
                 return room.getName();
             }
 
             @Override
-            public Room fromString(String string)
-            {
+            public Room fromString(String string) {
                 return null;
             }
         });
 
-        comboFace.setConverter(new StringConverter<Face>()
-        {
+        comboFace.setConverter(new StringConverter<Face>() {
             @Override
-            public String toString(Face face)
-            {
-                return face.getName() ;
+            public String toString(Face face) {
+                return face.getName();
             }
 
             @Override
-            public Face fromString(String string)
-            {
+            public Face fromString(String string) {
                 return null;
             }
         });
 
-        comboCustomer.setConverter(new StringConverter<Person>()
-        {
+        comboCustomer.setConverter(new StringConverter<Person>() {
             @Override
-            public String toString(Person person)
-            {
+            public String toString(Person person) {
                 return person.getName();
             }
 
             @Override
-            public Person fromString(String string)
-            {
+            public Person fromString(String string) {
                 return null;
             }
         });
 
-        comboRegion.setConverter(new StringConverter<Region>()
-        {
+        comboRegion.setConverter(new StringConverter<Region>() {
             @Override
-            public String toString(Region region)
-            {
+            public String toString(Region region) {
                 return region.getName();
             }
 
             @Override
-            public Region fromString(String string)
-            {
+            public Region fromString(String string) {
                 return null;
             }
         });
 
-        comboAbsorbance.setConverter(new StringConverter<MaterialAbsortancia>()
-        {
+        comboAbsorbance.setConverter(new StringConverter<MaterialAbsortancia>() {
             @Override
-            public String toString(MaterialAbsortancia object)
-            {
+            public String toString(MaterialAbsortancia object) {
                 return object.getSuperficie();
             }
 
             @Override
-            public MaterialAbsortancia fromString(String string)
-            {
+            public MaterialAbsortancia fromString(String string) {
                 return null;
             }
         });
 
-        comboComponent.setConverter(new StringConverter<Component>()
-        {
+        comboComponent.setConverter(new StringConverter<Component>() {
             @Override
-            public String toString(Component component)
-            {
+            public String toString(Component component) {
                 return component.getName();
             }
 
             @Override
-            public Component fromString(String string)
-            {
+            public Component fromString(String string) {
                 return null;
             }
         });
 
-        comboMaterial.setConverter(new StringConverter<Material>()
-        {
+        comboMaterial.setConverter(new StringConverter<Material>() {
             @Override
-            public String toString(Material object)
-            {
+            public String toString(Material object) {
                 return object.getNome();
             }
 
             @Override
-            public Material fromString(String string)
-            {
+            public Material fromString(String string) {
                 return null;
             }
         });
     }
 
     @FXML
-    void onNext(ActionEvent event)
-    {
+    void onNext(ActionEvent event) {
         this.onSave(event);
         tabPane.getSelectionModel().selectNext();
     }
@@ -777,19 +694,23 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         tabPane.getSelectionModel().selectPrevious();
     }
 
-    private ObservableList<Person> listPerson() { return FXCollections.observableArrayList(personRepository.findAll()); }
-
-    private ObservableList<Room> listRoom() {
-        return FXCollections.observableArrayList(roomRepository.findAll());
+    private ObservableList<Person> listPerson() {
+        return FXCollections.observableArrayList(personRepository.findAll());
     }
 
-    private ObservableList<Face> listFace() {
-        return FXCollections.observableArrayList(faceRepository.findAll());
+    private ObservableList<Region> listRegion() {
+        return FXCollections.observableArrayList(regionRepository.findAll());
     }
 
-    private ObservableList<Region> listRegion() { return FXCollections.observableArrayList(regionRepository.findAll()); }
+    private ObservableList<Project> listProject() {
+        return FXCollections.observableArrayList(projectRepository.findAll());
+    }
 
-    private ObservableList<Project> listProject() { return FXCollections.observableArrayList(projectRepository.findAll()); }
+    private ObservableList<Material> listMaterial() {
+        return FXCollections.observableArrayList(materialRepository.findAll());
+    }
 
-    private ObservableList<Material> listMaterial() { return FXCollections.observableArrayList(materialRepository.findAll()); }
+    private ObservableList<MaterialAbsortancia> listMaterialAbsorbance() {
+        return FXCollections.observableArrayList(absorbanceRpository.findAll());
+    }
 }
