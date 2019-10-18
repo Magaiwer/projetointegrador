@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -56,13 +57,7 @@ public class Component implements Serializable {
     @JoinColumn(name = "face_id")
     private Face face;
 
-    @ManyToMany()
-    @JoinTable(name = "component_material",
-            joinColumns = @JoinColumn(name = "component_id"),
-            inverseJoinColumns = @JoinColumn(name = "material_id"))
-    private List<Material> materials;
-
-    @OneToMany(mappedBy = "component")
+    @OneToMany(mappedBy = "component", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<ComponentMaterial> componentMaterials;
 
     @Transient
@@ -89,13 +84,24 @@ public class Component implements Serializable {
         return this.transmittance = new BigDecimal(1).divide(this.resistanceTotal, 4, RoundingMode.HALF_EVEN);
     }
 
-    public void addMaterial(Material material) {
-        this.getComponentMaterials().forEach(componentMaterial -> componentMaterial.setMaterial(material));
+    public void addMaterial(Material material, BigDecimal thickness) {
+        ComponentMaterial componentMaterial = new ComponentMaterial();
+        componentMaterial.setThickness(thickness);
+        componentMaterial.setMaterial(material);
+        componentMaterial.setComponent(this);
+        componentMaterial.setId(new ComponentMaterialId(this.id, material.getId()));
+
+        if(this.componentMaterials == null) {
+            this.componentMaterials = new ArrayList<>();
+        }
+
+        this.componentMaterials.add(componentMaterial);
     }
 
     public BigDecimal calculateHeatFlowWinter(BigDecimal outsideTemperature, BigDecimal insideTemperature) {
         return this.transmittance
-                .multiply(outsideTemperature.subtract(insideTemperature).abs()).setScale(4, RoundingMode.HALF_EVEN);
+                .multiply(outsideTemperature.subtract(insideTemperature).abs())
+                .setScale(4, RoundingMode.HALF_EVEN);
     }
 
     public BigDecimal calculateHeatFlowSummer(BigDecimal outsideTemperature, BigDecimal insideTemperature) {

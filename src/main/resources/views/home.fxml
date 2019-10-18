@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -55,7 +56,7 @@
                   </JFXButton>
                   <JFXButton fx:id="menuProject" buttonType="RAISED" onAction="#showProject" prefHeight="48.0" prefWidth="189.0" text="Projeto" textFill="WHITE">
                      <graphic>
-                        <FontAwesomeIconView fill="#fffbfb" glyphName="FILE" />
+                        <MaterialDesignIconView fill="WHITE" glyphName="WORKER" size="18" />
                      </graphic>
                   </JFXButton>
                   <Label prefHeight="28.0" prefWidth="184.0" styleClass="menu-label" text="Configurações" textFill="#fcfcfc">

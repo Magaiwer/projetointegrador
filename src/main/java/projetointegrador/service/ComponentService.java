@@ -29,6 +29,7 @@ public class ComponentService {
     public void save(Component component)
     {
         component.getComponentMaterials().forEach(ComponentMaterial::calculateResistance);
+        System.out.println(component);
         componentRepository.saveAndFlush(component);
     }
 }

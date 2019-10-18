@@ -352,10 +352,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @FXML
     void onAddComponentMaterial(ActionEvent event) {
         boolean noEmpty = EntityValidator.noEmpty(txtThickness);
-        if (componentMaterial != null && noEmpty) {
+        if (component != null && noEmpty) {
             bindComponentMaterial();
-            listComponentMaterial.add(componentMaterial);
-            tableComponentMaterial.setItems(FXCollections.observableArrayList(listComponentMaterial));
+            tableComponentMaterial.setItems(FXCollections.observableArrayList(component.getComponentMaterials()));
         }
     }
 
@@ -387,7 +386,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             boolean noEmpty = EntityValidator.noEmpty(txtNameRoom);
 
             if (room != null && noEmpty) {
-                bindRoom();
+                //bindRoom();
 
                 try {
                     List<Room> roomList = roomService.saveAll(tableRoom.getItems());
@@ -404,7 +403,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             boolean noEmpty = EntityValidator.noEmpty(txtNameFace);
 
             if (face != null && noEmpty) {
-                bindFace();
+                // bindFace();
 
                 try {
                     List<Face> faceList = faceService.saveAll(tableFace.getItems());
@@ -418,7 +417,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             }
         }
         if (tabComponent.isSelected()) {
-            bindComponent();
+            //bindComponent();
 
             try {
                 List<Component> componentList = componentService.saveAll(tableComponent.getItems());
@@ -431,11 +430,10 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             }
         }
         if (tabComponentMaterial.isSelected()) {
-            if (componentMaterial != null) {
+            if (component != null) {
                 try {
 
-                    component.setComponentMaterials(tableComponentMaterial.getItems());
-                    System.out.println(component);
+                    //component.setComponentMaterials(tableComponentMaterial.getItems());
                     componentService.save(component);
 
                     MessagesUtil.showMessageInformation("Conjunto de materiais do(s) componente(s) da face foram salvo(s) com sucesso");
@@ -475,12 +473,8 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     }
 
     private void bindComponentMaterial() {
-        componentMaterial = new ComponentMaterial();
         component = comboComponent.getSelectionModel().getSelectedItem();
-
-        componentMaterial.setComponent(component);
-        componentMaterial.setMaterial(comboMaterial.getSelectionModel().getSelectedItem());
-        componentMaterial.setThickness(new BigDecimal(txtThickness.getText()));
+        component.addMaterial(comboMaterial.getSelectionModel().getSelectedItem(), new BigDecimal(txtThickness.getText()));
     }
 
     @FXML
@@ -516,21 +510,21 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         comboComponent.valueProperty().addListener((observable, oldValue, newValue) -> txtFaceComponentMaterial.setText(newValue.getFace().getName()));
     }
 
-    public void initTableRoom() {
+    private void initTableRoom() {
         columnNameRoom.setCellValueFactory(new PropertyValueFactory<>("name"));
     }
 
-    public void initTableFace() {
+    private void initTableFace() {
         columnFace.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnFaceRoom.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getRoom().getName()));
     }
 
-    public void initTableComponent() {
+    private void initTableComponent() {
         columnNameComponent.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnNameFace.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFace().getName()));
     }
 
-    public void initTableComponentMaterial() {
+    private void initTableComponentMaterial() {
         columnComponentMaterial.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getComponent().getName()));
         columnMaterialComponent.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getMaterial().getNome()));
         columnThicknessComponent.setCellValueFactory(new PropertyValueFactory<>("thickness"));
@@ -687,10 +681,15 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     void onNext(ActionEvent event) {
         this.onSave(event);
         tabPane.getSelectionModel().selectNext();
+
+        if (tabFinal.isSelected()) {
+            btnNextProject.setText("Salvar");
+        }
     }
 
     @FXML
     void onPrevious(ActionEvent event) {
+        btnNextProject.setText("Proxímo");
         tabPane.getSelectionModel().selectPrevious();
     }
 
