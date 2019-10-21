@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,12 +50,18 @@ public class Face implements Serializable {
     }
 
     public BigDecimal calculateThermalLoad() {
-        return this.components.stream()
+        return this.thermalLoad = this.components.stream()
                 .map(component -> component.getQfo().add(component.getQft()))
                 .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
     }
 
+    public void addComponent(Component component) {
+        if (this.components == null) {
+            this.components = new ArrayList<>();
+        }
 
+        this.components.add(component);
+    }
 
 
 }

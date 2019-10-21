@@ -1,25 +1,27 @@
 package projetointegrador.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Entity
 @Table(name = "component_material")
-@Data
-public class ComponentMaterial {
+@Data @EqualsAndHashCode
+public class ComponentMaterial implements Serializable {
 
     @EmbeddedId
     private ComponentMaterialId id;
 
-    @ManyToOne
-    @JoinColumn(name = "component_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("componentId")
     private Component component;
 
-    @ManyToOne
-    @JoinColumn(name = "material_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("materialId")
     private Material material;
 
     @Column
@@ -30,7 +32,7 @@ public class ComponentMaterial {
 
 
     public BigDecimal calculateResistance() {
-        return this.resistance = this.thickness.divide(material.getCondutividadeTermica(), RoundingMode.CEILING);
+        return this.resistance = this.thickness.divide(material.getCondutividadeTermica(), RoundingMode.HALF_EVEN);
     }
 
 }

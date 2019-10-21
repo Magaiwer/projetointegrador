@@ -20,16 +20,27 @@ public class ComponentService {
     private ComponentRepository componentRepository;
 
     @Transactional
-    public List<Component> saveAll(List<Component> components)
-    {
+    public List<Component> saveAll(List<Component> components) {
         return componentRepository.saveAll(components);
     }
 
     @Transactional
-    public void save(Component component)
-    {
-        component.getComponentMaterials().forEach(ComponentMaterial::calculateResistance);
-        System.out.println(component);
+    public void save(Component component) {
+        calculateResistance(component);
+        calculateResistanceTotal(component);
+        calculateTransmittance(component);
         componentRepository.saveAndFlush(component);
+    }
+
+    public void calculateResistance(Component component) {
+        component.getComponentMaterials().forEach(ComponentMaterial::calculateResistance);
+    }
+
+    public void calculateResistanceTotal(Component component) {
+        component.calculateResistanceTotal();
+    }
+
+    public void calculateTransmittance(Component component) {
+        component.calculateTransmittance();
     }
 }

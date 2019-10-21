@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
+import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@EntityListeners(AuditListeners.class)
 @Entity
 @Table(name = "component")
 @Data
@@ -32,32 +33,32 @@ public class Component implements Serializable {
     private String name;
 
     @Column
-    private BigDecimal resistanceTotal;
+    private BigDecimal resistanceTotal = BigDecimal.ZERO;
 
 
     @Column
-    private BigDecimal transmittance;
+    private BigDecimal transmittance = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal alpha;
+    private BigDecimal alpha = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal indexRadiation;
+    private BigDecimal indexRadiation = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal qfo;
+    private BigDecimal qfo = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal qft;
+    private BigDecimal qft = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal m2;
+    private BigDecimal m2 = BigDecimal.ZERO;
 
     @ManyToOne
     @JoinColumn(name = "face_id")
     private Face face;
 
-    @OneToMany(mappedBy = "component", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "component", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ComponentMaterial> componentMaterials;
 
     @Transient
@@ -89,9 +90,10 @@ public class Component implements Serializable {
         componentMaterial.setThickness(thickness);
         componentMaterial.setMaterial(material);
         componentMaterial.setComponent(this);
-        componentMaterial.setId(new ComponentMaterialId(this.id, material.getId()));
 
-        if(this.componentMaterials == null) {
+        componentMaterial.setId(new ComponentMaterialId(this.getId(), material.getId()));
+
+        if (this.componentMaterials == null) {
             this.componentMaterials = new ArrayList<>();
         }
 

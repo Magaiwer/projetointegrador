@@ -2,6 +2,7 @@ package projetointegrador.model;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
+@EntityListeners(AuditListeners.class)
 @Entity
 @Table(name = "project")
 @Data

@@ -4,11 +4,13 @@ import javafx.beans.property.SimpleStringProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+@EntityListeners(AuditListeners.class)
 @Entity
 @Table(name = "room")
 @Data @ToString(exclude = "project") @EqualsAndHashCode(exclude = "project")
