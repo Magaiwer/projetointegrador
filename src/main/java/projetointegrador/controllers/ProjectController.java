@@ -31,6 +31,7 @@ import projetointegrador.service.ProjectService;
 import projetointegrador.service.RoomService;
 import projetointegrador.validation.EntityValidator;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
@@ -94,6 +95,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @FXML
     private TableView<Face> tableFace;
 
+
     @FXML
     private TableColumn<Face, String> columnFace;
 
@@ -114,6 +116,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     @FXML
     private TableView<Component> tableComponent;
+
+    @FXML
+    private TableColumn<Component, String> columnRoomComponent;
 
     @FXML
     private TableColumn<Component, String> columnNameFace;
@@ -165,6 +170,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     @FXML
     private TableColumn<ComponentMaterial, String> columnComponentMaterial;
+
+    @FXML
+    private TableColumn<ComponentMaterial, String> columnFaceComponentMaterial;
 
     @FXML
     private TableColumn<ComponentMaterial, String> columnMaterialComponent;
@@ -385,8 +393,11 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         boolean noEmpty = EntityValidator.noEmpty(txtNameComponent);
         if (component != null && noEmpty) {
             bindComponent();
+
+            listComponent.clear();
             listComponent.add(component);
-            tableComponent.setItems(FXCollections.observableArrayList(listComponent));
+            tableComponent.getItems().addAll(listComponent);
+            //tableComponent.setItems(FXCollections.observableArrayList(listComponent));
         }
     }
 
@@ -403,7 +414,8 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             txtTransmittanceComponent.setText(component.getTransmittance().toString());
             txtTransmittanceComponent.setVisible(true);
 
-            tableComponentMaterial.setItems(FXCollections.observableArrayList(component.getComponentMaterials()));
+            tableComponentMaterial.getItems().addAll(component.getComponentMaterials());
+            //tableComponentMaterial.setItems(FXCollections.observableArrayList(component.getComponentMaterials()));
         }
     }
 
@@ -414,34 +426,20 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         component.setM2(new BigDecimal(txtm2.getText()));
 
 
-  /*      RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
-        String toogleGroupValue = selectedRadioButton.getText();
-        System.out.println(toogleGroupValue);*/
-
         String flowType = toggleGroup.getSelectedToggle().getUserData().toString();
 
         BigDecimal qfo = FlowType.valueOf(flowType)
                 .calculateHeatFlow(component, new BigDecimal(txtTemperatureOutside.getText()), new BigDecimal(txtTemperatureOutside.getText()));
 
-
-        BigDecimal QFO = component.calculateQFO(qfo);
+        component.calculateQFO(qfo);
 
         component.getFace().addComponent(component);
         component.getFace().calculateThermalLoad();
 
-        System.out.println(component.getFace());
-        System.out.println(component);
-        System.out.println(face.getComponents().toString());
-
-
         listComponent.clear();
         listComponent.add(component);
 
-        System.out.println(listComponent.toString());
-
-        tableCalculate.setItems(FXCollections.observableArrayList(listComponent));
-
-
+        tableCalculate.getItems().addAll(FXCollections.observableArrayList(listComponent));
     }
 
     @FXML
@@ -633,16 +631,19 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     }
 
     private void initTableFace() {
+
         columnFace.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnFaceRoom.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getRoom().getName()));
     }
 
     private void initTableComponent() {
+        columnRoomComponent.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFace().getRoom().getName()));
         columnNameComponent.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnNameFace.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFace().getName()));
     }
 
     private void initTableComponentMaterial() {
+        columnFaceComponentMaterial.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getComponent().getFace().getName()));
         columnComponentMaterial.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getComponent().getName()));
         columnMaterialComponent.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getMaterial().getNome()));
         columnThicknessComponent.setCellValueFactory(new PropertyValueFactory<>("thickness"));

@@ -109,8 +109,9 @@
                         </JFXButton>
                         <TableView fx:id="tableComponent" layoutX="16.0" layoutY="150.0" prefHeight="334.0" prefWidth="740.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="150.0">
                            <columns>
+                              <TableColumn fx:id="columnRoomComponent" prefWidth="169.0" text="Comodo" />
                               <TableColumn fx:id="columnNameFace" prefWidth="169.0" text="Face" />
-                              <TableColumn fx:id="columnNameComponent" prefWidth="569.0" text="Nome " />
+                              <TableColumn fx:id="columnNameComponent" prefWidth="569.0" text="Componente" />
                            </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -138,7 +139,8 @@
                         </JFXButton>
                         <TableView fx:id="tableComponentMaterial" layoutX="25.0" layoutY="231.0" prefHeight="253.0" prefWidth="740.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="231.0">
                            <columns>
-                              <TableColumn fx:id="columnComponentMaterial" prefWidth="75.0" text="Conjunto" />
+                              <TableColumn fx:id="columnFaceComponentMaterial" prefWidth="107.0" text="Face" />
+                              <TableColumn fx:id="columnComponentMaterial" prefWidth="75.0" text="Componente" />
                               <TableColumn fx:id="columnMaterialComponent" prefWidth="107.0" text="Material" />
                               <TableColumn fx:id="columnThicknessComponent" prefWidth="123.0" text="Espessura" />
                               <TableColumn fx:id="columnResistanceComponent" prefWidth="75.0" text="Resistência" />

@@ -43,4 +43,6 @@ public class ComponentService {
     public void calculateTransmittance(Component component) {
         component.calculateTransmittance();
     }
+
+
 }
