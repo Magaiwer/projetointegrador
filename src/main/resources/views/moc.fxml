@@ -149,7 +149,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <JFXTextField fx:id="txtTransmittanceComponent" alignment="CENTER" editable="false" labelFloat="true" layoutX="539.0" layoutY="163.0" prefHeight="28.0" prefWidth="197.0" promptText="Transmitância" visible="false">
+                        <JFXTextField fx:id="txtTransmittanceComponent" alignment="CENTER" editable="false" labelFloat="true" layoutX="580.0" layoutY="163.0" prefHeight="28.0" prefWidth="156.0" promptText="Transmitância" visible="false">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
@@ -169,13 +169,13 @@
                         <JFXComboBox fx:id="comboAbsorbance" labelFloat="true" layoutX="21.0" layoutY="134.0" prefHeight="28.0" prefWidth="263.0" promptText="Absortancia *" />
                         <JFXTextField fx:id="txtAlpha" labelFloat="true" layoutX="315.0" layoutY="134.0" prefHeight="28.0" prefWidth="196.0" promptText="Alfa *" />
                         <JFXTextField fx:id="txtm2" labelFloat="true" layoutX="534.0" layoutY="134.0" prefHeight="28.0" prefWidth="209.0" promptText="m² *" />
-                        <JFXRadioButton fx:id="rgWinter" layoutX="21.0" layoutY="204.0" selected="true" text="Inverno" AnchorPane.topAnchor="204.0">
+                        <JFXRadioButton fx:id="rgWinter" layoutX="115.0" layoutY="204.0" selected="true" text="Inverno" AnchorPane.topAnchor="204.0">
                            <toggleGroup>
                               <ToggleGroup fx:id="toggleGroup" />
                            </toggleGroup>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="rgSummer" layoutX="127.0" layoutY="204.0" text="Verão" toggleGroup="$toggleGroup" AnchorPane.topAnchor="204.0" />
-                        <JFXButton fx:id="btnCalculate" buttonType="RAISED" layoutX="311.0" layoutY="199.0" onAction="#onCalculate" prefHeight="28.0" prefWidth="435.0" text="Calcular">
+                        <JFXRadioButton fx:id="rgSummer" layoutX="21.0" layoutY="204.0" selected="true" text="Verão" toggleGroup="$toggleGroup" AnchorPane.topAnchor="204.0" />
+                        <JFXButton fx:id="btnCalculate" buttonType="RAISED" layoutX="311.0" layoutY="198.0" onAction="#onCalculate" prefHeight="28.0" prefWidth="435.0" text="Calcular">
                            <graphic>
                               <MaterialDesignIconView glyphName="LAMBDA" />
                            </graphic>

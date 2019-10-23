@@ -1,6 +1,7 @@
 package projetointegrador.controllers;
 
 import com.jfoenix.controls.*;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -34,9 +35,7 @@ import projetointegrador.validation.EntityValidator;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @org.springframework.stereotype.Component
 public class ProjectController implements Initializable, BaseController<ProjectController> {
@@ -314,7 +313,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @Autowired
     private StageManager stageManager;
 
-    private Project project;
+    private Project project = new Project();
     private Room room;
     private Face face;
     private Component component;
@@ -322,10 +321,10 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private List<Room> listRoom;
     private List<Face> listFace;
     private List<Component> listComponent;
+    private Set<Component> componentSet;
 
     private void initializeFormWizzard() {
         if (txtIndex != null) {
-            project = new Project();
             room = new Room();
             face = new Face();
             component = new Component();
@@ -333,6 +332,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             listRoom = new ArrayList<>();
             listFace = new ArrayList<>();
             listComponent = new ArrayList<>();
+            componentSet = new HashSet<>();
 
             txtTemperatureOutside.setText("30");
             txtTemperatureInside.setText("25");
@@ -350,7 +350,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             initListeners();
 
             EntityValidator.noEmpty(txtNameProject, txtIndex, txtNameRoom, txtNameFace, txtNameComponent, txtAlpha,
-                    txtThickness, txtTemperatureInside, txtTemperatureOutside
+                    txtThickness, txtTemperatureInside, txtTemperatureOutside, txtm2
             );
 
         }
@@ -375,6 +375,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             bindRoom();
             listRoom.add(room);
             tableRoom.setItems(FXCollections.observableArrayList(listRoom));
+            EntityValidator.clearFields(txtNameRoom);
+        } else {
+            MessagesUtil.showMessageError("Verifique o preechimento dos campos obrigátorios");
         }
     }
 
@@ -385,6 +388,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             bindFace();
             listFace.add(face);
             tableFace.setItems(FXCollections.observableArrayList(listFace));
+            EntityValidator.clearFields(txtNameFace);
+        } else {
+            MessagesUtil.showMessageError("Verifique o preechimento dos campos obrigátorios");
         }
     }
 
@@ -397,13 +403,15 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             listComponent.clear();
             listComponent.add(component);
             tableComponent.getItems().addAll(listComponent);
-            //tableComponent.setItems(FXCollections.observableArrayList(listComponent));
+            EntityValidator.clearFields(txtNameComponent);
+        } else {
+            MessagesUtil.showMessageError("Verifique o preechimento dos campos obrigátorios");
         }
     }
 
     @FXML
     void onAddComponentMaterial(ActionEvent event) {
-        boolean noEmpty = EntityValidator.noEmpty(txtThickness, txtTemperatureOutside, txtTemperatureInside);
+        boolean noEmpty = EntityValidator.noEmpty(txtThickness);
 
         if (component != null && noEmpty) {
             bindComponentMaterial();
@@ -414,32 +422,45 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             txtTransmittanceComponent.setText(component.getTransmittance().toString());
             txtTransmittanceComponent.setVisible(true);
 
-            tableComponentMaterial.getItems().addAll(component.getComponentMaterials());
-            //tableComponentMaterial.setItems(FXCollections.observableArrayList(component.getComponentMaterials()));
+            //tableComponentMaterial.getItems().addAll(component.getComponentMaterials());
+            tableComponentMaterial.setItems(FXCollections.observableArrayList(component.getComponentMaterials()));
+
+            EntityValidator.clearFields(txtThickness);
+        } else {
+            MessagesUtil.showMessageError("Verifique o preechimento dos campos obrigátorios");
         }
     }
 
     @FXML
     void onCalculate(ActionEvent event) {
+
+        boolean noEmpty = EntityValidator.noEmpty(txtAlpha, txtm2, txtTemperatureOutside, txtTemperatureInside);
         component = comboComponentCalculate.getSelectionModel().getSelectedItem();
-        component.setAlpha(new BigDecimal(txtAlpha.getText()));
-        component.setM2(new BigDecimal(txtm2.getText()));
 
+        if (component != null && noEmpty) {
 
-        String flowType = toggleGroup.getSelectedToggle().getUserData().toString();
+            component.setAlpha(new BigDecimal(txtAlpha.getText()));
+            component.setM2(new BigDecimal(txtm2.getText()));
 
-        BigDecimal qfo = FlowType.valueOf(flowType)
-                .calculateHeatFlow(component, new BigDecimal(txtTemperatureOutside.getText()), new BigDecimal(txtTemperatureOutside.getText()));
+            String flowType = toggleGroup.getSelectedToggle().getUserData().toString();
 
-        component.calculateQFO(qfo);
+            BigDecimal qfo = FlowType.valueOf(flowType)
+                    .calculateHeatFlow(component, new BigDecimal(txtTemperatureOutside.getText()), new BigDecimal(txtTemperatureOutside.getText()));
 
-        component.getFace().addComponent(component);
-        component.getFace().calculateThermalLoad();
+            component.calculateQFO(qfo);
 
-        listComponent.clear();
-        listComponent.add(component);
+            component.getFace().addComponent(component);
+            component.getFace().calculateThermalLoad();
 
-        tableCalculate.getItems().addAll(FXCollections.observableArrayList(listComponent));
+            componentSet.remove(component);
+            componentSet.add(component);
+
+            tableCalculate.setItems(FXCollections.observableArrayList(componentSet));
+
+        } else {
+            MessagesUtil.showMessageError("Verifique o preechimento dos campos obrigátorios");
+        }
+
     }
 
     @FXML
@@ -519,9 +540,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     }
 
     private void roomSave() {
-        boolean noEmpty = EntityValidator.noEmpty(txtNameRoom);
-
-        if (room != null && noEmpty) {
+        if (room != null) {
             try {
                 List<Room> roomList = roomService.saveAll(tableRoom.getItems());
 
@@ -585,7 +604,21 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @FXML
     @Override
     public void onEdit(ActionEvent event) {
+        project = tableProject.getSelectionModel().getSelectedItem();
 
+        if (project != null) {
+            stageManager.switchScene(root, EFxmlView.PROJECT);
+            Optional<Project> projectOptional = projectRepository.findById(project.getId());
+
+            projectOptional.ifPresent(p -> project = p);
+
+            txtNameProject.setText(project.getName());
+            txtDescription.setText(project.getDescription());
+            comboCustomer.setValue(project.getPerson());
+            comboRegion.setValue(project.getRegion());
+        } else {
+            MessagesUtil.showMessageWarning("Selecione um Projeto");
+        }
     }
 
     @FXML

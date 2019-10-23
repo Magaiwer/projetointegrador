@@ -57,6 +57,12 @@ public class EntityValidator {
         return hasFieldsErrors.isEmpty();
     }
 
+    public static void clearFields(JFXTextField... fields) {
+        for (JFXTextField field : fields) {
+            field.clear();
+        }
+    }
+
     private static void addValidator(JFXTextField field) {
         RequiredFieldValidator validator = new RequiredFieldValidator();
         validator.setMessage(field.getPromptText() + " é obrigatório");

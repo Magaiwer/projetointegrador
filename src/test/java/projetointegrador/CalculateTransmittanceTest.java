@@ -11,6 +11,7 @@ import projetointegrador.model.Material;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
 
 public class CalculateTransmittanceTest {
@@ -41,7 +42,7 @@ public class CalculateTransmittanceTest {
         componentMaterial2.setMaterial(material2);
         componentMaterial2.setComponent(component1);
 
-        component1.setComponentMaterials(Arrays.asList(componentMaterial1, componentMaterial2));
+        component1.setComponentMaterials(new HashSet<>(Arrays.asList(componentMaterial1, componentMaterial2)));
 
         component1.getComponentMaterials()
                 .forEach(ComponentMaterial::calculateResistance);
@@ -69,7 +70,7 @@ public class CalculateTransmittanceTest {
 
         ComponentMaterial componentMaterial2 = builderComponent(new BigDecimal(2), new BigDecimal(20), component1);
 
-        component1.setComponentMaterials(Arrays.asList(componentMaterial1, componentMaterial2));
+        component1.setComponentMaterials(new HashSet<>(Arrays.asList(componentMaterial1, componentMaterial2)));
 
         component1.getComponentMaterials()
                 .forEach(ComponentMaterial::calculateResistance);
@@ -85,7 +86,7 @@ public class CalculateTransmittanceTest {
         ComponentMaterial componentMaterial3 = builderComponent(new BigDecimal(2), new BigDecimal(10), component2);
         ComponentMaterial componentMaterial4 = builderComponent(new BigDecimal(2), new BigDecimal(20), component2);
 
-        component2.setComponentMaterials(Arrays.asList(componentMaterial3, componentMaterial4));
+        component2.setComponentMaterials(new HashSet<>(Arrays.asList(componentMaterial3, componentMaterial4)));
 
         component2.getComponentMaterials()
                 .forEach(ComponentMaterial::calculateResistance);
@@ -94,7 +95,7 @@ public class CalculateTransmittanceTest {
         component2.calculateTransmittance();
 
         Face face1 = new Face();
-        face1.setComponents(Arrays.asList(component1, component2));
+        face1.setComponents(new HashSet<>(Arrays.asList(component1, component2)));
         face1.calculateTransmittanceAverage();
 
         BigDecimal expectedValue = new BigDecimal(15.1700).setScale(4, RoundingMode.HALF_EVEN);

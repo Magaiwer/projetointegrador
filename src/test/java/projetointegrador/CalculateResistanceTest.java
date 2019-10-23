@@ -1,5 +1,6 @@
 package projetointegrador;
 
+import org.assertj.core.util.Sets;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,9 +16,7 @@ import projetointegrador.repository.ComponentRepository;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class CalculateResistanceTest {
 
@@ -76,7 +75,7 @@ public class CalculateResistanceTest {
         componentMaterial2.setMaterial(material2);
         componentMaterial2.setComponent(component1);
 
-        component1.setComponentMaterials(Arrays.asList(componentMaterial1, componentMaterial2));
+        component1.setComponentMaterials(new HashSet<>(Arrays.asList(componentMaterial1, componentMaterial2)));
 
         component1.getComponentMaterials()
                 .forEach(ComponentMaterial::calculateResistance);

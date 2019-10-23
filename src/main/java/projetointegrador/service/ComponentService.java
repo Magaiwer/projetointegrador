@@ -26,10 +26,16 @@ public class ComponentService {
 
     @Transactional
     public void save(Component component) {
-        calculateResistance(component);
-        calculateResistanceTotal(component);
-        calculateTransmittance(component);
-        componentRepository.saveAndFlush(component);
+
+        try {
+            calculateResistance(component);
+            calculateResistanceTotal(component);
+            calculateTransmittance(component);
+            componentRepository.saveAndFlush(component);
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage(), component);
+        }
+
     }
 
     public void calculateResistance(Component component) {

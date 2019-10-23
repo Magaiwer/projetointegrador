@@ -15,8 +15,8 @@ import java.util.List;
 @Entity
 @Table(name = "project")
 @Data
-@ToString(exclude = "person")
-@EqualsAndHashCode(exclude = "person")
+@ToString(exclude = {"person"})
+@EqualsAndHashCode(exclude = {"person" })
 public class Project implements Serializable {
 
     @Id
@@ -40,10 +40,6 @@ public class Project implements Serializable {
     @ManyToOne
     @JoinColumn(name = "region_id")
     private Region region;
-
-    @OneToMany
-    private List<Room> rooms;
-
 
 
 

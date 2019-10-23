@@ -11,7 +11,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @EntityListeners(AuditListeners.class)
 @Entity
@@ -59,7 +61,7 @@ public class Component implements Serializable {
     private Face face;
 
     @OneToMany(mappedBy = "component", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ComponentMaterial> componentMaterials;
+    private Set<ComponentMaterial> componentMaterials;
 
     @Transient
     private BigDecimal rsi;
@@ -94,7 +96,7 @@ public class Component implements Serializable {
         componentMaterial.setId(new ComponentMaterialId(this.getId(), material.getId()));
 
         if (this.componentMaterials == null) {
-            this.componentMaterials = new ArrayList<>();
+            this.componentMaterials = new HashSet<>();
         }
 
         this.componentMaterials.add(componentMaterial);
