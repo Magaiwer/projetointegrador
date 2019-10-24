@@ -1,7 +1,6 @@
 package projetointegrador.controllers;
 
 import com.jfoenix.controls.*;
-import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -11,13 +10,15 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.util.AutoPopulatingList;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.Util.Formatter;
 import projetointegrador.Util.MessagesUtil;
@@ -32,7 +33,6 @@ import projetointegrador.service.ProjectService;
 import projetointegrador.service.RoomService;
 import projetointegrador.validation.EntityValidator;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
@@ -322,6 +322,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private List<Face> listFace;
     private List<Component> listComponent;
     private Set<Component> componentSet;
+    private List<ComponentMaterial> componentMaterials;
 
     private void initializeFormWizzard() {
         if (txtIndex != null) {
@@ -333,6 +334,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             listFace = new ArrayList<>();
             listComponent = new ArrayList<>();
             componentSet = new HashSet<>();
+            componentMaterials = new ArrayList<>();
 
             txtTemperatureOutside.setText("30");
             txtTemperatureInside.setText("25");
@@ -616,6 +618,21 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             txtDescription.setText(project.getDescription());
             comboCustomer.setValue(project.getPerson());
             comboRegion.setValue(project.getRegion());
+
+            listRoom = roomRepository.findByProjectWithFaces(project.getId());
+            tableRoom.setItems(FXCollections.observableArrayList(listRoom));
+
+
+            listRoom.forEach(room1 -> listFace.addAll(room1.getFaces()));
+            tableFace.setItems(FXCollections.observableArrayList(listFace));
+
+            listFace.forEach(face1 -> listComponent = componentRepository.findByFace(face1.getId()));
+            tableComponent.setItems(FXCollections.observableArrayList(listComponent));
+
+            listComponent.forEach(component1 -> componentMaterials.addAll(component1.getComponentMaterials()));
+            tableComponentMaterial.setItems(FXCollections.observableArrayList(componentMaterials));
+
+
         } else {
             MessagesUtil.showMessageWarning("Selecione um Projeto");
         }
