@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface ComponentRepository extends JpaRepository<Component, Long> {
 
- /*   @Query("from Component c inner join fetch c.materials m where c.face.id = :id")
-    List<Component> findByFace(@Param("id") Long id);*/
+    @Query("from Component c left outer join fetch c.componentMaterials m where c.face.id = :id")
+    List<Component> findByFace(@Param("id") Long id);
 }

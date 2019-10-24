@@ -8,7 +8,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -36,7 +39,7 @@ public class Face implements Serializable {
     private Room room;
 
     @OneToMany(mappedBy = "face", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Component> components;
+    private Set<Component> components;
 
     public BigDecimal calculateTransmittanceAverage() {
         this.transmittanceAverage = BigDecimal.valueOf(this.components
@@ -49,12 +52,18 @@ public class Face implements Serializable {
     }
 
     public BigDecimal calculateThermalLoad() {
-        return this.components.stream()
+        return this.thermalLoad = this.components.stream()
                 .map(component -> component.getQfo().add(component.getQft()))
                 .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
     }
 
+    public void addComponent(Component component) {
+        if (this.components == null) {
+            this.components = new HashSet<>();
+        }
 
+        this.components.add(component);
+    }
 
 
 }

@@ -9,14 +9,14 @@ public enum FlowType {
 
     SUMMER("Verão") {
         @Override
-        public void calculateHeatFlow(Component component, BigDecimal outsideTemperature, BigDecimal insideTemperature) {
-            component.calculateHeatFlowSummer(outsideTemperature, insideTemperature);
+        public BigDecimal calculateHeatFlow(Component component, BigDecimal outsideTemperature, BigDecimal insideTemperature) {
+           return component.calculateHeatFlowSummer(outsideTemperature, insideTemperature);
         }
     },
     WINTER("Inverno") {
         @Override
-        public void calculateHeatFlow(Component component, BigDecimal outsideTemperature, BigDecimal insideTemperature) {
-            component.calculateHeatFlowWinter(outsideTemperature, insideTemperature);
+        public BigDecimal calculateHeatFlow(Component component, BigDecimal outsideTemperature, BigDecimal insideTemperature) {
+           return component.calculateHeatFlowWinter(outsideTemperature, insideTemperature);
         }
     };
 
@@ -26,6 +26,6 @@ public enum FlowType {
         this.name = name;
     }
 
-    public abstract void calculateHeatFlow(Component component, BigDecimal outsideTemperature, BigDecimal insideTemperature);
+    public abstract BigDecimal calculateHeatFlow(Component component, BigDecimal outsideTemperature, BigDecimal insideTemperature);
 
 }

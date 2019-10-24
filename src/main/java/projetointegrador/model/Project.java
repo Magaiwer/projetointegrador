@@ -2,6 +2,7 @@ package projetointegrador.model;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,11 +11,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
+@EntityListeners(AuditListeners.class)
 @Entity
 @Table(name = "project")
 @Data
-@ToString(exclude = "person")
-@EqualsAndHashCode(exclude = "person")
+@ToString(exclude = {"person", "rooms"})
+@EqualsAndHashCode(exclude = {"person", "rooms" })
 public class Project implements Serializable {
 
     @Id
@@ -39,9 +41,8 @@ public class Project implements Serializable {
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @OneToMany
+    @OneToMany(mappedBy = "project")
     private List<Room> rooms;
-
 
 
 

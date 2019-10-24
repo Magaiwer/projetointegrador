@@ -7,14 +7,16 @@ import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 @EntityListeners(AuditListeners.class)
 @Entity
 @Table(name = "material")
 @DynamicUpdate
-@Data
-public class Material
+@Data @EqualsAndHashCode @ToString
+public class Material implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +27,8 @@ public class Material
 
     @Column
     private BigDecimal condutividadeTermica;
+
+    @Column
+    private boolean glass;
+
 }

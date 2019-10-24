@@ -4,19 +4,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
+import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-
+@EntityListeners(AuditListeners.class)
 @Entity
 @Table(name = "component")
 @Data
-@ToString(exclude = "face")
-@EqualsAndHashCode(exclude = "face")
+@ToString(exclude = {"face", "componentMaterials"})
+@EqualsAndHashCode(exclude = {"face", "componentMaterials"})
 @DynamicUpdate
 public class Component implements Serializable {
 
@@ -31,42 +35,42 @@ public class Component implements Serializable {
     private String name;
 
     @Column
-    private BigDecimal resistanceTotal;
+    private BigDecimal resistanceTotal = BigDecimal.ZERO;
 
 
     @Column
-    private BigDecimal transmittance;
+    private BigDecimal transmittance = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal alpha;
+    private BigDecimal alpha = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal indexRadiation;
+    private BigDecimal indexRadiation = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal qfo;
+    private BigDecimal qfo = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal qft;
+    private BigDecimal qft = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal m2;
+    private BigDecimal m2 = BigDecimal.ZERO;
 
     @ManyToOne
     @JoinColumn(name = "face_id")
     private Face face;
 
-    @ManyToMany()
-    @JoinTable(name = "component_material",
-            joinColumns = @JoinColumn(name = "component_id"),
-            inverseJoinColumns = @JoinColumn(name = "material_id"))
-    private List<Material> materials;
-
-    @OneToMany(mappedBy = "component")
-    private List<ComponentMaterial> componentMaterials;
+    @OneToMany(mappedBy = "component", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ComponentMaterial> componentMaterials;
 
     @Transient
     private BigDecimal rsi;
+
+    @Transient
+    private BigDecimal transmittanceGlass;
+
+    @Transient
+    private BigDecimal solarFactor;
 
     public BigDecimal calculateResistanceTotal() {
         BigDecimal resistanceSum = this.componentMaterials
@@ -83,13 +87,25 @@ public class Component implements Serializable {
         return this.transmittance = new BigDecimal(1).divide(this.resistanceTotal, 4, RoundingMode.HALF_EVEN);
     }
 
-    public void addMaterial(Material material) {
-        this.getComponentMaterials().forEach(componentMaterial -> componentMaterial.setMaterial(material));
+    public void addMaterial(Material material, BigDecimal thickness) {
+        ComponentMaterial componentMaterial = new ComponentMaterial();
+        componentMaterial.setThickness(thickness);
+        componentMaterial.setMaterial(material);
+        componentMaterial.setComponent(this);
+
+        componentMaterial.setId(new ComponentMaterialId(this.getId(), material.getId()));
+
+        if (this.componentMaterials == null) {
+            this.componentMaterials = new HashSet<>();
+        }
+
+        this.componentMaterials.add(componentMaterial);
     }
 
     public BigDecimal calculateHeatFlowWinter(BigDecimal outsideTemperature, BigDecimal insideTemperature) {
         return this.transmittance
-                .multiply(outsideTemperature.subtract(insideTemperature).abs()).setScale(4, RoundingMode.HALF_EVEN);
+                .multiply(outsideTemperature.subtract(insideTemperature).abs())
+                .setScale(4, RoundingMode.HALF_EVEN);
     }
 
     public BigDecimal calculateHeatFlowSummer(BigDecimal outsideTemperature, BigDecimal insideTemperature) {
@@ -97,8 +113,6 @@ public class Component implements Serializable {
 
         return this.transmittance.multiply(this.alpha.multiply(this.indexRadiation).multiply(RSE).add(deltaTemperature))
                 .setScale(4, RoundingMode.HALF_EVEN);
-
-
     }
 
     public BigDecimal calculateQFO(BigDecimal qfo) {
@@ -106,8 +120,8 @@ public class Component implements Serializable {
     }
 
 
-    public BigDecimal calculateQFT(BigDecimal outsideTemperature, BigDecimal insideTemperature, BigDecimal solarFactor, BigDecimal transmittance) {
-        this.qft = transmittance.multiply(outsideTemperature.subtract(insideTemperature).abs()).add(solarFactor.multiply(this.indexRadiation));
+    public BigDecimal calculateQFT(BigDecimal outsideTemperature, BigDecimal insideTemperature) {
+        this.qft = this.transmittanceGlass.multiply(outsideTemperature.subtract(insideTemperature).abs()).add(this.solarFactor.multiply(this.indexRadiation));
         return this.qft.multiply(m2);
     }
 

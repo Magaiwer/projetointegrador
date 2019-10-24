@@ -1,17 +1,18 @@
 package projetointegrador.model;
 
-import javafx.beans.property.SimpleStringProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+@EntityListeners(AuditListeners.class)
 @Entity
 @Table(name = "room")
-@Data @ToString(exclude = "project") @EqualsAndHashCode(exclude = "project")
+@Data @ToString(exclude = {"project", "faces"}) @EqualsAndHashCode(exclude = {"project", "faces"})
 public class Room implements Serializable {
 
     @Id
@@ -25,8 +26,8 @@ public class Room implements Serializable {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    /*
-    @OneToMany
+
+    @OneToMany(mappedBy = "room")
     private List<Face> faces;
-    */
+
 }
