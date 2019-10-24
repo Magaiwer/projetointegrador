@@ -16,11 +16,11 @@ public class ComponentMaterial implements Serializable {
     @EmbeddedId
     private ComponentMaterialId id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("componentId")
     private Component component;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("materialId")
     private Material material;
 

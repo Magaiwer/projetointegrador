@@ -38,17 +38,20 @@ public class ComponentService {
 
     }
 
-    public void calculateResistance(Component component) {
+    private void calculateResistance(Component component) {
         component.getComponentMaterials().forEach(ComponentMaterial::calculateResistance);
     }
 
-    public void calculateResistanceTotal(Component component) {
+    private void calculateResistanceTotal(Component component) {
         component.calculateResistanceTotal();
     }
 
     public void calculateTransmittance(Component component) {
+        calculateResistance(component);
+        calculateResistanceTotal(component);
         component.calculateTransmittance();
     }
+
 
 
 }

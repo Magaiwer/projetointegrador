@@ -399,12 +399,10 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @FXML
     void onAddComponent(ActionEvent event) {
         boolean noEmpty = EntityValidator.noEmpty(txtNameComponent);
+        bindComponent();
         if (component != null && noEmpty) {
-            bindComponent();
 
-            listComponent.clear();
-            listComponent.add(component);
-            tableComponent.getItems().addAll(listComponent);
+            tableComponent.getItems().add(component);
             EntityValidator.clearFields(txtNameComponent);
         } else {
             MessagesUtil.showMessageError("Verifique o preechimento dos campos obrigátorios");
@@ -415,17 +413,16 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     void onAddComponentMaterial(ActionEvent event) {
         boolean noEmpty = EntityValidator.noEmpty(txtThickness);
 
+        bindComponentMaterial();
         if (component != null && noEmpty) {
-            bindComponentMaterial();
-            componentService.calculateResistance(component);
-            componentService.calculateResistanceTotal(component);
+
             componentService.calculateTransmittance(component);
 
             txtTransmittanceComponent.setText(component.getTransmittance().toString());
             txtTransmittanceComponent.setVisible(true);
 
-            //tableComponentMaterial.getItems().addAll(component.getComponentMaterials());
             tableComponentMaterial.setItems(FXCollections.observableArrayList(component.getComponentMaterials()));
+            addComboComponentCalculate(component);
 
             EntityValidator.clearFields(txtThickness);
         } else {
@@ -440,6 +437,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         component = comboComponentCalculate.getSelectionModel().getSelectedItem();
 
         if (component != null && noEmpty) {
+            componentService.calculateTransmittance(component);
 
             component.setAlpha(new BigDecimal(txtAlpha.getText()));
             component.setM2(new BigDecimal(txtm2.getText()));
@@ -454,7 +452,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             component.getFace().addComponent(component);
             component.getFace().calculateThermalLoad();
 
-            componentSet.remove(component);
+            componentSet.removeIf(component1 -> component.getId().equals(component1.getId()));
             componentSet.add(component);
 
             tableCalculate.setItems(FXCollections.observableArrayList(componentSet));
@@ -489,11 +487,12 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     }
 
     private void finalSave() {
-
-        if (component != null) {
+        listComponent = tableCalculate.getItems();
+        if (!listComponent.isEmpty()) {
             try {
+                listComponent.forEach(component1 -> faceService.save(component.getFace()));
+                componentService.saveAll(listComponent);
 
-                componentService.save(component);
                 MessagesUtil.showMessageInformation(" salvo(s) com sucesso");
             } catch (Exception e) {
                 MessagesUtil.showMessageError(e.getMessage());
@@ -502,10 +501,12 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     }
 
     private void componentMaterialSave() {
-        if (component != null) {
+        listComponent = comboComponentCalculate.getItems();
+
+        if (!listComponent.isEmpty()) {
             try {
 
-                componentService.save(component);
+                componentService.saveAll(listComponent);
                 MessagesUtil.showMessageInformation("Conjunto de materiais do(s) componente(s) da face foram salvo(s) com sucesso");
             } catch (Exception e) {
                 MessagesUtil.showMessageError(e.getMessage());
@@ -518,7 +519,6 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             try {
                 List<Component> componentList = componentService.saveAll(tableComponent.getItems());
                 comboComponent.setItems(FXCollections.observableArrayList(componentList));
-                comboComponentCalculate.setItems(FXCollections.observableArrayList(componentList));
 
                 MessagesUtil.showMessageInformation("Componente(s) da face salvo(s) com sucesso");
             } catch (Exception e) {
@@ -899,5 +899,15 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     private ObservableList<MaterialAbsortancia> listMaterialAbsorbance() {
         return FXCollections.observableArrayList(absorbanceRpository.findAll());
+    }
+
+    private void addListComponents(Component component) {
+        this.listComponent.clear();
+        this.listComponent.add(component);
+    }
+
+    private void addComboComponentCalculate(Component component) {
+        comboComponentCalculate.getItems().removeIf(component1 -> component1.getId().equals(component.getId()));
+        comboComponentCalculate.getItems().add(component);
     }
 }
