@@ -21,6 +21,9 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"room", "components"})
 public class Face implements Serializable {
 
+    @Transient
+    private final BigDecimal BTUS = new BigDecimal(3412).setScale(1, RoundingMode.HALF_EVEN);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -63,6 +66,11 @@ public class Face implements Serializable {
         }
 
         this.components.add(component);
+    }
+
+    public BigDecimal calculateBtus() {
+        return this.thermalLoad.multiply(BTUS)
+                .divide(new BigDecimal(1000), RoundingMode.HALF_EVEN).setScale(1, RoundingMode.HALF_EVEN);
     }
 
 
