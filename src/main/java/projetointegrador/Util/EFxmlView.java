@@ -186,6 +186,17 @@ public enum EFxmlView {
         public String getFxmlFile() {
             return "/views/table-project.fxml";
         }
+    },
+    PROJECT_DETAIL {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("project.detail");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/views/detail-project.fxml";
+        }
     };
 
     public abstract String getTitle();
