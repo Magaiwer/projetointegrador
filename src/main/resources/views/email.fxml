@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXChipView?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXTextField fx:id="txtSender" labelFloat="true" layoutX="22.0" layoutY="21.0" prefHeight="28.0" prefWidth="694.0" promptText="Remetente">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </JFXTextField>
+      <JFXTextField fx:id="txtRecepients" labelFloat="true" layoutX="22.0" layoutY="68.0" prefHeight="28.0" prefWidth="694.0" promptText="Destinatário" />
+      <JFXTextField fx:id="txtSubject" labelFloat="true" layoutX="22.0" layoutY="117.0" prefHeight="28.0" prefWidth="694.0" promptText="Assunto" />
+      <JFXTextArea fx:id="txtBody" layoutX="22.0" layoutY="277.0" prefHeight="178.0" prefWidth="694.0" promptText="Corpo" />
+      <StackPane layoutX="22.0" layoutY="213.0" prefHeight="43.0" prefWidth="694.0">
+         <children>
+            <JFXChipView prefHeight="150.0" prefWidth="541.0" />
+         </children>
+      </StackPane>
+      <JFXTextField fx:id="txtAttachment" labelFloat="true" layoutX="22.0" layoutY="159.0" prefHeight="28.0" prefWidth="575.0" promptText="Anexo" />
+      <JFXButton fx:id="btnAttach" layoutX="608.0" layoutY="166.0" prefHeight="28.0" prefWidth="108.0" text="Adicionar">
+         <graphic>
+            <MaterialDesignIconView glyphName="Icons525.ACCESS" />
+         </graphic></JFXButton>
+      <JFXButton fx:id="btnSendMail" layoutX="155.0" layoutY="499.0" prefHeight="28.0" prefWidth="460.0" text="Enviar">
+         <graphic>
+            <FontAwesomeIconView fill="#523bd7" glyphName="ENVELOPE" size="18" />
+         </graphic>
+      </JFXButton>
+   </children>
+</AnchorPane>
