@@ -9,6 +9,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import projetointegrador.Util.EFxmlView;
 import projetointegrador.config.StageManager;
+import projetointegrador.mail.Email;
+import projetointegrador.mail.Mailer;
+
+import java.util.Arrays;
 
 
 @EnableCaching

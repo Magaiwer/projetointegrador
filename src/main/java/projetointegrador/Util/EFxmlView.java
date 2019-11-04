@@ -92,7 +92,7 @@ public enum EFxmlView {
             return "/views/table-form.fxml";
         }
     },
-    AUDITORIA_LIST{
+    AUDITORIA_LIST {
         @Override
         public String getTitle() {
             return getStringFromResourceBundle("audit.title");
@@ -103,12 +103,16 @@ public enum EFxmlView {
             return "/views/audit-list.fxml";
         }
     },
-    MATERIAL{
+    MATERIAL {
         @Override
-        public  String getTitle() { return getStringFromResourceBundle("material.title"); }
+        public String getTitle() {
+            return getStringFromResourceBundle("material.title");
+        }
 
         @Override
-        public String getFxmlFile() { return  "/views/material-form.fxml"; }
+        public String getFxmlFile() {
+            return "/views/material-form.fxml";
+        }
     },
     MATERIAL_TABLE {
         @Override
@@ -121,7 +125,7 @@ public enum EFxmlView {
             return "/views/table-material.fxml";
         }
     },
-    MATERIAL_ABSORTANCIA{
+    MATERIAL_ABSORTANCIA {
         @Override
         public String getTitle() {
             return getStringFromResourceBundle("material-absortancia.title");
@@ -187,7 +191,7 @@ public enum EFxmlView {
             return "/views/table-project.fxml";
         }
     },
-    DASHBOARDS{
+    DASHBOARDS {
         @Override
         public String getTitle() {
             return getStringFromResourceBundle("dashboards.title");
@@ -196,6 +200,28 @@ public enum EFxmlView {
         @Override
         public String getFxmlFile() {
             return "/views/dashboard.fxml";
+        }
+    },
+    PROJECT_DETAIL {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("project.detail");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/views/detail-project.fxml";
+        }
+    },
+    EMAIL {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("email.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/views/email.fxml";
         }
     };
 

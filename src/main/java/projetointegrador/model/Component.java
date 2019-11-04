@@ -67,6 +67,9 @@ public class Component implements Serializable {
     private BigDecimal rsi;
 
     @Transient
+    private String flowType;
+
+    @Transient
     private BigDecimal transmittanceGlass;
 
     @Transient
@@ -124,6 +127,8 @@ public class Component implements Serializable {
         this.qft = this.transmittanceGlass.multiply(outsideTemperature.subtract(insideTemperature).abs()).add(this.solarFactor.multiply(this.indexRadiation));
         return this.qft.multiply(m2);
     }
+
+
 
 
 }

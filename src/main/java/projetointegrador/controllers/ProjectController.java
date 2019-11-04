@@ -9,13 +9,21 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -33,6 +41,7 @@ import projetointegrador.service.ProjectService;
 import projetointegrador.service.RoomService;
 import projetointegrador.validation.EntityValidator;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
@@ -215,6 +224,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private JFXTextField txtAlpha;
 
     @FXML
+    private JFXTextField txtBTUS;
+
+    @FXML
     private TableView<Project> tableProject;
 
     @FXML
@@ -273,6 +285,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     @FXML
     private JFXButton btnCalculate;
+
+    @FXML
+    private JFXButton btnEmail;
 
     @Autowired
     private PersonRepository personRepository;
@@ -443,6 +458,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             component.setM2(new BigDecimal(txtm2.getText()));
 
             String flowType = toggleGroup.getSelectedToggle().getUserData().toString();
+            component.setFlowType(flowType);
 
             BigDecimal qfo = FlowType.valueOf(flowType)
                     .calculateHeatFlow(component, new BigDecimal(txtTemperatureOutside.getText()), new BigDecimal(txtTemperatureOutside.getText()));
@@ -452,15 +468,24 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             component.getFace().addComponent(component);
             component.getFace().calculateThermalLoad();
 
-            componentSet.removeIf(component1 -> component.getId().equals(component1.getId()));
-            componentSet.add(component);
 
-            tableCalculate.setItems(FXCollections.observableArrayList(componentSet));
+            tableCalculate.getItems().removeIf(component1 ->
+                    (component1.getId().equals(component.getId())
+                            && (component1.getFlowType().equals(component.getFlowType()))));
+
+            updateBTUS(component);
+            tableCalculate.getItems().add(component);
+            tableCalculate.refresh();
 
         } else {
             MessagesUtil.showMessageError("Verifique o preechimento dos campos obrigátorios");
         }
 
+    }
+
+    private void updateBTUS(Component component) {
+        txtBTUS.setText(component.getFace().calculateBtus().toString());
+        txtBTUS.setVisible(true);
     }
 
     @FXML
@@ -603,6 +628,10 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         component.setRsi(comboRSI.getSelectionModel().getSelectedItem().getValue());
     }
 
+    private void bindCalculate() {
+
+    }
+
     @FXML
     @Override
     public void onEdit(ActionEvent event) {
@@ -633,6 +662,47 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             tableComponentMaterial.setItems(FXCollections.observableArrayList(componentMaterials));
 
 
+        } else {
+            MessagesUtil.showMessageWarning("Selecione um Projeto");
+        }
+    }
+
+    @FXML
+    public void onShowDetail(ActionEvent event) throws IOException {
+
+        project = tableProject.getSelectionModel().getSelectedItem();
+
+        if (project != null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(EFxmlView.PROJECT_DETAIL.getFxmlFile()));
+            Parent parent = loader.load();
+
+            DetailController detailController = loader.getController();
+            detailController.setProject(project);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(parent));
+            stage.setMaximized(false);
+            stage.show();
+        } else {
+            MessagesUtil.showMessageWarning("Selecione um Projeto");
+        }
+
+    }
+
+    @FXML
+    public void onShowMailSender(ActionEvent event) throws IOException {
+        project = tableProject.getSelectionModel().getSelectedItem();
+
+        if (project != null) {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(EFxmlView.EMAIL.getFxmlFile()));
+
+            EmailController emailController = new EmailController(project);
+            loader.setController(emailController);
+
+            Parent parent = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(parent));
+            stage.show();
         } else {
             MessagesUtil.showMessageWarning("Selecione um Projeto");
         }
