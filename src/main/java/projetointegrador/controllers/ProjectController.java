@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,6 +22,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -283,6 +285,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     @FXML
     private JFXButton btnCalculate;
+
+    @FXML
+    private JFXButton btnEmail;
 
     @Autowired
     private PersonRepository personRepository;
@@ -662,17 +667,45 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         }
     }
 
+    @FXML
     public void onShowDetail(ActionEvent event) throws IOException {
-       FXMLLoader loader = new FXMLLoader(getClass().getResource(EFxmlView.PROJECT_DETAIL.getFxmlFile()));
-        Parent parent = loader.load();
 
-        DetailController detailController = loader.getController();
-        detailController.setProject(project);
-        Stage stage = new Stage();
-        stage.setScene(new Scene(parent));
-        stage.show();
+        project = tableProject.getSelectionModel().getSelectedItem();
 
+        if (project != null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(EFxmlView.PROJECT_DETAIL.getFxmlFile()));
+            Parent parent = loader.load();
 
+            DetailController detailController = loader.getController();
+            detailController.setProject(project);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(parent));
+            stage.setMaximized(false);
+            stage.show();
+        } else {
+            MessagesUtil.showMessageWarning("Selecione um Projeto");
+        }
+
+    }
+
+    @FXML
+    public void onShowMailSender(ActionEvent event) throws IOException {
+        project = tableProject.getSelectionModel().getSelectedItem();
+
+        if (project != null) {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(EFxmlView.EMAIL.getFxmlFile()));
+
+            EmailController emailController = new EmailController(project);
+            loader.setController(emailController);
+
+            Parent parent = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(parent));
+            stage.show();
+        } else {
+            MessagesUtil.showMessageWarning("Selecione um Projeto");
+        }
     }
 
     @FXML

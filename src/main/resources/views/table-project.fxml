@@ -30,7 +30,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <JFXTextField fx:id="txtFilterProject" labelFloat="true" layoutX="555.0" layoutY="68.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="294.0" promptText="Filtrar" AnchorPane.rightAnchor="14.0">
+      <JFXTextField fx:id="txtFilterProject" labelFloat="true" layoutX="555.0" layoutY="68.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="255.0" promptText="Filtrar" AnchorPane.rightAnchor="14.0">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -47,12 +47,20 @@
       </JFXButton>
       <JFXButton fx:id="btnDeleteProject" graphicTextGap="8.0" layoutX="240.0" layoutY="68.0" onAction="#onDelete" prefHeight="29.0" prefWidth="101.0" text="Deletar">
          <graphic>
-            <FontAwesomeIconView glyphName="TRASH" />
+            <FontAwesomeIconView glyphName="TRASH_ALT" />
          </graphic>
       </JFXButton>
       <JFXButton fx:id="btnDetailProject" buttonType="RAISED" graphicTextGap="8.0" layoutX="341.0" layoutY="68.0" onAction="#onShowDetail" prefHeight="29.0" prefWidth="101.0" text="Detalhes">
          <graphic>
             <FontAwesomeIconView glyphName="LIST_ALT" size="12" wrappingWidth="12.0" />
+         </graphic>
+         <tooltip>
+            <Tooltip text="Visualizar detalhes do Projeto" />
+         </tooltip>
+      </JFXButton>
+      <JFXButton fx:id="btnEmail" buttonType="RAISED" graphicTextGap="8.0" layoutX="442.0" layoutY="68.0" onAction="#onShowMailSender" prefHeight="29.0" prefWidth="101.0" text="E-mail">
+         <graphic>
+            <FontAwesomeIconView glyphName="ENVELOPE_ALT" size="12" wrappingWidth="12.0" />
          </graphic>
          <tooltip>
             <Tooltip text="Visualizar detalhes do Projeto" />
