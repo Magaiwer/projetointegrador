@@ -51,6 +51,9 @@ public class AppController implements Initializable {
     private JFXButton menuProject;
 
     @FXML
+    private JFXButton menuDashboards;
+
+    @FXML
     private AnchorPane body;
 
     @Lazy
@@ -105,6 +108,11 @@ public class AppController implements Initializable {
     @FXML
     void showProject(ActionEvent event) {
         stageManager.switchScene(body, EFxmlView.PROJECT_TABLE);
+    }
+
+    @FXML
+    void showDashboards(ActionEvent event) {
+        stageManager.switchScene(body, EFxmlView.DASHBOARDS);
     }
 
 
