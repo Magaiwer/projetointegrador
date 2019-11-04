@@ -31,11 +31,7 @@
                         <FontAwesomeIconView fill="#f8f4f4" glyphName="DATABASE" />
                      </graphic>
                   </Label>
-                  <JFXButton fx:id="menuUser" onAction="#showUser" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Usuário">
-                     <graphic>
-                        <FontAwesomeIconView fill="#f8f4f4" glyphName="USER" />
-                     </graphic>
-                  </JFXButton>
+                  <JFXButton fx:id="menuUser" onAction="#showUser" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Usuário" />
                   <JFXButton fx:id="menuGroup" onAction="#showGroup" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Grupo">
                      <graphic>
                         <FontAwesomeIconView fill="#f8f4f4" glyphName="USERS" />
@@ -59,6 +55,10 @@
                         <MaterialDesignIconView fill="WHITE" glyphName="WORKER" size="18" />
                      </graphic>
                   </JFXButton>
+                  <JFXButton fx:id="menuDashboards" onAction="#showDashboards" prefHeight="48.0" prefWidth="189.0" text="Dashboards" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="#f8f4f4" glyphName="COLUMNS" />
+                     </graphic></JFXButton>
                   <Label prefHeight="28.0" prefWidth="184.0" styleClass="menu-label" text="Configurações" textFill="#fcfcfc">
                      <graphic>
                         <FontAwesomeIconView fill="#f8f4f4" glyphName="GEARS" />
@@ -75,7 +75,6 @@
                      <graphic>
                         <FontAwesomeIconView fill="#fffbfb" glyphName="LIST" />
                      </graphic></JFXButton>
-                  <JFXButton prefHeight="48.0" prefWidth="189.0" />
                   <JFXButton prefHeight="48.0" prefWidth="189.0" />
                </children>
             </VBox>
