@@ -16,6 +16,7 @@ import projetointegrador.mail.Mailer;
 import projetointegrador.model.Project;
 import projetointegrador.service.BeanUtil;
 import projetointegrador.service.UserService;
+import projetointegrador.validation.EntityValidator;
 
 import java.io.File;
 import java.net.URL;
@@ -62,10 +63,12 @@ public class EmailController implements Initializable {
     @Autowired
     private Mailer mailer;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private Project project;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private Stage stage;
 
     private Email email;
@@ -81,10 +84,12 @@ public class EmailController implements Initializable {
 
         initConverter();
 
-        if(project != null) {
+        if (project != null) {
             txtSender.setText(UserService.userLogged.getLogin());
             txtSubject.setText(project.getName());
             txtRecepients.setText(project.getPerson().getEmail());
+
+            EntityValidator.noEmpty(txtSender, txtRecepients);
         }
 
         btnAttach.setOnAction(event -> {
@@ -100,10 +105,12 @@ public class EmailController implements Initializable {
         mailer = BeanUtil.getBean(Mailer.class);
         btnSendMail.setOnAction(event -> {
             bindEmail();
-            mailer.send(email);
-            this.stage.close();
+            boolean noEmpty = EntityValidator.noEmpty(txtSender, txtRecepients);
+            if (noEmpty) {
+                mailer.send(email);
+                this.stage.close();
+            }
         });
-
     }
 
     private void bindEmail() {

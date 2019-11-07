@@ -22,15 +22,15 @@
             <Insets />
          </opaqueInsets>
       </JFXTextField>
-      <JFXTextField fx:id="txtRecepients" labelFloat="true" layoutX="32.0" layoutY="90.0" prefHeight="28.0" prefWidth="694.0" promptText="Destinatário(s)">
+      <JFXTextField fx:id="txtRecepients" labelFloat="true" layoutX="32.0" layoutY="101.0" prefHeight="28.0" prefWidth="694.0" promptText="Destinatário(s)">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </JFXTextField>
-      <JFXTextField fx:id="txtCc" labelFloat="true" layoutX="32.0" layoutY="135.0" prefHeight="28.0" prefWidth="694.0" promptText="Cc" />
-      <JFXTextField fx:id="txtSubject" labelFloat="true" layoutX="32.0" layoutY="182.0" prefHeight="28.0" prefWidth="694.0" promptText="Assunto" />
-      <JFXTextArea fx:id="txtBody" labelFloat="true" layoutX="32.0" layoutY="309.0" prefHeight="156.0" prefWidth="694.0" promptText="   E-mail" />
-      <JFXButton fx:id="btnAttach" layoutX="618.0" layoutY="232.0" prefHeight="28.0" prefWidth="108.0" text="Anexo">
+      <JFXTextField fx:id="txtCc" labelFloat="true" layoutX="32.0" layoutY="160.0" prefHeight="28.0" prefWidth="694.0" promptText="Cc" />
+      <JFXTextField fx:id="txtSubject" labelFloat="true" layoutX="32.0" layoutY="208.0" prefHeight="28.0" prefWidth="694.0" promptText="Assunto" />
+      <JFXTextArea fx:id="txtBody" labelFloat="true" layoutX="32.0" layoutY="360.0" prefHeight="133.0" prefWidth="694.0" promptText="   E-mail" />
+      <JFXButton fx:id="btnAttach" layoutX="618.0" layoutY="263.0" prefHeight="28.0" prefWidth="108.0" text="Anexo">
          <graphic>
             <FontAwesomeIconView glyphName="PAPERCLIP" size="18" />
          </graphic>
@@ -40,7 +40,7 @@
             <FontAwesomeIconView fill="#523bd7" glyphName="ENVELOPE" size="18" />
          </graphic>
       </JFXButton>
-      <StackPane focusTraversable="false" layoutX="34.0" layoutY="237.0" prefHeight="69.0" prefWidth="575.0">
+      <StackPane focusTraversable="false" layoutX="34.0" layoutY="268.0" prefHeight="69.0" prefWidth="575.0">
          <children>
             <JFXChipView fx:id="chipViewAttach" focusTraversable="false" prefHeight="60.0" prefWidth="575.0" promptText="Anexo(s)" visible="false" />
          </children>
