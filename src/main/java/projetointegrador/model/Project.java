@@ -44,6 +44,8 @@ public class Project implements Serializable {
     @OneToMany(mappedBy = "project")
     private List<Room> rooms;
 
-
+    public String getIdProjectAndName() {
+        return this.getId() + " - " + this.getName();
+    }
 
 }

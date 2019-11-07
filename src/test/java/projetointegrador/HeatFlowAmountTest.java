@@ -22,7 +22,10 @@ public class HeatFlowAmountTest {
         Component component = new Component();
         component.setTransmittance(new BigDecimal(0.0667));
 
-        BigDecimal qfo = component.calculateHeatFlowWinter(new BigDecimal(30), new BigDecimal(25));
+        component.setTemperatureOutside(new BigDecimal(30));
+        component.setTemperatureInside(new BigDecimal(25));
+
+        BigDecimal qfo = component.calculateHeatFlowWinter();
 
         BigDecimal expectedValue = new BigDecimal(0.3335).setScale(4, RoundingMode.HALF_EVEN);
 
@@ -39,7 +42,10 @@ public class HeatFlowAmountTest {
         component.setM2(new BigDecimal(4.3));
 
 
-        BigDecimal qfo = component.calculateHeatFlowSummer(new BigDecimal(30), new BigDecimal(24));
+        component.setTemperatureOutside(new BigDecimal(30));
+        component.setTemperatureInside(new BigDecimal(24));
+
+        BigDecimal qfo = component.calculateHeatFlowSummer();
 
         BigDecimal QFO = component.calculateQFO(qfo);
 

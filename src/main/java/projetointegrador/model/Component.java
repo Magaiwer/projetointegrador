@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
 import projetointegrador.listeners.AuditListeners;
+import projetointegrador.model.enums.FlowType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -67,13 +68,19 @@ public class Component implements Serializable {
     private BigDecimal rsi;
 
     @Transient
-    private String flowType;
+    private FlowType flowType;
 
     @Transient
     private BigDecimal transmittanceGlass;
 
     @Transient
     private BigDecimal solarFactor;
+
+    @Transient
+    private BigDecimal temperatureOutside;
+
+    @Transient
+    private BigDecimal temperatureInside;
 
     public BigDecimal calculateResistanceTotal() {
         BigDecimal resistanceSum = this.componentMaterials
@@ -105,14 +112,14 @@ public class Component implements Serializable {
         this.componentMaterials.add(componentMaterial);
     }
 
-    public BigDecimal calculateHeatFlowWinter(BigDecimal outsideTemperature, BigDecimal insideTemperature) {
+    public BigDecimal calculateHeatFlowWinter() {
         return this.transmittance
-                .multiply(outsideTemperature.subtract(insideTemperature).abs())
+                .multiply(this.temperatureOutside.subtract(this.temperatureInside).abs())
                 .setScale(4, RoundingMode.HALF_EVEN);
     }
 
-    public BigDecimal calculateHeatFlowSummer(BigDecimal outsideTemperature, BigDecimal insideTemperature) {
-        BigDecimal deltaTemperature = outsideTemperature.subtract(insideTemperature).abs();
+    public BigDecimal calculateHeatFlowSummer() {
+        BigDecimal deltaTemperature = this.temperatureOutside.subtract(this.temperatureInside).abs();
 
         return this.transmittance.multiply(this.alpha.multiply(this.indexRadiation).multiply(RSE).add(deltaTemperature))
                 .setScale(4, RoundingMode.HALF_EVEN);

@@ -9,6 +9,7 @@ import projetointegrador.model.Component;
 import projetointegrador.model.ComponentMaterial;
 import projetointegrador.repository.ComponentRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -53,5 +54,8 @@ public class ComponentService {
     }
 
 
-
+    public void calculateQFO(Component component) {
+        BigDecimal qfo = component.getFlowType().calculateHeatFlow(component);
+        component.calculateQFO(qfo);
+    }
 }
