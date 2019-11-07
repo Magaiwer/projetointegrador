@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -10,14 +12,14 @@
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="863.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="15.0" layoutY="9.0" prefHeight="18.0" prefWidth="329.0" text="Detalhes do Projeto">
+      <Label fx:id="lbDescriptionForm" layoutX="15.0" layoutY="9.0" prefHeight="29.0" prefWidth="831.0" text="Detalhes do Projeto">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
       <JFXComboBox fx:id="comboRoom" labelFloat="true" layoutX="15.0" layoutY="52.0" prefHeight="28.0" prefWidth="420.0" promptText="Comodo" />
       <JFXComboBox fx:id="comboFace" labelFloat="true" layoutX="15.0" layoutY="111.0" prefHeight="28.0" prefWidth="420.0" promptText="Face" />
-      <JFXTextField fx:id="txtBTUS" alignment="CENTER" editable="false" labelFloat="true" layoutX="520.0" layoutY="111.0" prefHeight="28.0" prefWidth="329.0" promptText="BTUS" unFocusColor="#4f4f4f00" />
+      <JFXTextField fx:id="txtBTUS" alignment="CENTER" editable="false" labelFloat="true" layoutX="621.0" layoutY="97.0" prefHeight="28.0" prefWidth="228.0" promptText="BTUS" unFocusColor="#4f4f4f00" />
       <TableView fx:id="tableDetail" prefHeight="253.0" prefWidth="740.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="200.0">
          <columns>
             <TableColumn fx:id="columnRoom" prefWidth="75.0" text="Comodo" />
@@ -35,5 +37,9 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
+      <JFXButton fx:id="btnClear" layoutX="490.0" layoutY="97.0" onAction="#onBtnClearClick" prefHeight="28.0" prefWidth="94.0" text="Limpar">
+         <graphic>
+            <FontAwesomeIconView glyphName="ERASER" />
+         </graphic></JFXButton>
    </children>
 </AnchorPane>

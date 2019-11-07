@@ -1,13 +1,16 @@
 package projetointegrador.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -77,11 +80,15 @@ public class DetailController implements Initializable {
     @FXML
     private JFXTextField txtBTUS;
 
+    @FXML
+    private Label lbDescriptionForm;
+
+    @FXML
+    private JFXButton btnClear;
 
     private FaceRepository faceRepository;
     private RoomRepository roomRepository;
     private ComponentRepository componentRepository;
-    private RoomService roomService;
 
     @Getter
     @Setter
@@ -99,25 +106,27 @@ public class DetailController implements Initializable {
         roomRepository = BeanUtil.getBean(RoomRepository.class);
         faceRepository = BeanUtil.getBean(FaceRepository.class);
         componentRepository = BeanUtil.getBean(ComponentRepository.class);
-        roomService = BeanUtil.getBean(RoomService.class);
 
         projectFilter = new ProjectFilter();
 
-
         if (this.project != null) {
+            lbDescriptionForm.setText("Detalhes do Projeto: " + project.getIdProjectAndName());
             comboRoom.setItems(listRoomByProject());
             projectFilter.setProjectId(project.getId());
             initListeners();
             initTable(projectFilter);
             initConverter();
-
-
-            Room room = new Room();
-            room = listRoomByProject().get(0);
-
-            System.out.println(room.calculateBtus());
         }
+    }
 
+    @FXML
+    void onBtnClearClick(ActionEvent event) {
+        comboRoom.getSelectionModel().clearSelection();
+        comboFace.getSelectionModel().clearSelection();
+        txtBTUS.clear();
+        projectFilter = new ProjectFilter();
+        projectFilter.setProjectId(project.getId());
+        initTable(projectFilter);
     }
 
     private ObservableList<Room> listRoomByProject() {
@@ -135,16 +144,17 @@ public class DetailController implements Initializable {
 
     private void initListeners() {
         comboRoom.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null ) {
+            if (newValue != null) {
                 calculateBTUS(newValue);
                 comboFace.setItems(listFaceByRoom(newValue));
+                projectFilter = new ProjectFilter();
                 projectFilter.setRoomId(newValue.getId());
                 initTable(projectFilter);
             }
         });
 
         comboFace.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null ) {
+            if (newValue != null) {
                 projectFilter.setFaceId(newValue.getId());
                 initTable(projectFilter);
             }
