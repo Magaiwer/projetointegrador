@@ -108,7 +108,7 @@ public class DashboardsController implements Initializable
 
         try {
            regions.forEach(region ->
-                data.add(new PieChart.Data(region.getName(), region.getId())));
+                data.add(new PieChart.Data(region.getName(), region.getId())) );
         }
         catch (Exception e)
         {
@@ -122,10 +122,7 @@ public class DashboardsController implements Initializable
         initializeFormWizzard();
 
         PieChart pieChart = new PieChart();
-
-        loadDataPieChart();
         pieChart.getData().addAll(data);
-
         pieChart.setVisible(true);
     }
 
