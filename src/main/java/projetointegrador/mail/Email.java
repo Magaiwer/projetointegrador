@@ -2,13 +2,14 @@ package projetointegrador.mail;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.StringUtils;
 
-import javax.swing.text.html.ListView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 public class Email {
 
     private String sender;
@@ -21,27 +22,33 @@ public class Email {
 
 
     public void addRecipients(String recipient) {
-        if(this.recipients == null) {
+        if (this.recipients == null) {
             this.recipients = new ArrayList<>();
         }
-
-        this.recipients = Arrays.asList(recipient.split(";"));
+        if (!StringUtils.isEmpty(recipient)) {
+            this.recipients = Arrays.asList(recipient.split(";"));
+        }
     }
 
     public void addCopyTo(String copyTo) {
-        if(this.copyTo == null) {
+        if (this.copyTo == null) {
             this.copyTo = new ArrayList<>();
         }
 
-       this.copyTo = Arrays.asList(copyTo.split(";"));
+        if (!StringUtils.isEmpty(copyTo)) {
+            this.copyTo = Arrays.asList(copyTo.split(";"));
+        }
+
     }
 
-    public void  addAttachments(String path) {
-        if(this.attachments == null) {
+    public void addAttachments(String path) {
+        if (this.attachments == null) {
             this.attachments = new ArrayList<>();
         }
 
-        this.attachments.add(path);
+        if (!StringUtils.isEmpty(path)) {
+            this.attachments.add(path);
+        }
     }
 
     public boolean hasAttachments() {

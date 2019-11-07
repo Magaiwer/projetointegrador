@@ -702,6 +702,8 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             Parent parent = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(parent));
+
+            emailController.setStage(stage);
             stage.show();
         } else {
             MessagesUtil.showMessageWarning("Selecione um Projeto");
