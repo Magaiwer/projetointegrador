@@ -452,18 +452,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         component = comboComponentCalculate.getSelectionModel().getSelectedItem();
 
         if (component != null && noEmpty) {
+            bindCalculate(component);
             componentService.calculateTransmittance(component);
-
-            component.setAlpha(new BigDecimal(txtAlpha.getText()));
-            component.setM2(new BigDecimal(txtm2.getText()));
-
-            String flowType = toggleGroup.getSelectedToggle().getUserData().toString();
-            component.setFlowType(flowType);
-
-            BigDecimal qfo = FlowType.valueOf(flowType)
-                    .calculateHeatFlow(component, new BigDecimal(txtTemperatureOutside.getText()), new BigDecimal(txtTemperatureOutside.getText()));
-
-            component.calculateQFO(qfo);
+            componentService.calculateQFO(component);
 
             component.getFace().addComponent(component);
             component.getFace().calculateThermalLoad();
@@ -515,7 +506,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         listComponent = tableCalculate.getItems();
         if (!listComponent.isEmpty()) {
             try {
-                listComponent.forEach(component1 -> faceService.save(component.getFace()));
+                listComponent.forEach(component1 -> faceService.save(component1.getFace()));
                 componentService.saveAll(listComponent);
 
                 MessagesUtil.showMessageInformation(" salvo(s) com sucesso");
@@ -583,8 +574,8 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private void projectSave() {
         boolean noEmpty = EntityValidator.noEmpty(txtNameProject, txtIndex);
 
+        bindProject();
         if (project != null && noEmpty) {
-            bindProject();
 
             try {
                 projectService.save(project);
@@ -597,6 +588,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     }
 
     private void bindProject() {
+        project = new Project();
         project.setName(txtNameProject.getText());
         project.setDescription(txtDescription.getText());
         project.setPerson(comboCustomer.getValue());
@@ -628,8 +620,15 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         component.setRsi(comboRSI.getSelectionModel().getSelectedItem().getValue());
     }
 
-    private void bindCalculate() {
-
+    private void bindCalculate(Component component) {
+        if(component != null) {
+            component.setAlpha(new BigDecimal(txtAlpha.getText()));
+            component.setM2(new BigDecimal(txtm2.getText()));
+            component.setTemperatureOutside(new BigDecimal(txtTemperatureOutside.getText()));
+            component.setTemperatureInside(new BigDecimal(txtTemperatureOutside.getText()));
+            String flowType = toggleGroup.getSelectedToggle().getUserData().toString();
+            component.setFlowType(FlowType.valueOf(flowType));
+        }
     }
 
     @FXML
@@ -674,10 +673,11 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
         if (project != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(EFxmlView.PROJECT_DETAIL.getFxmlFile()));
-            Parent parent = loader.load();
 
-            DetailController detailController = loader.getController();
-            detailController.setProject(project);
+            DetailController detailController = new DetailController(project);
+            loader.setController(detailController);
+
+            Parent parent = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(parent));
             stage.setMaximized(false);
