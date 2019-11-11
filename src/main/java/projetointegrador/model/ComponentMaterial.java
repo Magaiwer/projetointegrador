@@ -20,7 +20,7 @@ public class ComponentMaterial implements Serializable {
     @MapsId("componentId")
     private Component component;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("materialId")
     private Material material;
 

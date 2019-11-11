@@ -16,12 +16,13 @@ import java.util.List;
 @Table(name = "room")
 @Data
 @ToString(exclude = {"project", "faces"})
-@EqualsAndHashCode(exclude = {"project", "faces"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Room implements Serializable {
 
     @Transient
     private final BigDecimal BTUS = new BigDecimal(3412).setScale(1, RoundingMode.HALF_EVEN);
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,7 +35,7 @@ public class Room implements Serializable {
     private Project project;
 
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Face> faces;
 
     public BigDecimal calculateBtus() {
@@ -46,8 +47,12 @@ public class Room implements Serializable {
 
         return thermalLoadSum.multiply(BTUS)
                 .divide(new BigDecimal(1000))
-                .setScale(4, RoundingMode.HALF_EVEN);
+                .setScale(2, RoundingMode.HALF_EVEN);
 
+    }
+
+    public boolean isNew() {
+        return this.id == null;
     }
 
 }
