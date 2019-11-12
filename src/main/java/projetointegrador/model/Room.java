@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 @EntityListeners(AuditListeners.class)
@@ -36,7 +37,7 @@ public class Room implements Serializable {
 
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Face> faces;
+    private List<Face> faces = new ArrayList<>();
 
     public BigDecimal calculateBtus() {
         BigDecimal thermalLoadSum = this.faces

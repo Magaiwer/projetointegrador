@@ -44,8 +44,8 @@ public class Face implements Serializable {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @OneToMany(mappedBy = "face", cascade = CascadeType.ALL)
-    private Set<Component> components;
+    @OneToMany(mappedBy = "face", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Component> components = new HashSet<>();
 
     public BigDecimal calculateTransmittanceAverage() {
         this.transmittanceAverage = BigDecimal.valueOf(this.components

@@ -61,7 +61,7 @@ public class Component implements Serializable {
     private Face face;
 
     @OneToMany(mappedBy = "component", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ComponentMaterial> componentMaterials;
+    private Set<ComponentMaterial> componentMaterials = new HashSet<>();
 
     @Transient
     private BigDecimal rsi;
