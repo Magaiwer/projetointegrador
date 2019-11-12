@@ -73,7 +73,7 @@ public class ComponentService {
     public void calculateAllIndexComponent(Component component) {
         calculateTransmittance(component);
 
-        if (component.getTransmittanceGlass() != null) {
+        if (component.isGlass()) {
             calculateQFT(component);
         } else {
             calculateQFO(component);

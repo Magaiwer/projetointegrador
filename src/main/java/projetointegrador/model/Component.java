@@ -139,5 +139,9 @@ public class Component implements Serializable {
         return this.id == null;
     }
 
+    public boolean isGlass(){
+        return this.transmittanceGlass != null && this.transmittanceGlass.longValue() > 0;
+    }
+
 
 }
