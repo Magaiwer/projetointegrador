@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="439.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.AuditoriaController">
+<AnchorPane prefHeight="503.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.AuditoriaController">
    <children>
-      <TableView fx:id="tableAudit" layoutY="65.0" prefHeight="335.0" prefWidth="600.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="65.0">
+      <TableView fx:id="tableAudit" layoutY="94.0" prefHeight="399.0" prefWidth="723.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="94.0">
           <columnResizePolicy>
-              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
           </columnResizePolicy>
           <columns>
-          <TableColumn fx:id="columnId" prefWidth="59.0" minWidth="90"  text="Código" />
-            <TableColumn fx:id="columnNewValue" prefWidth="366.0" minWidth="500"  text="Valor novo" />
-            <TableColumn fx:id="columnCommand" prefWidth="109.0" minWidth="150"  text="Comando" />
-            <TableColumn fx:id="columnUserId"  minWidth="150" prefWidth="-1.0" text="Usuario" />
+          <TableColumn fx:id="columnId" minWidth="30.0" prefWidth="-1.0" text="Código" />
+            <TableColumn fx:id="columnNewValue" minWidth="300.0" prefWidth="-1.0" text="Valor novo" />
+            <TableColumn fx:id="columnCommand" minWidth="40.0" prefWidth="-1.0" text="Comando" />
+            <TableColumn fx:id="columnCreatedAt" minWidth="47.0" prefWidth="-1.0" text="Data " />
+            <TableColumn fx:id="columnUserId" minWidth="47.0" prefWidth="-1.0" text="Usuário" />
         </columns>
       </TableView>
+      <JFXTextField fx:id="txtFilter" labelFloat="true" layoutX="14.0" layoutY="53.0" prefHeight="28.0" prefWidth="287.0" promptText="Filtrar" />
+      <Label layoutX="14.0" layoutY="13.0" prefHeight="18.0" prefWidth="331.0" text="Auditoria">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
