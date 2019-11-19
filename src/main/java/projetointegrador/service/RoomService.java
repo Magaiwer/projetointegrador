@@ -30,4 +30,12 @@ public class RoomService {
     public void save(Room room) {
         roomRepository.save(room);
     }
+
+    @Transactional
+    public void delete(Room room) {
+
+        if(!room.isNew()) {
+            roomRepository.delete(room);
+        }
+    }
 }

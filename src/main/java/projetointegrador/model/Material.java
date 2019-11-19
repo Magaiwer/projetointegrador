@@ -15,9 +15,12 @@ import java.util.List;
 @Entity
 @Table(name = "material")
 @DynamicUpdate
-@Data @EqualsAndHashCode @ToString
-public class Material implements Serializable
-{
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
+public class Material implements Serializable {
+
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,5 +33,9 @@ public class Material implements Serializable
 
     @Column
     private boolean glass;
+
+    public boolean isNew() {
+        return this.id == null;
+    }
 
 }

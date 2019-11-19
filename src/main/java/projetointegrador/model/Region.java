@@ -15,9 +15,10 @@ import java.util.List;
 @Entity
 @Table(name = "region")
 @Data
-@ToString(exclude = "project") @EqualsAndHashCode(exclude = "project")
+@ToString(exclude = "project") @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Region implements Serializable {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,8 +31,5 @@ public class Region implements Serializable {
 
     @OneToMany
     private List<Project> project;
-
-
-
 
 }

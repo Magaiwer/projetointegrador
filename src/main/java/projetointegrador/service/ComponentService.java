@@ -58,4 +58,26 @@ public class ComponentService {
         BigDecimal qfo = component.getFlowType().calculateHeatFlow(component);
         component.calculateQFO(qfo);
     }
+
+    public void calculateQFT(Component component) {
+        if (component.getTransmittanceGlass() != null && component.getSolarFactor() != null) {
+            component.calculateQFT();
+        }
+    }
+
+    private void calculateThermalLoadFace(Component component) {
+        component.getFace().addComponent(component);
+        component.getFace().calculateThermalLoad();
+    }
+
+    public void calculateAllIndexComponent(Component component) {
+        calculateTransmittance(component);
+
+        if (component.isGlass()) {
+            calculateQFT(component);
+        } else {
+            calculateQFO(component);
+        }
+        calculateThermalLoadFace(component);
+    }
 }

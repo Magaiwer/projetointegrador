@@ -1,7 +1,10 @@
 package projetointegrador.Util;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.util.Optional;
 
@@ -31,4 +34,14 @@ public class MessagesUtil {
         alert.setHeaderText(message);
         return alert.showAndWait();
     }
+
+    public static void showNotification(String message) {
+        Notifications.create()
+                .title("")
+                .text(message)
+                .hideAfter(Duration.seconds(3.0))
+                .position(Pos.TOP_RIGHT)
+                .showInformation();
+    }
+
 }
