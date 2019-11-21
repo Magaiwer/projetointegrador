@@ -328,6 +328,10 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @Autowired
     private StageManager stageManager;
 
+    @FXML
+    private TableView<Region> tableProjectsByRegion;
+
+
     private Project project = new Project();
     private Room room;
     private Face face;
