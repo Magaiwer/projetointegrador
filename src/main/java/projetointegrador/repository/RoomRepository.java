@@ -19,4 +19,5 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("select distinct r from Room r left outer join  fetch  r.faces where r.project.id = :id")
     List<Room> findByProjectWithFaces(@Param("id") Long id);
 
+
 }

@@ -2,6 +2,7 @@ package projetointegrador.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.sun.org.apache.bcel.internal.generic.ANEWARRAY;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,8 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
+import javafx.scene.chart.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +24,17 @@ import org.springframework.stereotype.Component;
 import projetointegrador.model.*;
 import projetointegrador.model.enums.FlowType;
 import projetointegrador.model.enums.Rsi;
+import projetointegrador.repository.PersonRepository;
 import projetointegrador.repository.ProjectRepository;
 import projetointegrador.repository.RegionRepository;
+import projetointegrador.repository.RoomRepository;
 import projetointegrador.validation.EntityValidator;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class DashboardsController implements Initializable
@@ -41,10 +49,19 @@ public class DashboardsController implements Initializable
     private JFXComboBox<Project> comboProject;
 
     @FXML
-    private JFXComboBox<Region> comboRegion;
+    private JFXButton btnAddFilter;
 
     @FXML
-    private JFXButton btnAddFilter;
+    private JFXButton btnClearFilters;
+
+    @FXML
+    private JFXButton btnTotalProjects;
+
+    @FXML
+    private JFXButton btnTotalClients;
+
+    @FXML
+    private JFXButton btnAverageRooms;
 
     @Autowired
     private RegionRepository regionRepository;
@@ -52,29 +69,65 @@ public class DashboardsController implements Initializable
     @Autowired
     private ProjectRepository projectRepository;
 
-    private ObservableList<Region> regions;
-    private ObservableList data;
+    @Autowired
+    private PersonRepository personRepository;
+
+    @Autowired
+    private RoomRepository roomRepository;
 
     @FXML
-    void onAddFilter(ActionEvent event)
-    {
+    private TableView<Region> tableProjectsByRegion;
 
+    @FXML
+    private TableColumn<Region, String> columnRegion;
+
+    @FXML
+    private TableColumn<Region, Long> columnAmountProjects;
+
+    @FXML
+    private PieChart pieChart;
+    @FXML
+    private PieChart pieChartRegions;
+
+
+    private ObservableList<Region> regions;
+    private ObservableList<Person> persons;
+
+    @FXML
+    void onApplyFilters(ActionEvent event)
+    {
+        loadTotalProjects();
+        loadTotalClients();
+        loadAverageRoomsByProject();
+        loadDataPieChart();
+        loadDataPieChartRegions();
     }
 
+    @FXML
+    void onClearFilters(ActionEvent event)
+    {
+        comboProject.getItems().clear();
+        initCombo();
+    }
 
     private void initializeFormWizzard()
     {
         initCombo();
         initConverter();
         loadDataPieChart();
+        loadDataPieChartRegions();
+        loadTotalProjects();
+        loadTotalClients();
+        loadAverageRoomsByProject();
     }
 
+    private ObservableList<Region> listRegions() {
+        return FXCollections.observableArrayList(regionRepository.findAll());
+    }
 
     private void initCombo() {
         comboProject.setItems(listProject());
-        comboRegion.setItems(listRegion());
     }
-
 
     private void initConverter() {
         comboProject.setConverter(new StringConverter<Project>() {
@@ -88,31 +141,75 @@ public class DashboardsController implements Initializable
                 return null;
             }
         });
-
-        comboRegion.setConverter(new StringConverter<Region>() {
-            @Override
-            public String toString(Region region) {
-                return region.getName();
-            }
-
-            @Override
-            public Region fromString(String string) {
-                return null;
-            }
-        });
     }
 
-    public void loadDataPieChart() {
-        data = FXCollections.observableArrayList();
+    public void loadDataPieChart()
+    {
+        persons = FXCollections.observableArrayList(personRepository.findAll());
+        
+        PieChart.Data data[] = new PieChart.Data[persons.size()];
+
+        AtomicInteger atomicInteger = new AtomicInteger(0);
+        persons.forEach(person ->
+            data[atomicInteger.getAndIncrement()] = new PieChart.Data(person.getName(), personRepository.findProjectsByPerson(person.getId()).size()));
+
+        pieChart.setTitle("Quantidade de projetos por cliente");
+        pieChart.setData(FXCollections.observableArrayList(data));
+    }
+
+    public void loadDataPieChartRegions()
+    {
         regions = FXCollections.observableArrayList(regionRepository.findAll());
 
-        try {
-           regions.forEach(region ->
-                data.add(new PieChart.Data(region.getName(), region.getId())));
-        }
-        catch (Exception e)
-        {
+        PieChart.Data data[] = new PieChart.Data[regions.size()];
 
+        AtomicInteger atomicInteger = new AtomicInteger(0);
+        regions.forEach(region ->
+                data[atomicInteger.getAndIncrement()] = new PieChart.Data(region.getName(), projectRepository.findByRegionId(region.getId()).size()));
+
+        pieChartRegions.setTitle("Quantidade de projetos por regiao");
+        pieChartRegions.setData(FXCollections.observableArrayList(data));
+    }
+
+    public void loadTotalProjects()
+    {
+        if(comboProject.getValue() != null)
+        {
+            Project selectedProject = (Project) comboProject.getSelectionModel().getSelectedItem();
+            Long id = selectedProject.getId();
+
+            btnTotalProjects.setText(String.valueOf(projectRepository.findProjectById(id).size()));
+        }
+        else
+        {
+            btnTotalProjects.setText(String.valueOf(projectRepository.findAll().size()));
+        }
+    }
+
+    public void loadTotalClients()
+    {
+        if(comboProject.getValue() != null)
+        {
+            btnTotalClients.setText(String.valueOf(1));
+        }
+        else
+        {
+            btnTotalClients.setText(String.valueOf(personRepository.findAll().size()));
+        }
+    }
+
+    public void loadAverageRoomsByProject()
+    {
+        if(comboProject.getValue() != null)
+        {
+            Project selectedProject = (Project) comboProject.getSelectionModel().getSelectedItem();
+            Long id = selectedProject.getId();
+            System.out.println(roomRepository.findByProjectId(id));
+            btnAverageRooms.setText(String.valueOf(roomRepository.findByProjectId(id).size()));
+        }
+        else
+        {
+            btnAverageRooms.setText("5");
         }
     }
 
@@ -120,21 +217,10 @@ public class DashboardsController implements Initializable
     public void initialize(URL location, ResourceBundle resources)
     {
         initializeFormWizzard();
-
-        PieChart pieChart = new PieChart();
-
-        loadDataPieChart();
-        pieChart.getData().addAll(data);
-
-        pieChart.setVisible(true);
     }
 
-
-    private ObservableList<Project> listProject() {
+    private ObservableList<Project> listProject()
+    {
         return FXCollections.observableArrayList(projectRepository.findAll());
-    }
-
-    private ObservableList<Region> listRegion() {
-        return FXCollections.observableArrayList(regionRepository.findAll());
     }
 }
