@@ -12,7 +12,7 @@ COST 100;
 ALTER FUNCTION remove_acento(text)
 OWNER TO postgres;
 
-CREATE OR REPLACE FUNCTION diferenca_datas_dia(date, date) RETURNS integer AS $$
+CREATE OR REPLACE FUNCTION dif_dates_day(date, date) RETURNS integer AS $$
     BEGIN
         RETURN (SELECT
                   (SELECT count(*) - 1
@@ -23,7 +23,7 @@ CREATE OR REPLACE FUNCTION diferenca_datas_dia(date, date) RETURNS integer AS $$
         END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION diferenca_datas_ano(date, date) RETURNS integer AS $$
+CREATE OR REPLACE FUNCTION dif_dates_year(date, date) RETURNS integer AS $$
     BEGIN
         RETURN (SELECT
                   (SELECT count(*) - 1
@@ -34,7 +34,7 @@ CREATE OR REPLACE FUNCTION diferenca_datas_ano(date, date) RETURNS integer AS $$
         END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION diferenca_datas_mes(date, date) RETURNS integer AS $$
+CREATE OR REPLACE FUNCTION dif_dates_month(date, date) RETURNS integer AS $$
     BEGIN
         RETURN (SELECT
                   (SELECT count(*) - 1
@@ -44,3 +44,43 @@ CREATE OR REPLACE FUNCTION diferenca_datas_mes(date, date) RETURNS integer AS $$
                               $2::date)) g (date1, date2));
         END;
 $$ LANGUAGE plpgsql;
+
+CREATE TYPE type_projects AS (
+	id INT,
+	name VARCHAR,
+	description VARCHAR,
+	date VARCHAR,
+	person_id INT,
+	region_id INT,
+	person_name VARCHAR,
+	person_email VARCHAR,
+	person_fone VARCHAR,
+	region_name VARCHAR
+);
+
+
+CREATE OR REPLACE FUNCTION projects(person_id INTEGER) RETURNS SETOF type_projects AS $$
+DECLARE
+	data_projects type_projects;
+BEGIN
+	FOR data_projects IN SELECT project.id,
+				                project.name,
+				                project.description,
+				                project.date,
+				                project.person_id,
+				                project.region_id,
+				                person.name,
+				                person.email,
+				                person.fone,
+				                region.name
+		                   FROM project,
+				                person,
+				                region
+		                  WHERE project.person_id = person.id
+		                    AND project.region_id = region.id
+		                    AND project.person_id = $1 LOOP
+		RETURN NEXT data_projects;
+	END LOOP;
+	RETURN;
+END;
+$$ LANGUAGE 'plpgsql';
