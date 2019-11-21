@@ -12,3 +12,35 @@ COST 100;
 ALTER FUNCTION remove_acento(text)
 OWNER TO postgres;
 
+CREATE OR REPLACE FUNCTION diferenca_datas_dia(date, date) RETURNS integer AS $$
+    BEGIN
+        RETURN (SELECT
+                  (SELECT count(*) - 1
+                   FROM generate_series(date1, date2, '1 DAY')) AS meses
+                FROM (
+                      VALUES ($1::date,
+                              $2::date)) g (date1, date2));
+        END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION diferenca_datas_ano(date, date) RETURNS integer AS $$
+    BEGIN
+        RETURN (SELECT
+                  (SELECT count(*) - 1
+                   FROM generate_series(date1, date2, '1 YEAR')) AS meses
+                FROM (
+                      VALUES ($1::date,
+                              $2::date)) g (date1, date2));
+        END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION diferenca_datas_mes(date, date) RETURNS integer AS $$
+    BEGIN
+        RETURN (SELECT
+                  (SELECT count(*) - 1
+                   FROM generate_series(date1, date2, '1 MONTH')) AS meses
+                FROM (
+                      VALUES ($1::date,
+                              $2::date)) g (date1, date2));
+        END;
+$$ LANGUAGE plpgsql;
