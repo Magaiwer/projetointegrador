@@ -223,6 +223,17 @@ public enum EFxmlView {
         public String getFxmlFile() {
             return "/views/email.fxml";
         }
+    },
+    FILE_TRANSFER {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("file.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/views/file-transfer-form.fxml";
+        }
     };
 
     public abstract String getTitle();
