@@ -30,6 +30,7 @@ import projetointegrador.repository.RegionRepository;
 import projetointegrador.repository.RoomRepository;
 import projetointegrador.validation.EntityValidator;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -209,7 +210,11 @@ public class DashboardsController implements Initializable
         }
         else
         {
-            btnAverageRooms.setText("5");
+            btnAverageRooms.setText(BigDecimal.valueOf(roomRepository.findAll()
+                    .stream()
+                    .map(Room::getId)
+                    .mapToDouble(Long::doubleValue)
+                    .average().orElse(BigDecimal.ZERO.doubleValue())).toString());
         }
     }
 
