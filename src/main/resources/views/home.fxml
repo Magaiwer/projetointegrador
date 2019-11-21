@@ -81,7 +81,11 @@
                      <graphic>
                         <FontAwesomeIconView fill="#fffbfb" glyphName="LIST" />
                      </graphic></JFXButton>
-                  <JFXButton prefHeight="48.0" prefWidth="189.0" />
+                  <JFXButton fx:id="menuTransfer" onAction="#showFileTransfer" prefHeight="48.0" prefWidth="189.0" text="Transferência" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="#fffbfb" glyphName="LIST" />
+                     </graphic>
+                  </JFXButton>
                </children>
             </VBox>
          </left>
