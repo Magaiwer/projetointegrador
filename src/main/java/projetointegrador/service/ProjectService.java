@@ -23,9 +23,24 @@ public class ProjectService {
     private ProjectRepository projectRepository;
 
     @Transactional
-    public void save(Project project)
-    {
-        project.setDate(LocalDateTime.now());
-        projectRepository.saveAndFlush(project);
+    public void save(Project project) {
+        try {
+
+            if (project.isNew()) {
+                project.setDate(LocalDateTime.now());
+            }
+            projectRepository.saveAndFlush(project);
+
+        } catch (RuntimeException ex) {
+            LOGGER.error("Erro ao salvar projeto", ex);
+        }
+    }
+
+    public void delete(Project project) {
+        try {
+            projectRepository.delete(project);
+        } catch (Exception ex) {
+            LOGGER.error("Problema ao deletar projeto", ex);
+        }
     }
 }

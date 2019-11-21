@@ -11,18 +11,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +37,10 @@ import projetointegrador.validation.EntityValidator;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 @org.springframework.stereotype.Component
 public class ProjectController implements Initializable, BaseController<ProjectController> {
@@ -289,6 +285,21 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     @FXML
     private JFXButton btnEmail;
 
+    @FXML
+    private JFXButton btnRemoveCalculate;
+
+    @FXML
+    private JFXButton btnRemoveRoom;
+
+    @FXML
+    private JFXButton btnRemoveFace;
+
+    @FXML
+    private JFXButton btnRemoveComponent;
+
+    @FXML
+    private JFXButton btnRemoveComponentMaterial;
+
     @Autowired
     private PersonRepository personRepository;
 
@@ -309,6 +320,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     @Autowired
     private MaterialRepository materialRepository;
+
     @Autowired
     private MaterialAbsortanciaRepository absorbanceRpository;
 
@@ -340,8 +352,10 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private List<Room> listRoom;
     private List<Face> listFace;
     private List<Component> listComponent;
-    private Set<Component> componentSet;
     private List<ComponentMaterial> componentMaterials;
+
+    private static final String TEMPERATURE_OUTSIDE = "30";
+    private static final String TEMPERATURE_INSIDE = "25";
 
     private void initializeFormWizzard() {
         if (txtIndex != null) {
@@ -352,11 +366,10 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             listRoom = new ArrayList<>();
             listFace = new ArrayList<>();
             listComponent = new ArrayList<>();
-            componentSet = new HashSet<>();
             componentMaterials = new ArrayList<>();
 
-            txtTemperatureOutside.setText("30");
-            txtTemperatureInside.setText("25");
+            txtTemperatureOutside.setText(TEMPERATURE_OUTSIDE);
+            txtTemperatureInside.setText(TEMPERATURE_INSIDE);
 
             rgSummer.setUserData(FlowType.SUMMER);
             rgWinter.setUserData(FlowType.WINTER);
@@ -397,6 +410,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             listRoom.add(room);
             tableRoom.setItems(FXCollections.observableArrayList(listRoom));
             EntityValidator.clearFields(txtNameRoom);
+            btnRemoveRoom.setDisable(false);
         } else {
             MessagesUtil.showMessageError("Verifique o preechimento dos campos obrigátorios");
         }
@@ -410,6 +424,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             listFace.add(face);
             tableFace.setItems(FXCollections.observableArrayList(listFace));
             EntityValidator.clearFields(txtNameFace);
+            btnRemoveFace.setDisable(false);
         } else {
             MessagesUtil.showMessageError("Verifique o preechimento dos campos obrigátorios");
         }
@@ -423,6 +438,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
             tableComponent.getItems().add(component);
             EntityValidator.clearFields(txtNameComponent);
+            btnRemoveComponent.setDisable(false);
         } else {
             MessagesUtil.showMessageError("Verifique o preechimento dos campos obrigátorios");
         }
@@ -444,6 +460,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             addComboComponentCalculate(component);
 
             EntityValidator.clearFields(txtThickness);
+            btnRemoveComponentMaterial.setDisable(false);
         } else {
             MessagesUtil.showMessageError("Verifique o preechimento dos campos obrigátorios");
         }
@@ -456,45 +473,84 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         component = comboComponentCalculate.getSelectionModel().getSelectedItem();
 
         if (component != null && noEmpty) {
-            componentService.calculateTransmittance(component);
-
-            component.setAlpha(new BigDecimal(txtAlpha.getText()));
-            component.setM2(new BigDecimal(txtm2.getText()));
-
-            String flowType = toggleGroup.getSelectedToggle().getUserData().toString();
-            component.setFlowType(flowType);
-
-            BigDecimal qfo = FlowType.valueOf(flowType)
-                    .calculateHeatFlow(component, new BigDecimal(txtTemperatureOutside.getText()), new BigDecimal(txtTemperatureOutside.getText()));
-
-            component.calculateQFO(qfo);
+            bindCalculate(component);
+         /*   componentService.calculateTransmittance(component);
+            componentService.calculateQFO(component);
+            componentService.calculateQFT(component);
 
             component.getFace().addComponent(component);
-            component.getFace().calculateThermalLoad();
+            component.getFace().calculateThermalLoad();*/
 
+            componentService.calculateAllIndexComponent(component);
 
-            tableCalculate.getItems().removeIf(component1 ->
-                    (component1.getId().equals(component.getId())
-                            && (component1.getFlowType().equals(component.getFlowType()))));
-
-            updateBTUS(component);
-            tableCalculate.getItems().add(component);
-            tableCalculate.refresh();
+            updateTableCalculate(component);
+            btnRemoveCalculate.setDisable(false);
 
         } else {
             MessagesUtil.showMessageError("Verifique o preechimento dos campos obrigátorios");
         }
-
     }
 
-    private void updateBTUS(Component component) {
-        txtBTUS.setText(component.getFace().calculateBtus().toString());
-        txtBTUS.setVisible(true);
+    private void updateTableCalculate(Component component) {
+        tableCalculate.getItems().removeIf(component1 ->
+                (component1.getId().equals(component.getId())
+                        && (component1.getFlowType().equals(component.getFlowType()))));
+
+        tableCalculate.getItems().add(component);
+        tableCalculate.refresh();
+    }
+
+    @FXML
+    void onRemoveCalculate(ActionEvent event) {
+        removeObjectFromTable(tableCalculate);
+        btnRemoveCalculate.setDisable(tableCalculate.getItems().isEmpty());
+    }
+
+    @FXML
+    void onRemoveComponent(ActionEvent event) {
+        removeObjectFromTable(tableComponent);
+        btnRemoveComponent.setDisable(tableComponent.getItems().isEmpty());
+    }
+
+    @FXML
+    void onRemoveComponentMaterial(ActionEvent event) {
+        removeObjectFromTable(tableComponentMaterial);
+        btnRemoveComponentMaterial.setDisable(tableComponentMaterial.getItems().isEmpty());
+    }
+
+    @FXML
+    void onRemoveFace(ActionEvent event) {
+        faceService.delete(tableFace.getSelectionModel().getSelectedItem());
+
+        removeObjectFromTable(tableFace);
+        tableComponent.getItems().clear();
+
+        tableFace.getItems().forEach(face1 -> tableComponent.getItems().addAll(face1.getComponents()));
+        tableComponent.setItems(FXCollections.observableArrayList());
+        btnRemoveFace.setDisable(tableFace.getItems().isEmpty());
+    }
+
+    @FXML
+    void onRemoveRoom(ActionEvent event) {
+        roomService.delete(tableRoom.getSelectionModel().getSelectedItem());
+        removeObjectFromTable(tableRoom);
+        btnRemoveRoom.setDisable(tableRoom.getItems().isEmpty());
+    }
+
+    private void removeObjectFromTable(TableView tableObject) {
+        Object object = tableObject.getSelectionModel().getSelectedItem();
+
+        if (object != null) {
+            tableObject.getItems().remove(object);
+        } else {
+            MessagesUtil.showMessageWarning("Selecione o item a remover");
+        }
     }
 
     @FXML
     @Override
     public void onSave(ActionEvent event) {
+
         if (tabProject.isSelected()) {
             projectSave();
         }
@@ -519,10 +575,12 @@ public class ProjectController implements Initializable, BaseController<ProjectC
         listComponent = tableCalculate.getItems();
         if (!listComponent.isEmpty()) {
             try {
-                listComponent.forEach(component1 -> faceService.save(component.getFace()));
+                listComponent.forEach(component1 -> faceService.save(component1.getFace()));
                 componentService.saveAll(listComponent);
 
-                MessagesUtil.showMessageInformation(" salvo(s) com sucesso");
+                MessagesUtil.showNotification(" salvo(s) com sucesso");
+                txtIndex = null;
+                stageManager.switchScene(root, EFxmlView.PROJECT_TABLE);
             } catch (Exception e) {
                 MessagesUtil.showMessageError(e.getMessage());
             }
@@ -536,7 +594,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             try {
 
                 componentService.saveAll(listComponent);
-                MessagesUtil.showMessageInformation("Conjunto de materiais do(s) componente(s) da face foram salvo(s) com sucesso");
+                MessagesUtil.showNotification("Conjunto de materiais do(s) componente(s) da face foram salvo(s) com sucesso");
             } catch (Exception e) {
                 MessagesUtil.showMessageError(e.getMessage());
             }
@@ -549,7 +607,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
                 List<Component> componentList = componentService.saveAll(tableComponent.getItems());
                 comboComponent.setItems(FXCollections.observableArrayList(componentList));
 
-                MessagesUtil.showMessageInformation("Componente(s) da face salvo(s) com sucesso");
+                MessagesUtil.showNotification("Componente(s) da face salvo(s) com sucesso");
             } catch (Exception e) {
                 MessagesUtil.showMessageError(e.getMessage());
             }
@@ -563,7 +621,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
                 comboFace.setItems(FXCollections.observableArrayList(faceList));
 
-                MessagesUtil.showMessageInformation("Face(s) salva(s) com sucesso");
+                MessagesUtil.showNotification("Face(s) salva(s) com sucesso");
             } catch (Exception e) {
                 MessagesUtil.showMessageError(e.getMessage());
             }
@@ -577,7 +635,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
                 comboRoom.setItems(FXCollections.observableArrayList(roomList));
 
-                MessagesUtil.showMessageInformation("Comodo(s) salvo(s) com sucesso");
+                MessagesUtil.showNotification("Comodo(s) salvo(s) com sucesso");
             } catch (Exception e) {
                 MessagesUtil.showMessageError(e.getMessage());
             }
@@ -587,12 +645,12 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     private void projectSave() {
         boolean noEmpty = EntityValidator.noEmpty(txtNameProject, txtIndex);
 
+        bindProject();
         if (project != null && noEmpty) {
-            bindProject();
 
             try {
                 projectService.save(project);
-                MessagesUtil.showMessageInformation("Projeto salvo com sucesso");
+                MessagesUtil.showNotification("Projeto salvo com sucesso");
 
             } catch (Exception e) {
                 MessagesUtil.showMessageError(e.getMessage());
@@ -601,6 +659,9 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     }
 
     private void bindProject() {
+        if (project.isNew()) {
+            project = new Project();
+        }
         project.setName(txtNameProject.getText());
         project.setDescription(txtDescription.getText());
         project.setPerson(comboCustomer.getValue());
@@ -608,19 +669,25 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     }
 
     private void bindRoom() {
-        room = new Room();
+        if (room.isNew()) {
+            room = new Room();
+        }
         room.setProject(project);
         room.setName(txtNameRoom.getText());
     }
 
     private void bindFace() {
-        face = new Face();
+        if (face.isNew()) {
+            face = new Face();
+        }
         face.setName(txtNameFace.getText());
         face.setRoom(comboRoom.getSelectionModel().getSelectedItem());
     }
 
     private void bindComponent() {
-        component = new Component();
+        if (component.isNew()) {
+            component = new Component();
+        }
         component.setName(txtNameComponent.getText());
         component.setFace(comboFace.getSelectionModel().getSelectedItem());
         component.setIndexRadiation(new BigDecimal(txtIndex.getText()));
@@ -628,12 +695,30 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     private void bindComponentMaterial() {
         component = comboComponent.getSelectionModel().getSelectedItem();
-        component.addMaterial(comboMaterial.getSelectionModel().getSelectedItem(), new BigDecimal(txtThickness.getText()));
+
+        Material material = comboMaterial.getSelectionModel().getSelectedItem();
+
+        if (material.isGlass()) {
+            boolean noEmpty = EntityValidator.noEmpty(txtTransmittance, txtSolarFactor);
+            if (noEmpty) {
+                component.setTransmittanceGlass(new BigDecimal(txtTransmittance.getText()));
+                component.setSolarFactor(new BigDecimal(txtSolarFactor.getText()));
+            }
+        }
+
+        component.addMaterial(material, new BigDecimal(txtThickness.getText()));
         component.setRsi(comboRSI.getSelectionModel().getSelectedItem().getValue());
     }
 
-    private void bindCalculate() {
-
+    private void bindCalculate(Component component) {
+        if (component != null) {
+            component.setAlpha(new BigDecimal(txtAlpha.getText()));
+            component.setM2(new BigDecimal(txtm2.getText()));
+            component.setTemperatureOutside(new BigDecimal(txtTemperatureOutside.getText()));
+            component.setTemperatureInside(new BigDecimal(txtTemperatureOutside.getText()));
+            String flowType = toggleGroup.getSelectedToggle().getUserData().toString();
+            component.setFlowType(FlowType.valueOf(flowType));
+        }
     }
 
     @FXML
@@ -652,23 +737,73 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             comboCustomer.setValue(project.getPerson());
             comboRegion.setValue(project.getRegion());
 
-            listRoom = roomRepository.findByProjectWithFaces(project.getId());
-            tableRoom.setItems(FXCollections.observableArrayList(listRoom));
+            listRoom = updateTableRoom(project);
 
+            listFace = updateTableFaces(listRoom);
 
-            listRoom.forEach(room1 -> listFace.addAll(room1.getFaces()));
-            tableFace.setItems(FXCollections.observableArrayList(listFace));
+            listComponent = updateTableComponent(listFace);
 
-            listFace.forEach(face1 -> listComponent = componentRepository.findByFace(face1.getId()));
-            tableComponent.setItems(FXCollections.observableArrayList(listComponent));
+            updateTableComponentMaterial(listComponent);
+            listComponent.forEach(this::updateTableCalculate);
 
-            listComponent.forEach(component1 -> componentMaterials.addAll(component1.getComponentMaterials()));
-            tableComponentMaterial.setItems(FXCollections.observableArrayList(componentMaterials));
+            btnRemoveComponent.setDisable(tableComponent.getItems().isEmpty());
+            btnRemoveRoom.setDisable(tableRoom.getItems().isEmpty());
+            btnRemoveFace.setDisable(tableFace.getItems().isEmpty());
+            btnRemoveComponentMaterial.setDisable(tableComponentMaterial.getItems().isEmpty());
+            btnRemoveCalculate.setDisable(tableCalculate.getItems().isEmpty());
 
 
         } else {
             MessagesUtil.showMessageWarning("Selecione um Projeto");
         }
+    }
+
+    private void updateTableComponentMaterial(List<Component> componentList) {
+        componentList.forEach(component1 -> componentMaterials.addAll(component1.getComponentMaterials()));
+        tableComponentMaterial.setItems(FXCollections.observableArrayList(componentMaterials));
+    }
+
+    private List<Component> updateTableComponent(List<Face> faceList) {
+        List<Component> componentList = new ArrayList<>();
+        faceList.forEach(face1 -> componentList.addAll(componentRepository.findByFace(face1.getId())));
+        tableComponent.setItems(FXCollections.observableArrayList(componentList));
+        return componentList;
+    }
+
+    private List<Face> updateTableFaces(List<Room> roomList) {
+        List<Face> faceList = new ArrayList<>();
+        roomList.forEach(room1 -> faceList.addAll(room1.getFaces()));
+        tableFace.setItems(FXCollections.observableArrayList(faceList));
+        return faceList;
+    }
+
+    private List<Room> updateTableRoom(Project project) {
+        List<Room> roomList = roomRepository.findByProjectWithFaces(project.getId());
+        tableRoom.setItems(FXCollections.observableArrayList(roomList));
+        return roomList;
+    }
+
+    @FXML
+    @Override
+    public void onDelete(ActionEvent event) {
+        project = tableProject.getSelectionModel().getSelectedItem();
+
+        if (project != null) {
+            Optional<ButtonType> confirm = MessagesUtil.showMessageConfirmation("Você deseja remover o projeto " + project.getName());
+
+            if (confirm.get() == ButtonType.OK) {
+                projectService.delete(project);
+                initTable();
+            }
+        }
+    }
+
+    @FXML
+    @Override
+    public void onNew(ActionEvent event) {
+        stageManager.switchScene(root, EFxmlView.PROJECT);
+        project = new Project();
+        txtNameProject.requestFocus();
     }
 
     @FXML
@@ -678,10 +813,11 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
         if (project != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(EFxmlView.PROJECT_DETAIL.getFxmlFile()));
-            Parent parent = loader.load();
 
-            DetailController detailController = loader.getController();
-            detailController.setProject(project);
+            DetailController detailController = new DetailController(project);
+            loader.setController(detailController);
+
+            Parent parent = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(parent));
             stage.setMaximized(false);
@@ -706,23 +842,12 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             Parent parent = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(parent));
+
+            emailController.setStage(stage);
             stage.show();
         } else {
             MessagesUtil.showMessageWarning("Selecione um Projeto");
         }
-    }
-
-    @FXML
-    @Override
-    public void onDelete(ActionEvent event) {
-
-    }
-
-    @FXML
-    @Override
-    public void onNew(ActionEvent event) {
-        stageManager.switchScene(root, EFxmlView.PROJECT);
-        txtNameProject.requestFocus();
     }
 
     @Override
@@ -731,8 +856,12 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
         comboMaterial.valueProperty().addListener((observable, oldValue, newValue) -> {
             txtThermalConductivity.setText(newValue.getCondutividadeTermica().toString());
-            txtTransmittance.setVisible(newValue.isGlass());
+
             txtSolarFactor.setVisible(newValue.isGlass());
+            txtTransmittance.setVisible(newValue.isGlass());
+            if (newValue.isGlass()) {
+                EntityValidator.noEmpty(txtTransmittance, txtSolarFactor);
+            }
         });
 
         comboAbsorbance.valueProperty().addListener((observable, oldValue, newValue) -> txtAlpha.setText(newValue.getAlfaIni().toString()));
@@ -755,7 +884,6 @@ public class ProjectController implements Initializable, BaseController<ProjectC
     }
 
     private void initTableFace() {
-
         columnFace.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnFaceRoom.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getRoom().getName()));
     }
@@ -814,10 +942,8 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     private void initCombo() {
         FilteredList<Person> personFilteredList = new FilteredList<>(listPerson(), person -> true);
-        comboCustomer.getEditor().textProperty().addListener((observable, oldValue, newValue) ->
-        {
-            personFilteredList.setPredicate(person ->
-            {
+        comboCustomer.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            personFilteredList.setPredicate(person -> {
 
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
@@ -973,11 +1099,6 @@ public class ProjectController implements Initializable, BaseController<ProjectC
 
     private ObservableList<MaterialAbsortancia> listMaterialAbsorbance() {
         return FXCollections.observableArrayList(absorbanceRpository.findAll());
-    }
-
-    private void addListComponents(Component component) {
-        this.listComponent.clear();
-        this.listComponent.add(component);
     }
 
     private void addComboComponentCalculate(Component component) {

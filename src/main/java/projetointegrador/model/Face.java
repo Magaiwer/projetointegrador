@@ -3,6 +3,7 @@ package projetointegrador.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,12 +19,14 @@ import java.util.Set;
 @Table(name = "face")
 @Data
 @ToString(exclude = {"room", "components"})
-@EqualsAndHashCode(exclude = {"room", "components"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@DynamicUpdate
 public class Face implements Serializable {
 
     @Transient
     private final BigDecimal BTUS = new BigDecimal(3412).setScale(1, RoundingMode.HALF_EVEN);
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,7 +45,7 @@ public class Face implements Serializable {
     private Room room;
 
     @OneToMany(mappedBy = "face", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Component> components;
+    private Set<Component> components = new HashSet<>();
 
     public BigDecimal calculateTransmittanceAverage() {
         this.transmittanceAverage = BigDecimal.valueOf(this.components
@@ -68,9 +71,8 @@ public class Face implements Serializable {
         this.components.add(component);
     }
 
-    public BigDecimal calculateBtus() {
-        return this.thermalLoad.multiply(BTUS)
-                .divide(new BigDecimal(1000), RoundingMode.HALF_EVEN).setScale(1, RoundingMode.HALF_EVEN);
+    public boolean isNew() {
+        return this.id == null;
     }
 
 

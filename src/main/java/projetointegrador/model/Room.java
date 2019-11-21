@@ -7,14 +7,23 @@ import projetointegrador.listeners.AuditListeners;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 @EntityListeners(AuditListeners.class)
 @Entity
 @Table(name = "room")
-@Data @ToString(exclude = {"project", "faces"}) @EqualsAndHashCode(exclude = {"project", "faces"})
+@Data
+@ToString(exclude = {"project", "faces"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Room implements Serializable {
 
+    @Transient
+    private final BigDecimal BTUS = new BigDecimal(3412).setScale(1, RoundingMode.HALF_EVEN);
+
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +36,24 @@ public class Room implements Serializable {
     private Project project;
 
 
-    @OneToMany(mappedBy = "room")
-    private List<Face> faces;
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Face> faces = new ArrayList<>();
+
+    public BigDecimal calculateBtus() {
+        BigDecimal thermalLoadSum = this.faces
+                .stream()
+                .map(Face::getThermalLoad)
+                .reduce(BigDecimal::add)
+                .orElse(BigDecimal.ZERO);
+
+        return thermalLoadSum.multiply(BTUS)
+                .divide(new BigDecimal(1000))
+                .setScale(2, RoundingMode.HALF_EVEN);
+
+    }
+
+    public boolean isNew() {
+        return this.id == null;
+    }
 
 }

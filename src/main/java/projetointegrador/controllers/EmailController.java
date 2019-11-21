@@ -3,9 +3,8 @@ package projetointegrador.controllers;
 import com.jfoenix.controls.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -14,17 +13,19 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import projetointegrador.mail.Email;
 import projetointegrador.mail.Mailer;
-import projetointegrador.model.Group;
 import projetointegrador.model.Project;
 import projetointegrador.service.BeanUtil;
 import projetointegrador.service.UserService;
+import projetointegrador.validation.EntityValidator;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EmailController implements Initializable {
+
+    @FXML
+    private AnchorPane root;
 
     @FXML
     private JFXTextField txtSender;
@@ -62,8 +63,13 @@ public class EmailController implements Initializable {
     @Autowired
     private Mailer mailer;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private Project project;
+
+    @Getter
+    @Setter
+    private Stage stage;
 
     private Email email;
 
@@ -78,10 +84,12 @@ public class EmailController implements Initializable {
 
         initConverter();
 
-        if(project != null) {
+        if (project != null) {
             txtSender.setText(UserService.userLogged.getLogin());
             txtSubject.setText(project.getName());
             txtRecepients.setText(project.getPerson().getEmail());
+
+            EntityValidator.noEmpty(txtSender, txtRecepients);
         }
 
         btnAttach.setOnAction(event -> {
@@ -97,9 +105,12 @@ public class EmailController implements Initializable {
         mailer = BeanUtil.getBean(Mailer.class);
         btnSendMail.setOnAction(event -> {
             bindEmail();
-            mailer.send(email);
+            boolean noEmpty = EntityValidator.noEmpty(txtSender, txtRecepients);
+            if (noEmpty) {
+                mailer.send(email);
+                this.stage.close();
+            }
         });
-
     }
 
     private void bindEmail() {

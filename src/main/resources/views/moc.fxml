@@ -45,11 +45,11 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXTextField fx:id="txtNameRoom" labelFloat="true" layoutX="14.0" layoutY="30.0" prefHeight="28.0" prefWidth="526.0" promptText="Nome *" AnchorPane.topAnchor="40.0">
+                        <JFXTextField fx:id="txtNameRoom" labelFloat="true" layoutX="14.0" layoutY="30.0" prefHeight="28.0" prefWidth="428.0" promptText="Nome *" AnchorPane.topAnchor="40.0">
                            <tooltip>
                               <Tooltip text="Nome do comodo. Ex: Sala, Quarto" />
                            </tooltip></JFXTextField>
-                        <JFXButton fx:id="btnAddRoom" graphicTextGap="15.0" layoutX="587.0" layoutY="30.0" onAction="#onAddRoom" prefHeight="28.0" prefWidth="124.0" text="Adicionar" AnchorPane.topAnchor="40.0">
+                        <JFXButton fx:id="btnAddRoom" graphicTextGap="10.0" layoutX="465.0" layoutY="39.0" onAction="#onAddRoom" prefHeight="31.0" prefWidth="113.0" text="Adicionar" AnchorPane.topAnchor="39.0">
                            <graphic>
                               <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
                            </graphic>
@@ -62,6 +62,11 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
+                        <JFXButton fx:id="btnRemoveRoom" disable="true" graphicTextGap="10.0" layoutX="585.0" layoutY="39.0" onAction="#onRemoveRoom" prefHeight="31.0" prefWidth="113.0" text="Remover">
+                           <graphic>
+                              <FontAwesomeIconView fill="#8d8181" glyphName="TRASH_ALT" size="18" wrappingWidth="16.571428298950195" />
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </AnchorPane>
               </content>
@@ -70,12 +75,12 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXComboBox fx:id="comboRoom" labelFloat="true" layoutX="15.0" layoutY="39.0" prefHeight="28.0" prefWidth="522.0" promptText="Comodo *" />
-                        <JFXTextField fx:id="txtNameFace" labelFloat="true" layoutX="17.0" layoutY="96.0" prefHeight="28.0" prefWidth="519.0" promptText="Nome *" AnchorPane.topAnchor="96.0">
+                        <JFXComboBox fx:id="comboRoom" labelFloat="true" layoutX="15.0" layoutY="39.0" prefHeight="28.0" prefWidth="448.0" promptText="Comodo *" />
+                        <JFXTextField fx:id="txtNameFace" labelFloat="true" layoutX="17.0" layoutY="96.0" prefHeight="28.0" prefWidth="446.0" promptText="Nome *" AnchorPane.topAnchor="96.0">
                            <tooltip>
                               <Tooltip text="Descrição da face. Ex: Face Sul, Face Leste" />
                            </tooltip></JFXTextField>
-                        <JFXButton fx:id="btnAddFace" buttonType="RAISED" graphicTextGap="15.0" layoutX="572.0" layoutY="94.0" onAction="#onAddFace" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
+                        <JFXButton fx:id="btnAddFace" buttonType="RAISED" graphicTextGap="15.0" layoutX="484.0" layoutY="81.0" onAction="#onAddFace" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
                            <graphic>
                               <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
                            </graphic></JFXButton>
@@ -88,6 +93,11 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
+                        <JFXButton fx:id="btnRemoveFace" disable="true" graphicTextGap="10.0" layoutX="633.0" layoutY="81.0" onAction="#onRemoveFace" prefHeight="31.0" prefWidth="113.0" text="Remover">
+                           <graphic>
+                              <FontAwesomeIconView fill="#8d8181" glyphName="TRASH_ALT" size="18" wrappingWidth="16.571428298950195" />
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </AnchorPane>
               </content>
@@ -96,12 +106,12 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXComboBox fx:id="comboFace" labelFloat="true" layoutX="16.0" layoutY="41.0" prefHeight="28.0" prefWidth="522.0" promptText="Face *" />
-                        <JFXTextField fx:id="txtNameComponent" labelFloat="true" layoutX="17.0" layoutY="94.0" prefHeight="28.0" prefWidth="519.0" promptText="Nome *" AnchorPane.topAnchor="94.0">
+                        <JFXComboBox fx:id="comboFace" labelFloat="true" layoutX="16.0" layoutY="41.0" prefHeight="28.0" prefWidth="448.0" promptText="Face *" />
+                        <JFXTextField fx:id="txtNameComponent" labelFloat="true" layoutX="17.0" layoutY="94.0" prefHeight="28.0" prefWidth="448.0" promptText="Nome *" AnchorPane.topAnchor="94.0">
                            <tooltip>
                               <Tooltip text="Descrição dos componentes da face. Ex: Parte superior madeira, Parte inferior concreto" />
                            </tooltip></JFXTextField>
-                        <JFXButton fx:id="btnAddComponent" buttonType="RAISED" graphicTextGap="15.0" layoutX="572.0" layoutY="94.0" onAction="#onAddComponent" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
+                        <JFXButton fx:id="btnAddComponent" buttonType="RAISED" graphicTextGap="15.0" layoutX="484.0" layoutY="81.0" onAction="#onAddComponent" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
                            <graphic>
                               <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
                            </graphic>
@@ -116,6 +126,11 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
+                        <JFXButton fx:id="btnRemoveComponent" disable="true" graphicTextGap="10.0" layoutX="633.0" layoutY="81.0" onAction="#onRemoveComponent" prefHeight="31.0" prefWidth="113.0" text="Remover">
+                           <graphic>
+                              <FontAwesomeIconView fill="#8d8181" glyphName="TRASH_ALT" size="18" wrappingWidth="16.571428298950195" />
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </AnchorPane>
                </content>
@@ -124,19 +139,19 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXComboBox fx:id="comboComponent" labelFloat="true" layoutX="25.0" layoutY="24.0" prefHeight="28.0" prefWidth="356.0" promptText="Componente *" AnchorPane.topAnchor="40.0" />
-                        <JFXComboBox fx:id="comboRSI" labelFloat="true" layoutX="577.0" layoutY="40.0" prefHeight="28.0" prefWidth="159.0" promptText="RSI *" />
-                        <JFXComboBox fx:id="comboMaterial" labelFloat="true" layoutX="24.0" layoutY="102.0" prefHeight="28.0" prefWidth="360.0" promptText="Material *" />
-                        <JFXTextField fx:id="txtTransmittance" labelFloat="true" layoutX="395.0" layoutY="102.0" prefHeight="28.0" prefWidth="155.0" promptText="Trasmitâcia Fabricante *" visible="false" />
-                        <JFXTextField fx:id="txtSolarFactor" labelFloat="true" layoutX="579.0" layoutY="102.0" prefHeight="28.0" prefWidth="155.0" promptText="Fator Solar Fabricante *" visible="false" />
-                        <JFXTextField fx:id="txtThickness" labelFloat="true" layoutX="26.0" layoutY="163.0" prefHeight="28.0" prefWidth="172.0" promptText="Espessura *" />
-                        <JFXTextField fx:id="txtThermalConductivity" editable="false" labelFloat="true" layoutX="233.0" layoutY="163.0" prefHeight="28.0" prefWidth="151.0" promptText="Condutividade Térmica *" />
-                        <JFXButton fx:id="btnAddComponentMaterial" buttonType="RAISED" graphicTextGap="15.0" layoutX="403.0" layoutY="162.0" onAction="#onAddComponentMaterial" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
+                        <JFXComboBox fx:id="comboComponent" labelFloat="true" layoutX="25.0" layoutY="39.0" prefHeight="28.0" prefWidth="356.0" promptText="Componente *" AnchorPane.topAnchor="39.0" />
+                        <JFXComboBox fx:id="comboRSI" labelFloat="true" layoutX="577.0" layoutY="38.0" prefHeight="28.0" prefWidth="159.0" promptText="RSI *" />
+                        <JFXComboBox fx:id="comboMaterial" labelFloat="true" layoutX="24.0" layoutY="100.0" prefHeight="28.0" prefWidth="360.0" promptText="Material *" />
+                        <JFXTextField fx:id="txtTransmittance" labelFloat="true" layoutX="395.0" layoutY="100.0" prefHeight="28.0" prefWidth="155.0" promptText="Trasmitâcia Fabricante *" visible="false" />
+                        <JFXTextField fx:id="txtSolarFactor" labelFloat="true" layoutX="579.0" layoutY="100.0" prefHeight="28.0" prefWidth="155.0" promptText="Fator Solar Fabricante *" visible="false" />
+                        <JFXTextField fx:id="txtThickness" labelFloat="true" layoutX="26.0" layoutY="161.0" prefHeight="28.0" prefWidth="172.0" promptText="Espessura *" />
+                        <JFXTextField fx:id="txtThermalConductivity" editable="false" labelFloat="true" layoutX="233.0" layoutY="161.0" prefHeight="28.0" prefWidth="151.0" promptText="Condutividade Térmica *" />
+                        <JFXButton fx:id="btnAddComponentMaterial" buttonType="RAISED" graphicTextGap="15.0" layoutX="440.0" layoutY="160.0" onAction="#onAddComponentMaterial" prefHeight="28.0" prefWidth="124.0" text="Adicionar">
                            <graphic>
                               <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
                            </graphic>
                         </JFXButton>
-                        <TableView fx:id="tableComponentMaterial" layoutX="25.0" layoutY="231.0" prefHeight="253.0" prefWidth="740.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="231.0">
+                        <TableView fx:id="tableComponentMaterial" layoutX="10.0" layoutY="246.0" prefHeight="238.0" prefWidth="740.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="246.0">
                            <columns>
                               <TableColumn fx:id="columnFaceComponentMaterial" prefWidth="107.0" text="Face" />
                               <TableColumn fx:id="columnComponentMaterial" prefWidth="75.0" text="Componente" />
@@ -148,12 +163,17 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <JFXTextField fx:id="txtTransmittanceComponent" alignment="CENTER" editable="false" labelFloat="true" layoutX="580.0" layoutY="163.0" prefHeight="28.0" prefWidth="156.0" promptText="Transmitância" visible="false">
+                        <JFXTextField fx:id="txtTransmittanceComponent" alignment="CENTER" editable="false" labelFloat="true" layoutX="601.0" layoutY="204.0" prefHeight="28.0" prefWidth="144.0" promptText="Transmitância" visible="false">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </JFXTextField>
-                        <JFXTextField fx:id="txtFaceComponentMaterial" editable="false" labelFloat="true" layoutX="395.0" layoutY="40.0" prefHeight="28.0" prefWidth="169.0" promptText="Face" />
+                        <JFXTextField fx:id="txtFaceComponentMaterial" editable="false" labelFloat="true" layoutX="395.0" layoutY="38.0" prefHeight="28.0" prefWidth="169.0" promptText="Face" />
+                        <JFXButton fx:id="btnRemoveComponentMaterial" disable="true" graphicTextGap="10.0" layoutX="603.0" layoutY="160.0" onAction="#onRemoveComponentMaterial" prefHeight="31.0" prefWidth="143.0" text="Remover">
+                           <graphic>
+                              <FontAwesomeIconView fill="#8d8181" glyphName="TRASH_ALT" size="18" wrappingWidth="16.571428298950195" />
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </AnchorPane>
               </content>
@@ -176,7 +196,7 @@
                         <JFXRadioButton fx:id="rgSummer" layoutX="21.0" layoutY="204.0" selected="true" text="Verão" toggleGroup="$toggleGroup" AnchorPane.topAnchor="204.0" />
                         <JFXButton fx:id="btnCalculate" buttonType="RAISED" layoutX="311.0" layoutY="198.0" onAction="#onCalculate" prefHeight="28.0" prefWidth="205.0" text="Calcular" />
                         <RequiredFieldValidator />
-                        <Label layoutX="21.0" layoutY="14.0" prefHeight="18.0" prefWidth="482.0" text="Calcular Fluxo de Calor e Carga Térmica">
+                        <Label layoutX="21.0" layoutY="14.0" prefHeight="28.0" prefWidth="482.0" text="Calcular Fluxo de Calor e Carga Térmica">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
@@ -195,7 +215,12 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <JFXTextField fx:id="txtBTUS" alignment="CENTER" editable="false" labelFloat="true" layoutX="534.0" layoutY="190.0" prefHeight="28.0" prefWidth="209.0" promptText="BTUS" visible="false" />
+                        <JFXTextField fx:id="txtBTUS" alignment="CENTER" editable="false" labelFloat="true" layoutX="619.0" layoutY="10.0" prefHeight="28.0" prefWidth="121.0" promptText="BTUS" visible="false" />
+                        <JFXButton fx:id="btnRemoveCalculate" disable="true" graphicTextGap="10.0" layoutX="571.0" layoutY="197.0" onAction="#onRemoveCalculate" prefHeight="31.0" prefWidth="175.0" text="Remover">
+                           <graphic>
+                              <FontAwesomeIconView fill="#8d8181" glyphName="TRASH_ALT" size="18" wrappingWidth="16.571428298950195" />
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </AnchorPane>
               </content>

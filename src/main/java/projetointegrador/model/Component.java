@@ -5,14 +5,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
 import projetointegrador.listeners.AuditListeners;
+import projetointegrador.model.enums.FlowType;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @EntityListeners(AuditListeners.class)
@@ -20,13 +19,14 @@ import java.util.Set;
 @Table(name = "component")
 @Data
 @ToString(exclude = {"face", "componentMaterials"})
-@EqualsAndHashCode(exclude = {"face", "componentMaterials"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @DynamicUpdate
 public class Component implements Serializable {
 
     @Transient
     private final BigDecimal RSE = new BigDecimal(0.04);
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -61,19 +61,25 @@ public class Component implements Serializable {
     private Face face;
 
     @OneToMany(mappedBy = "component", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ComponentMaterial> componentMaterials;
+    private Set<ComponentMaterial> componentMaterials = new HashSet<>();
 
     @Transient
     private BigDecimal rsi;
 
     @Transient
-    private String flowType;
+    private FlowType flowType;
 
     @Transient
-    private BigDecimal transmittanceGlass;
+    private BigDecimal transmittanceGlass = BigDecimal.ZERO;
 
     @Transient
-    private BigDecimal solarFactor;
+    private BigDecimal solarFactor = BigDecimal.ZERO;
+
+    @Transient
+    private BigDecimal temperatureOutside = BigDecimal.ZERO;
+
+    @Transient
+    private BigDecimal temperatureInside = BigDecimal.ZERO;
 
     public BigDecimal calculateResistanceTotal() {
         BigDecimal resistanceSum = this.componentMaterials
@@ -105,14 +111,14 @@ public class Component implements Serializable {
         this.componentMaterials.add(componentMaterial);
     }
 
-    public BigDecimal calculateHeatFlowWinter(BigDecimal outsideTemperature, BigDecimal insideTemperature) {
+    public BigDecimal calculateHeatFlowWinter() {
         return this.transmittance
-                .multiply(outsideTemperature.subtract(insideTemperature).abs())
+                .multiply(this.temperatureOutside.subtract(this.temperatureInside).abs())
                 .setScale(4, RoundingMode.HALF_EVEN);
     }
 
-    public BigDecimal calculateHeatFlowSummer(BigDecimal outsideTemperature, BigDecimal insideTemperature) {
-        BigDecimal deltaTemperature = outsideTemperature.subtract(insideTemperature).abs();
+    public BigDecimal calculateHeatFlowSummer() {
+        BigDecimal deltaTemperature = this.temperatureOutside.subtract(this.temperatureInside).abs();
 
         return this.transmittance.multiply(this.alpha.multiply(this.indexRadiation).multiply(RSE).add(deltaTemperature))
                 .setScale(4, RoundingMode.HALF_EVEN);
@@ -123,12 +129,19 @@ public class Component implements Serializable {
     }
 
 
-    public BigDecimal calculateQFT(BigDecimal outsideTemperature, BigDecimal insideTemperature) {
-        this.qft = this.transmittanceGlass.multiply(outsideTemperature.subtract(insideTemperature).abs()).add(this.solarFactor.multiply(this.indexRadiation));
+    public BigDecimal calculateQFT() {
+        this.qft = this.transmittanceGlass.multiply(this.temperatureOutside
+                .subtract(this.temperatureInside).abs()).add(this.solarFactor.multiply(this.indexRadiation));
         return this.qft.multiply(m2);
     }
 
+    public boolean isNew() {
+        return this.id == null;
+    }
 
+    public boolean isGlass(){
+        return this.transmittanceGlass != null && this.transmittanceGlass.longValue() > 0;
+    }
 
 
 }
