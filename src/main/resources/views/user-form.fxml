@@ -7,33 +7,41 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="panelUser" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="548.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.UsuarioController">
    <children>
-      <Pane layoutY="-42.0" prefHeight="399.0" prefWidth="775.0" translateZ="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <JFXTextField fx:id="txtName" labelFloat="true" layoutX="36.0" layoutY="65.0" prefHeight="29.0" prefWidth="578.0" promptText="Nome *" AnchorPane.leftAnchor="16.0" />
+      <JFXToggleButton fx:id="btnAtivo" layoutX="649.0" layoutY="50.0" prefHeight="60.0" prefWidth="109.0" text="Ativo" />
+      <JFXTextField fx:id="txtEmail" labelFloat="true" layoutX="36.0" layoutY="139.0" prefHeight="29.0" prefWidth="578.0" promptText="E-mail *" AnchorPane.leftAnchor="16.0" />
+      <JFXPasswordField fx:id="txtPassword" labelFloat="true" layoutX="36.0" layoutY="212.0" prefHeight="29.0" prefWidth="263.0" promptText="Senha" AnchorPane.leftAnchor="16.0" />
+      <JFXPasswordField fx:id="txtConfirmePassword" labelFloat="true" layoutX="331.0" layoutY="212.0" prefHeight="29.0" prefWidth="263.0" promptText="Confirmação senha" />
+      <JFXButton fx:id="btnSave" layoutX="36.0" layoutY="492.0" onAction="#onSave" prefHeight="48.0" prefWidth="144.0" text="Salvar" AnchorPane.bottomAnchor="10.0">
+         <graphic>
+            <FontAwesomeIconView fill="#139717" glyphName="CHECK" size="18" />
+         </graphic></JFXButton>
+      <JFXButton fx:id="btnCancel" layoutX="239.0" layoutY="492.0" onAction="#onCancel" prefHeight="48.0" prefWidth="144.0" text="Cancelar" AnchorPane.bottomAnchor="10.0">
+         <graphic>
+            <FontAwesomeIconView fill="#bf0f0f" glyphName="CLOSE" size="18" />
+         </graphic></JFXButton>
+      <JFXComboBox fx:id="cboxGroups" layoutX="36.0" layoutY="282.0" prefHeight="28.0" prefWidth="464.0" promptText="Selecione os grupos " AnchorPane.leftAnchor="16.0" />
+      <JFXButton fx:id="btnAddGroup" graphicTextGap="8.0" layoutX="505.0" layoutY="281.0" onAction="#addGroup" prefHeight="30.0" prefWidth="109.0" text="Adicionar">
+         <graphic>
+            <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
+         </graphic>
+      </JFXButton>
+      <StackPane layoutX="36.0" layoutY="322.0" prefHeight="150.0" prefWidth="578.0">
          <children>
-            <JFXTextField fx:id="txtName" labelFloat="true" layoutX="26.0" layoutY="55.0" prefHeight="29.0" prefWidth="578.0" promptText="Nome" />
-            <JFXToggleButton fx:id="btnAtivo" layoutX="639.0" layoutY="40.0" prefHeight="60.0" prefWidth="109.0" text="Ativo" />
-            <JFXTextField fx:id="txtEmail" labelFloat="true" layoutX="26.0" layoutY="129.0" prefHeight="29.0" prefWidth="578.0" promptText="E-mail" />
-            <JFXPasswordField fx:id="txtPassword" labelFloat="true" layoutX="26.0" layoutY="202.0" prefHeight="29.0" prefWidth="263.0" promptText="Senha" />
-            <JFXPasswordField fx:id="txtConfirmePassword" labelFloat="true" layoutX="341.0" layoutY="202.0" prefHeight="29.0" prefWidth="263.0" promptText="Confirmação senha" />
-            <JFXButton fx:id="btnSave" layoutX="26.0" layoutY="482.0" onAction="#onSave" prefHeight="48.0" prefWidth="144.0" text="Salvar" />
-            <JFXButton fx:id="btnCancel" layoutX="229.0" layoutY="482.0" onAction="#onCancel" prefHeight="48.0" prefWidth="144.0" text="Cancelar" />
-            <JFXComboBox fx:id="cboxGroups" layoutX="26.0" layoutY="272.0" prefHeight="28.0" prefWidth="464.0" promptText="Selecione os group" />
-            <JFXButton fx:id="btnAddGroup" graphicTextGap="8.0" layoutX="495.0" layoutY="271.0" onAction="#addGroup" prefHeight="30.0" prefWidth="109.0" text="Adicionar">
-               <graphic>
-                  <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
-               </graphic>
-            </JFXButton>
-            <StackPane layoutX="26.0" layoutY="312.0" prefHeight="150.0" prefWidth="578.0">
-               <children>
-                  <JFXChipView fx:id="cViewGrupo" prefHeight="140.0" prefWidth="302.0" />
-               </children>
-            </StackPane>
+            <JFXChipView fx:id="cViewGrupo" prefHeight="140.0" prefWidth="302.0" />
          </children>
-      </Pane>
+      </StackPane>
+      <Label layoutX="35.0" layoutY="24.0" prefHeight="28.0" prefWidth="553.0" text="Cadatro de Usuário" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

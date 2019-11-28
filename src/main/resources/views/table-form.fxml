@@ -3,13 +3,15 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.FormController">
    <children>
-      <TableView fx:id="tableForm" editable="true" layoutX="5.0" layoutY="81.0" maxWidth="1.7976931348623157E308" prefHeight="430.0" prefWidth="933.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="81.0">
+      <TableView fx:id="tableForm" editable="true" layoutX="5.0" layoutY="81.0" maxWidth="1.7976931348623157E308" prefHeight="430.0" prefWidth="933.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
           <columns>
               <TableColumn fx:id="colunmAudit" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="87.0">
                <graphic>
@@ -21,24 +23,29 @@
               <TableColumn fx:id="colunmDescription" editable="false" minWidth="0.0" prefWidth="377.0" text="Descrição" />
           </columns>
       </TableView>
-      <JFXButton fx:id="btnNewForm" graphicTextGap="8.0" layoutX="14.0" layoutY="46.0" onAction="#onNew" prefHeight="29.0" prefWidth="101.0" text="Novo">
+      <JFXButton fx:id="btnNewForm" graphicTextGap="8.0" layoutX="14.0" layoutY="66.0" onAction="#onNew" prefHeight="29.0" prefWidth="101.0" text="Novo" AnchorPane.leftAnchor="10.0">
          <graphic>
             <FontAwesomeIconView glyphName="PLUS" />
          </graphic></JFXButton>
-      <JFXButton fx:id="btnEditForm" graphicTextGap="8.0" layoutX="125.0" layoutY="46.0" onAction="#onEdit" prefHeight="29.0" prefWidth="101.0" text="Editar">
+      <JFXButton fx:id="btnEditForm" graphicTextGap="8.0" layoutX="125.0" layoutY="66.0" onAction="#onEdit" prefHeight="29.0" prefWidth="101.0" text="Editar">
          <graphic>
             <FontAwesomeIconView glyphName="PENCIL" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="btnDeleteForm" graphicTextGap="8.0" layoutX="235.0" layoutY="46.0" onAction="#onDelete" prefHeight="29.0" prefWidth="101.0" text="Deletar">
+      <JFXButton fx:id="btnDeleteForm" graphicTextGap="8.0" layoutX="235.0" layoutY="66.0" onAction="#onDelete" prefHeight="29.0" prefWidth="101.0" text="Deletar">
          <graphic>
             <FontAwesomeIconView glyphName="TRASH" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="btnAuditForm" graphicTextGap="8.0" layoutX="336.0" layoutY="46.0" onAction="#onAudit" prefHeight="29.0" prefWidth="101.0" text="Auditar">
+      <JFXButton fx:id="btnAuditForm" graphicTextGap="8.0" layoutX="336.0" layoutY="66.0" onAction="#onAudit" prefHeight="29.0" prefWidth="101.0" text="Auditar">
          <graphic>
             <FontAwesomeIconView glyphName="EYE" />
          </graphic>
       </JFXButton>
+      <Label layoutX="28.0" layoutY="14.0" text="Formulários do sistema" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

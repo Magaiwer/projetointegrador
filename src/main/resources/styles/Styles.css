@@ -19,6 +19,11 @@
     -fx-background-color: #3a1c52;
 }
 
+.button:selected {
+    -fx-background-color: #3a1c52;
+    -fx-text-fill: #33a6ff;
+}
+
 .sid-bar{
    /* -fx-background-color: #4059a9;*/
     -fx-background-color: #3a1c52;

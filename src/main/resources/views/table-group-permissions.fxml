@@ -15,7 +15,7 @@
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.PermissionController">
    <children>
       <JFXComboBox fx:id="cbGroups" labelFloat="true" layoutX="344.0" layoutY="61.0" prefHeight="28.0" prefWidth="329.0" promptText="Grupos" />
-      <TableView fx:id="tablePermissions" editable="true" layoutX="14.0" layoutY="101.0" prefHeight="395.0" prefWidth="832.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="105.0">
+      <TableView fx:id="tablePermissions" editable="true" layoutX="14.0" layoutY="101.0" prefHeight="395.0" prefWidth="832.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
          <columns>
             <TableColumn fx:id="columnForm" minWidth="5.0" prefWidth="76.0" styleClass="column-alignment-center" text="Formulários" />
             <TableColumn fx:id="columnPermission" minWidth="188.0" prefWidth="188.0" text="Permissões" />
@@ -33,7 +33,7 @@
       </TableView>
       <Label layoutX="15.0" layoutY="9.0" prefHeight="18.0" prefWidth="329.0" text="Gerenciar Permissões">
          <font>
-            <Font name="System Bold" size="20.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <JFXButton fx:id="btnUpdatePermission" graphicTextGap="8.0" layoutX="675.0" layoutY="61.0" onAction="#updatePermission" prefHeight="31.0" prefWidth="178.0" text="Aplicar Permissões">
@@ -41,7 +41,7 @@
             <FontAwesomeIconView fill="#1aa115" glyphName="PLUS" size="20" wrappingWidth="16.571428298950195" />
          </graphic>
       </JFXButton>
-      <JFXTextField fx:id="txtFilterPermissions" labelFloat="true" layoutX="15.0" layoutY="61.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="294.0" promptText="Filtrar">
+      <JFXTextField fx:id="txtFilterPermissions" labelFloat="true" layoutX="15.0" layoutY="61.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="294.0" promptText="Filtrar" AnchorPane.leftAnchor="10.0">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>

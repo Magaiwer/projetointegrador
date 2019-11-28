@@ -22,11 +22,12 @@
                   <Pane prefHeight="136.0" prefWidth="189.0">
                      <children>
                         <Separator layoutY="133.0" prefHeight="3.0" prefWidth="189.0" />
-                        <ImageView fitHeight="105.0" fitWidth="154.0" layoutX="42.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="101.0" fitWidth="97.0" layoutX="42.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/logo-home.png" />
                            </image>
                         </ImageView>
+                        <Label fx:id="lbUser" layoutX="6.0" layoutY="111.0" prefHeight="18.0" prefWidth="165.0" textFill="#fcf9f9" />
                      </children>
                   </Pane>
                   <Label prefHeight="28.0" prefWidth="184.0" styleClass="menu-label" text="Cadastros" textFill="#fcfcfc">
@@ -37,31 +38,34 @@
                         <FontAwesomeIconView fill="#f8f4f4" glyphName="DATABASE" />
                      </graphic>
                   </Label>
-                  <JFXButton fx:id="menuUser" onAction="#showUser" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Usuário" />
+                  <JFXButton fx:id="menuUser" onAction="#showUser" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Usuário">
+                     <graphic>
+                        <FontAwesomeIconView fill="#f5f3f3" glyphName="USER" size="12" />
+                     </graphic></JFXButton>
                   <JFXButton fx:id="menuGroup" onAction="#showGroup" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Grupo">
                      <graphic>
                         <FontAwesomeIconView fill="#f8f4f4" glyphName="USERS" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="menuMaterial" onAction="#showMaterial" prefHeight="48.0" prefWidth="189.0" text="Material" textFill="#f2f2f2">
+                  <JFXButton fx:id="menuMaterial" onAction="#showMaterial" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Material" textFill="#f2f2f2">
                      <graphic>
                         <FontAwesomeIconView fill="#fcfcfc" glyphName="CUBE" />
                      </graphic></JFXButton>
-                  <JFXButton fx:id="menuMaterialAbsortancia" onAction="#showMaterialAbsortancia" prefHeight="48.0" prefWidth="189.0" text="Superficie" textFill="#fffbfb">
+                  <JFXButton fx:id="menuMaterialAbsortancia" onAction="#showMaterialAbsortancia" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Superficie" textFill="#fffbfb">
                      <graphic>
                         <FontAwesomeIconView fill="#f5f5f5" glyphName="CUBES" />
                      </graphic></JFXButton>
-                  <JFXButton fx:id="menuPermissions" onAction="#showPermissions" prefHeight="48.0" prefWidth="189.0" text="Permissões" textFill="#fffbfb">
+                  <JFXButton fx:id="menuPermissions" onAction="#showPermissions" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Permissões" textFill="#fffbfb">
                      <graphic>
                         <FontAwesomeIconView fill="#f5f5f5" glyphName="LOCK" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="menuProject" buttonType="RAISED" onAction="#showProject" prefHeight="48.0" prefWidth="189.0" text="Projeto" textFill="WHITE">
+                  <JFXButton fx:id="menuProject" buttonType="RAISED" onAction="#showProject" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Projeto" textFill="WHITE">
                      <graphic>
                         <MaterialDesignIconView fill="WHITE" glyphName="WORKER" size="18" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="menuDashboards" onAction="#showDashboards" prefHeight="48.0" prefWidth="189.0" text="Dashboards" textFill="WHITE">
+                  <JFXButton fx:id="menuDashboards" onAction="#showDashboards" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Dashboards" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="#f8f4f4" glyphName="COLUMNS" />
                      </graphic></JFXButton>
@@ -73,17 +77,17 @@
                         <Insets left="5.0" />
                      </VBox.margin>
                   </Label>
-                  <JFXButton fx:id="menuAudit" onAction="#showAudit" prefHeight="48.0" prefWidth="189.0" text="Auditoria" textFill="WHITE">
+                  <JFXButton fx:id="menuAudit" onAction="#showAudit" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Auditoria" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="FILE_TEXT" />
                      </graphic></JFXButton>
-                  <JFXButton fx:id="menuForm" onAction="#showForms" prefHeight="48.0" prefWidth="189.0" text="Formularios" textFill="WHITE">
+                  <JFXButton fx:id="menuForm" onAction="#showForms" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Formularios" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="#fffbfb" glyphName="LIST" />
                      </graphic></JFXButton>
-                  <JFXButton fx:id="menuTransfer" onAction="#showFileTransfer" prefHeight="48.0" prefWidth="189.0" text="Transferência" textFill="WHITE">
+                  <JFXButton fx:id="menuTransfer" onAction="#showFileTransfer" prefHeight="48.0" prefWidth="189.0" styleClass="menu-button" text="Transferência" textFill="WHITE">
                      <graphic>
-                        <FontAwesomeIconView fill="#fffbfb" glyphName="LIST" />
+                        <FontAwesomeIconView fill="#fffbfb" glyphName="UPLOAD" />
                      </graphic>
                   </JFXButton>
                </children>

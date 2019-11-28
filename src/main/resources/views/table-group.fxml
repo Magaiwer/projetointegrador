@@ -2,30 +2,38 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.GrupoController">
    <children>
-      <TableView fx:id="tableGroup" layoutX="5.0" layoutY="81.0" prefHeight="430.0" prefWidth="933.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="81.0">
+      <TableView fx:id="tableGroup" layoutX="5.0" layoutY="81.0" prefHeight="430.0" prefWidth="933.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
           <columns>
               <TableColumn fx:id="colunmId" prefWidth="73.0" text="Código" />
               <TableColumn fx:id="colunmName" minWidth="0.0" prefWidth="779.0" text="Nome" />
           </columns>
       </TableView>
-      <JFXButton  fx:id="btnNewGroup" graphicTextGap="8.0" layoutX="14.0" layoutY="46.0" onAction="#onNew" prefHeight="29.0" prefWidth="101.0" text="Novo">
+      <JFXButton fx:id="btnNewGroup" graphicTextGap="8.0" layoutX="10.0" layoutY="66.0" onAction="#onNew" prefHeight="29.0" prefWidth="101.0" text="Novo" AnchorPane.leftAnchor="10.0">
          <graphic>
             <FontAwesomeIconView glyphName="PLUS" />
          </graphic></JFXButton>
-      <JFXButton fx:id="btnEditGroup" graphicTextGap="8.0" layoutX="125.0" layoutY="46.0" onAction="#onEdit" prefHeight="29.0" prefWidth="101.0" text="Editar">
+      <JFXButton fx:id="btnEditGroup" graphicTextGap="8.0" layoutX="125.0" layoutY="66.0" onAction="#onEdit" prefHeight="29.0" prefWidth="101.0" text="Editar">
          <graphic>
             <FontAwesomeIconView glyphName="PENCIL" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="btnDeleteGroup" graphicTextGap="8.0" layoutX="235.0" layoutY="46.0" onAction="#onDelete" prefHeight="29.0" prefWidth="101.0" text="deletar">
+      <JFXButton fx:id="btnDeleteGroup" graphicTextGap="8.0" layoutX="235.0" layoutY="66.0" onAction="#onDelete" prefHeight="29.0" prefWidth="101.0" text="deletar">
          <graphic>
             <FontAwesomeIconView glyphName="TRASH" />
          </graphic>
       </JFXButton>
+      <Label prefHeight="28.0" prefWidth="553.0" text="Grupos de usuário" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

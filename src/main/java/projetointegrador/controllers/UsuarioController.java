@@ -51,9 +51,6 @@ public class UsuarioController implements Initializable, BaseController<UsuarioC
     private JFXTextField txtEmail;
 
     @FXML
-    private AnchorPane panelUser;
-
-    @FXML
     private JFXPasswordField txtConfirmePassword;
 
     @FXML

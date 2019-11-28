@@ -13,7 +13,7 @@
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetointegrador.controllers.ProjectController">
    <children>
-      <TableView fx:id="tableProject" editable="true" layoutX="14.0" layoutY="101.0" prefHeight="395.0" prefWidth="832.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="105.0">
+      <TableView fx:id="tableProject" editable="true" layoutX="14.0" layoutY="101.0" prefHeight="395.0" prefWidth="832.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
          <columns>
             <TableColumn fx:id="columnIdProject" minWidth="5.0" prefWidth="95.0" styleClass="column-alignment-center" text="Cod." />
             <TableColumn fx:id="columnNameProject" minWidth="188.0" prefWidth="343.0" text="Projeto" />
@@ -25,22 +25,22 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="15.0" layoutY="9.0" prefHeight="18.0" prefWidth="329.0" text="Cadastro de Projetos">
+      <Label layoutX="15.0" layoutY="9.0" prefHeight="18.0" prefWidth="329.0" text="Cadastro de Projetos" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <font>
-            <Font name="System Bold" size="20.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <JFXTextField fx:id="txtFilterProject" labelFloat="true" layoutX="555.0" layoutY="68.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="255.0" promptText="Filtrar" AnchorPane.rightAnchor="14.0">
+      <JFXTextField fx:id="txtFilterProject" labelFloat="true" layoutX="555.0" layoutY="68.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="255.0" promptText="Filtrar" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="66.0">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </JFXTextField>
-      <JFXButton fx:id="btnNewProject" graphicTextGap="8.0" layoutX="19.0" layoutY="68.0" onAction="#onNew" prefHeight="29.0" prefWidth="101.0" text="Novo">
+      <JFXButton fx:id="btnNewProject" graphicTextGap="8.0" layoutX="19.0" layoutY="68.0" onAction="#onNew" prefHeight="29.0" prefWidth="101.0" text="Novo" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="66.0">
          <graphic>
             <FontAwesomeIconView glyphName="PLUS" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="btnEditProject" graphicTextGap="8.0" layoutX="130.0" layoutY="68.0" onAction="#onEdit" prefHeight="29.0" prefWidth="101.0" text="Editar">
+      <JFXButton fx:id="btnEditProject" graphicTextGap="8.0" layoutX="130.0" layoutY="68.0" onAction="#onEdit" prefHeight="29.0" prefWidth="101.0" text="Editar" AnchorPane.topAnchor="66.0">
          <graphic>
             <FontAwesomeIconView glyphName="PENCIL" />
          </graphic>
@@ -50,7 +50,7 @@
             <FontAwesomeIconView glyphName="TRASH_ALT" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="btnDetailProject" buttonType="RAISED" graphicTextGap="8.0" layoutX="341.0" layoutY="68.0" onAction="#onShowDetail" prefHeight="29.0" prefWidth="101.0" text="Detalhes">
+      <JFXButton fx:id="btnDetailProject" buttonType="RAISED" graphicTextGap="8.0" layoutX="341.0" layoutY="68.0" onAction="#onShowDetail" prefHeight="29.0" prefWidth="101.0" text="Detalhes" AnchorPane.topAnchor="66.0">
          <graphic>
             <FontAwesomeIconView glyphName="LIST_ALT" size="12" wrappingWidth="12.0" />
          </graphic>
@@ -58,7 +58,7 @@
             <Tooltip text="Visualizar detalhes do Projeto" />
          </tooltip>
       </JFXButton>
-      <JFXButton fx:id="btnEmail" buttonType="RAISED" graphicTextGap="8.0" layoutX="442.0" layoutY="68.0" onAction="#onShowMailSender" prefHeight="29.0" prefWidth="101.0" text="E-mail">
+      <JFXButton fx:id="btnEmail" buttonType="RAISED" graphicTextGap="8.0" layoutX="442.0" layoutY="68.0" onAction="#onShowMailSender" prefHeight="29.0" prefWidth="101.0" text="E-mail" AnchorPane.topAnchor="66.0">
          <graphic>
             <FontAwesomeIconView glyphName="ENVELOPE_ALT" size="12" wrappingWidth="12.0" />
          </graphic>
