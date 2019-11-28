@@ -62,7 +62,9 @@ public class ClientSocketController implements Initializable {
 
             File fileSelected = fileChooser.showOpenDialog(new Stage());
 
-            bindFile(fileSelected);
+            if (fileSelected != null) {
+                bindFile(fileSelected);
+            }
         });
 
         btnSendFile.setOnAction(event -> new Thread(() -> {

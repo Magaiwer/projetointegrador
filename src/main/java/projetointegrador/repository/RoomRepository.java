@@ -19,5 +19,9 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("select distinct r from Room r left outer join  fetch  r.faces where r.project.id = :id")
     List<Room> findByProjectWithFaces(@Param("id") Long id);
 
+/*    @Query(" select avg(tpm.totalroom) from (count (r.id) as totalroom from project p inner join room r on p.id = r.project_id group by p.id) as tpm  ")
+    double averageRoomByProject();*/
+
+
 
 }

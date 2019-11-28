@@ -15,4 +15,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findProjectByIdAndRegionId(@Param("id") Long id, @Param("region_id") Long region_id);
 
     List<Project> findByRegionId(@Param("region_id") Long region_id);
+
+
 }

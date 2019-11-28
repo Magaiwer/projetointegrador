@@ -35,10 +35,10 @@ public class Face implements Serializable {
     private String name;
 
     @Column
-    private BigDecimal transmittanceAverage;
+    private BigDecimal transmittanceAverage = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal thermalLoad;
+    private BigDecimal thermalLoad = BigDecimal.ZERO;
 
     @ManyToOne
     @JoinColumn(name = "room_id")

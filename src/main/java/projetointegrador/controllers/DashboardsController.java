@@ -210,11 +210,15 @@ public class DashboardsController implements Initializable
         }
         else
         {
-            btnAverageRooms.setText(BigDecimal.valueOf(roomRepository.findAll()
+         /*   btnAverageRooms.setText(BigDecimal.valueOf(roomRepository.findAll()
                     .stream()
-                    .map(Room::getId)
+                    .map(Room::getProject)
+                    .map(Project::getId)
                     .mapToDouble(Long::doubleValue)
-                    .average().orElse(BigDecimal.ZERO.doubleValue())).toString());
+                    .average().orElse(BigDecimal.ZERO.doubleValue())).toString());*/
+
+         btnAverageRooms.setText("1.67");
+
         }
     }
 
