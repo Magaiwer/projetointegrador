@@ -63,9 +63,9 @@ A proposta do software é gerenciar um projeto, onde deve calcular a carga térm
 
 **10.** O sistema deve permitir desativar a auditoria dos dados.
 
-11. O sistema deve gerar logs de erros. 
+**11.** O sistema deve gerar logs de erros. 
 
-12. O sistema deve utilizar uma biblioteca para envio de emails.
+**12.** O sistema deve utilizar uma biblioteca para envio de emails.
 
 
 ### Tecnologias
