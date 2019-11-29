@@ -77,3 +77,6 @@ A proposta do software é gerenciar um projeto, onde deve calcular a carga térm
   * Flyway: 5.2.4
   * JFoenix : 8.0.9
   * ContolsFX: 8.40.15
+  
+### Demonstração
+![Demonstração do sistema](src/main/resources/demo/demo.gif)
