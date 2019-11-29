@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 public enum Rsi {
 
     UP(new BigDecimal(0.10), "Superior"),
-    BOTTOM(new BigDecimal(0.17), "Lateral"),
-    LEFT_RIGHT(new BigDecimal(0.13), "Inferior");
+    BOTTOM(new BigDecimal(0.17), "Inferior"),
+    LEFT_RIGHT(new BigDecimal(0.13), "Lateral");
 
     private BigDecimal value;
 

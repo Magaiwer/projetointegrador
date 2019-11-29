@@ -715,7 +715,7 @@ public class ProjectController implements Initializable, BaseController<ProjectC
             component.setAlpha(new BigDecimal(txtAlpha.getText()));
             component.setM2(new BigDecimal(txtm2.getText()));
             component.setTemperatureOutside(new BigDecimal(txtTemperatureOutside.getText()));
-            component.setTemperatureInside(new BigDecimal(txtTemperatureOutside.getText()));
+            component.setTemperatureInside(new BigDecimal(txtTemperatureInside.getText()));
             String flowType = toggleGroup.getSelectedToggle().getUserData().toString();
             component.setFlowType(FlowType.valueOf(flowType));
         }
