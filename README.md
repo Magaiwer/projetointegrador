@@ -69,6 +69,11 @@ A proposta do software é gerenciar um projeto, onde deve calcular a carga térm
 
 
 ### Tecnologias
-  * JavaFX
-  * Spring boot, Spring Data JPA:
-  * Lombok
+  * Java: 1.8
+  * JavaFX: 2.2
+  * Spring boot, Spring Data JPA: 2.1.3
+  * Lombok: 1.18.6
+  * PostgreSQL: 42.2
+  * Flyway: 5.2.4
+  * JFoenix : 8.0.9
+  * ContolsFX: 8.40.15
