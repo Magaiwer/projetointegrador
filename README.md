@@ -10,8 +10,11 @@ A proposta do sofware é gerenciar um projeto, onde deve calcular a carga térmi
 **3.** Manter o cadastro da tabela de absortância dos materiais.
 **4.** Manter o cadastro de projetos.
 **5.** Manter o cadastro de cômodos que pertencem ao projeto.
+
 **6.** O sistema deverá  calcular a resistência  térmica do conjunto de materiais de uma face.
+
 **7.** Manter o cadastro de faces de cada cômodo.
+
 **8.** O sistema deverá permitir informar de forma dinâmica quantas materialidades possuem cada face.
 **9.** O sistema deverá armazenar a soma da resistência térmica de todos os materiais componentes da mesma face.
 **10.** A espessura do material deve ser calculada em metros.
