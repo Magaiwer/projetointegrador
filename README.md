@@ -1,7 +1,7 @@
 # Projeto integrador 1
 
 Projeto desenvolvido ao longo do semestre para a disciplina de Projeto integrador 1, do curso de Engenharia de software e Sistema da Informação em conjunto com os alunos de conforto 2 do curso de Arquitetura e urbanismo.
-A proposta do sofware é gerenciar um projeto, onde deve calcular a carga térmica, fluxo de calor, e resistência térmica dos materiais utilizados por face e ambiente.
+A proposta do software é gerenciar um projeto, onde deve calcular a carga térmica, fluxo de calor, e resistência térmica dos materiais utilizados por face e ambiente.
 
 
 ### Requisitos funcionais:
@@ -35,7 +35,7 @@ A proposta do sofware é gerenciar um projeto, onde deve calcular a carga térmi
 
 **15.** O sistema deve calcular a carga térmica da face.
 
-**16.** Ao final do cálculo o sistema deve converter o consumo energético de kWh para BTUS.
+**16.** Ao final do cálculo o sistema deve converter o consumo energético de Watts para BTUS.
 
 **17.** O sistema deverá realizar o envio de e-mails com anexos.
 
@@ -69,6 +69,6 @@ A proposta do sofware é gerenciar um projeto, onde deve calcular a carga térmi
 
 
 ### Tecnologias
-  - JavaFX
-  - Spring boot, Spring Data JPA, Spring Security
-  - Lombok
+  * JavaFX
+  * Spring boot, Spring Data JPA:
+  * Lombok
