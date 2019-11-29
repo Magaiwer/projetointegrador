@@ -80,3 +80,11 @@ A proposta do software é gerenciar um projeto, onde deve calcular a carga térm
   
 ### Demonstração
 ![Demonstração do sistema](src/main/resources/demo/demo.gif)
+
+### Modelo ER
+![Modelo ER](src/main/resources/model-er/project_integration_confortable.png)
+
+
+### Casos de uso
+![Casos de uso](/src/main/resources/use-case/use-case.png)
+
