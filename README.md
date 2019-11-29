@@ -1,6 +1,6 @@
 # Projeto integrador 1
 
-*Read this in english: [English](README-en-US.md)
+* Read this in english: [English](README-en-US.md)
 
 Projeto desenvolvido ao longo do semestre para a disciplina de Projeto integrador 1, do curso de Engenharia de software e Sistema da Informação em conjunto com os alunos de conforto 2 do curso de Arquitetura e urbanismo.
 A proposta do software é gerenciar um projeto, onde deve calcular a carga térmica, fluxo de calor, e resistência térmica dos materiais utilizados por face e ambiente.
